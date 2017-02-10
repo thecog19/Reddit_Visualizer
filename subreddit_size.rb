@@ -3,7 +3,7 @@ require "pp"
 
 class RedditBot
 
-  def init 
+  def init
     @token
     @agent = ENV["user_agent"]
     @username =  ENV["username"]
@@ -11,6 +11,10 @@ class RedditBot
     @id = ENV["reddit_id"]
     @secret = ENV["reddit_secret"]
     get_oath_token
+  end
+
+  def run
+    get_subreddits
   end
 
   def get_oath_token
@@ -27,15 +31,23 @@ class RedditBot
     @token = token_info["access_token"]
   end
 
-  def get_subreddit_posts(type, subreddit)
-    #returns an array of posts
-    reddit_info = HTTParty.get("https://oauth.reddit.com/r/#{subreddit.to_s}/#{type.to_s}.json",
+  def get_subreddits
+    #returns an array of subreddits
+    subreddits = HTTParty.get("https://oauth.reddit.com/subreddits/popular.json",
       :headers => {"Authorization" => "bearer #{@token}",
         'user-agent' => "uniquenameforsupercoolbot191919" },
-      :query => {limit: 25}
+      :query => {limit: 10}
       )
-    reddit_info["data"]["children"][3]["data"]
+    generate_subreddit_hash(subreddits)
   end
 
+  def generate_subreddit_hash(subreddits)
+    subreddit_data = {}
+    subreddits["data"]["children"].each do |subreddit|
+      subreddit_data[subreddit["data"]["display_name"]] = subreddit["data"]["subscribers"]
+    end
+    puts subreddit_data
+  end
+  
 end
-File.open("save.txt", 'w') { |file| file.write(RedditBot.new.get_subreddit_posts("hot", "pics")) }
+RedditBot.new.run
