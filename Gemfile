@@ -5,12 +5,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 gem 'rails', '~> 5.0.1'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
-gem "httparty"
-gem 'figaro'
+gem 'figaro', '~> 1.1.1'
+gem 'httparty', '~> 0.14.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -22,10 +21,14 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring', '~> 2.0.1'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'guard', '~> 2.14.1'
+  gem 'guard-rspec', '~> 4.7'
   gem 'better_errors', '~> 2.1.1'
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'jazz_fingers', '~> 4.0.1'
+end
+
+group :test do
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
