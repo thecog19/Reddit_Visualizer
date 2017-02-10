@@ -8,6 +8,8 @@ end
 gem 'rails', '~> 5.0.1'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
+gem 'figaro', '~> 1.1.1'
+gem 'httparty', '~> 0.14.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
