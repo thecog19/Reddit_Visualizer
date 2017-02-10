@@ -10,6 +10,16 @@ describe SubredditApi do
 
       expect(subreddits.length).to eq(1)
     end
+
+    it "uses client to communicate with the API" do
+      client = double()
+      expect(client).to receive(:get).and_return({'data' => {'children' => []}})
+      expect(client).to receive(:post).and_return({})
+      subreddit_api = SubredditApi.new(client: client)
+      
+      subreddit_api.top_subreddits(1)
+    end
+
   end
 
 end

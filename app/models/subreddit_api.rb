@@ -2,13 +2,13 @@ require "httparty"
 
 class SubredditApi
 
-  def initialize
+  def initialize(args = {})
     @agent = ENV["REDDIT_AGENT"]
     @username =  ENV["REDDIT_USERNAME"]
     @password = ENV["REDDIT_PASSWORD"]
     @id = ENV["REDDIT_ID"]
-    @secret = ENV["REDDIT_SECRET"]
-    @client = HTTParty
+    @secret = ENV["REDDIT_SECRET"]    
+    @client = args.fetch(:client, HTTParty)
   end
 
   def top_subreddits(n)
@@ -57,4 +57,3 @@ class SubredditApi
   end
 
 end
-
