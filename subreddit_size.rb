@@ -36,7 +36,7 @@ class RedditBot
     subreddits = HTTParty.get("https://oauth.reddit.com/subreddits/popular.json",
       :headers => {"Authorization" => "bearer #{@token}",
         'user-agent' => "uniquenameforsupercoolbot191919" },
-      :query => {limit: 10}
+      :query => {limit: 100}
       )
     generate_subreddit_hash(subreddits)
   end
@@ -48,6 +48,6 @@ class RedditBot
     end
     puts subreddit_data
   end
-  
+
 end
 RedditBot.new.run
