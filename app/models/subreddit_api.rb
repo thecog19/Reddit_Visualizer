@@ -8,7 +8,7 @@ class SubredditApi
     @password = ENV["REDDIT_PASSWORD"]
     @id = ENV["REDDIT_ID"]
     @secret = ENV["REDDIT_SECRET"]
-    @token = get_oath_token
+    @client = HTTParty
   end
 
   def top_subreddits(n)
@@ -17,7 +17,7 @@ class SubredditApi
   end
 
   private
-  attr_reader :agent, :username, :password, :id, :secret, :token
+  attr_reader :agent, :username, :password, :id, :secret, :client
 
   def cleanse_all_data(raw_subreddit_data)
     raw_subreddit_data.map! do |subreddit_data|
@@ -31,24 +31,24 @@ class SubredditApi
   end
 
   def get_top_subreddit_data(n)
-    headers = { "Authorization" => "bearer #{token}",
+    headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
     query = { limit: n }
-    api_response = HTTParty.get("https://oauth.reddit.com/subreddits/popular.json",
+    api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                                 headers: headers,
                                 query: query
                                )
     api_response["data"]["children"]
   end
 
-  def get_oath_token
+  def oath_token
     basic_auth = { username: id,
                    password: secret }
     headers = { "user-agent" => agent }
     body = { grant_type:  "password",
              username:  username,
              password: password }
-    token_info = HTTParty.post("https://www.reddit.com/api/v1/access_token",
+    token_info = client.post("https://www.reddit.com/api/v1/access_token",
                                basic_auth: basic_auth,
                                headers: headers,
                                body: body
