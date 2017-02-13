@@ -1,5 +1,6 @@
 require "httparty"
-
+require "figaro"
+##bundle exec figaro install
 ##USE rails runner SCRIPTNAME to make sure rails is loaded
 class SubredditApi
 
@@ -41,7 +42,7 @@ class SubredditApi
 
   def populate_database(num_sr = 200, num_users = 25)
     top_subreddits(num_sr)
-    subreddits = Subreddit.all
+    subreddits = Subreddit.all.clone
     #this is updating dynamically. which is a problem. 
     subreddits.each do |subreddit|
       sub_connectivity(subreddit.name, num_users)
@@ -122,6 +123,14 @@ class SubredditApi
     return posts
   end
 
+  def get_sub_count(name)
+    data = HTTParty.get("https://oauth.reddit.com/r/#{subreddit.to_s}",
+      :headers => {"Authorization" => "bearer #{oath_token}",
+        'user-agent' => agent },
+      )
+    data["data"]["subscribers"]
+  end
+
   def get_authors(posts)
     authors = []
     posts["data"]["children"].each do |post|
@@ -134,6 +143,9 @@ class SubredditApi
 
   def get_subreddits_for_author(author)
     sleep(1)
+    if author == "[deleted]"
+      return []
+    end
     author_subreddits = HTTParty.get("https://oauth.reddit.com/user/#{author}/comments.json",
       :headers => {"Authorization" => "bearer #{oath_token}",
         'user-agent' => agent },
@@ -159,7 +171,9 @@ class SubredditApi
 
   def gen_subreddit(subreddit_name)
     if Subreddit.where(name: subreddit_name).empty?
-      subreddit = Subreddit.new(name: subreddit_name, url: "/r/#{subreddit_name}")
+      subreddit = Subreddit.new(name: subreddit_name, 
+                                url: "/r/#{subreddit_name}",
+                                subscriber_count: get_sub_count(subreddit_name))
       subreddit.save
     else
       subreddit = Subreddit.where(name: subreddit_name).last
@@ -192,7 +206,9 @@ class SubredditApi
 
 end
 s = SubredditApi.new
-s.populate_database(50, 10)
+#first number is number of subreddits(it'll keep going after that)
+#second is how many users to querry
+s.populate_database(50, 100)
 
 
 
