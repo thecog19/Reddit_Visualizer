@@ -29,8 +29,8 @@ class SubredditPersister
       subreddit.save if subreddit.valid?
     end
 
-    def persist_subreddit_connections(subreddit_connections)
-      subreddit_connections.each do |connection|
+    def persist_subreddit_connections(connections)
+      connections.each do |connection|
         persist_subreddit_connection(connection)
       end
     end
@@ -47,7 +47,6 @@ class SubredditPersister
     end
 
     def generate_subreddit_connections(subreddit, user_count)
-      # { subreddit_from_id: , subreddit_to_id: , connection_weight:  }
       puts subreddit
       authors = api.get_subreddit_authors(subreddit, user_count)
       scores = Hash.new(0)
@@ -56,6 +55,15 @@ class SubredditPersister
         calculate_scores(subreddits, scores)
       end
       scores
+      # scores = {
+      #  "askReddit" => 120123
+      #  "trees" => 12
+      #  ... 100 times
+      # }
+      # top 5 scores each do |name, score|
+      # second_sub = SubredditConnect.find_or_fetch_by_name(name)
+      # connection_params = { subreddit_from_id: subreddit.id, subreddit_to_id: second_sub.id, connection_weight:  score }
+      # persist_subreddit_connection(connection_params)
     end
 
     def calculate_scores(subreddits, scores)
