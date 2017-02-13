@@ -12,4 +12,17 @@ class Subreddit < ApplicationRecord
   has_many :destination_subreddits,
     through: :subreddit_destination_connections,
     source: :subreddit_to
+
+  def find_or_fetch_by_name(subreddit_name)
+    if where(name: subreddit_name).empty?
+      subreddit = new(name: subreddit_name, 
+      url: "/r/#{subreddit_name}",
+      subscriber_count: get_sub_count(subreddit_name))
+      subreddit.save
+    else
+      subreddit = where(name: subreddit_name).last
+    end
+
+    subreddit
+  end
 end

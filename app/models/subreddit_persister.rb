@@ -49,12 +49,8 @@ class SubredditPersister
     def generate_subreddit_connections(subreddit, user_count)
       puts subreddit
       authors = api.get_subreddit_authors(subreddit, user_count)
-      scores = Hash.new(0)
-      authors.each do |author|
-        subreddits = api.get_subreddits_commented_on(author)
-        calculate_scores(subreddits, scores)
-      end
-      scores
+      scores = get_scores(authors, 5)
+      build_connections(scores, subreddit)
       # scores = {
       #  "askReddit" => 120123
       #  "trees" => 12
@@ -66,12 +62,32 @@ class SubredditPersister
       # persist_subreddit_connection(connection_params)
     end
 
+    def get_scores(authors, limit = 5)
+      all_scores = get_all_scores(authors)
+      sorted_scores = all_scores.sort_by { |subreddit, score| score }
+      sorted_scores.to_h
+    end
+
+    def get_all_scores(authors)
+      scores = Hash.new(0)
+      authors.each do |author|
+        subreddits = api.get_subreddits_commented_on(author)
+        calculate_scores(subreddits, scores)
+      end
+      scores
+    end
+
     def calculate_scores(subreddits, scores)
       subreddits.each do |subreddit|
         scores[subreddit] += 1
       end
     end
 
+    def build_connections(scores, subreddit)
+      scores.map do |subreddit_name, score|
+
+      end
+    end
 end
 
 s = SubredditPersister.new
