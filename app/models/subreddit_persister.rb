@@ -10,7 +10,7 @@ class SubredditPersister
   end
 
   def collect_subreddit_connections(user_count = 25)
-    subreddit_connections = generate_subreddit_connections(user_count)
+    subreddit_connections = generate_all_subreddit_connections(user_count)
     persist_subreddit_connections(subreddit_connections)
   end
 
@@ -29,8 +29,14 @@ class SubredditPersister
       subreddit.save if subreddit.valid?
     end
 
-    def generate_subreddit_connections(user_count)
-      
+    def generate_all_subreddit_connections(user_count)
+      Subreddit.all.each do |subreddit|
+        generate_subreddit_connections(subreddit, user_count)
+      end
+    end
+
+    def generate_subreddit_connections(subreddit, user_count)
+      authors = api.get_subreddit_authors(subreddit, user_count)
     end
 
 end
