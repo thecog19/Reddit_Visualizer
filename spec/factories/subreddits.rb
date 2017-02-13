@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :subreddit do
     subscriber_count ""
-    url "MyString"
+    sequence(:url) { |n| "#{n}url" }
     name "MyString"
     description "MyText"
   end

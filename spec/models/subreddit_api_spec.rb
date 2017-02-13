@@ -16,7 +16,7 @@ describe SubredditApi do
       expect(client).to receive(:get).and_return({'data' => {'children' => []}})
       expect(client).to receive(:post).and_return({})
       subreddit_api = SubredditApi.new(client: client)
-      
+
       subreddit_api.top_subreddits(1)
     end
 
