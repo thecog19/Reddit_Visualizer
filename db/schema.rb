@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20170210163350) do
   create_table "subreddit_connections", force: :cascade do |t|
     t.integer  "subreddit_from_id"
     t.integer  "subreddit_to_id"
+    t.bigint   "connection_weight"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.index ["subreddit_from_id", "subreddit_to_id"], name: "from_to", unique: true, using: :btree
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20170210163350) do
     t.text     "description"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.index ["url"], name: "index_subreddits_on_url", unique: true, using: :btree
   end
 
 end
