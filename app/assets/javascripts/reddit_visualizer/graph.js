@@ -28,6 +28,7 @@ RV.graph = function(config) {
     },
     rootId = config.json.rootId,
     nodes,
+    links,
     root;
 
   // Build json request route
@@ -39,6 +40,7 @@ RV.graph = function(config) {
     .attr('width', width)
     .attr('height', height);
 
+  console.log(svg);
   // Configure force settings to adjust physics interaction between nodes.
   var force = d3.layout.force()
     .linkDistance(linkDistance)
@@ -66,6 +68,7 @@ RV.graph = function(config) {
     nodes = flatten(root),
     // 'nodes' must have a 'children' attr
     links = d3.layout.tree().links(nodes);
+    console.log(links);
 
     // Feed the force layout current nodes and links.
     force

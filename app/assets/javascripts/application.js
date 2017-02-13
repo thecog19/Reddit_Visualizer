@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require d3
+//= require reddit_visualizer/graph
 //= require_tree .

@@ -23,11 +23,13 @@ RV.config = {
   },
 
   json: {
-    base: '/subreddits/',
+    base: '/api/v1/subreddits/',
     suffix: '.json',
     rootId: '1',
     accessor: 'id'
   }
 };
 
-RV.graph(RV.config);
+$(function() {
+  RV.graph(RV.config);
+});
