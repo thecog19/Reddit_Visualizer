@@ -42,8 +42,8 @@ class SubredditApi
 
   def populate_database(num_sr = 200, num_users = 25)
     top_subreddits(num_sr)
-    subreddits = Subreddit.all.clone
-    #this is updating dynamically. which is a problem. 
+    subreddits = Subreddit.all
+    #this is updating dynamically. which is a problem.
     subreddits.each do |subreddit|
       sub_connectivity(subreddit.name, num_users)
     end
@@ -61,7 +61,7 @@ class SubredditApi
 
   def cleanse_subreddit_data(raw_data)
     subreddit = Subreddit.new(
-      subscriber_count: raw_data["data"]["subscribers"], 
+      subscriber_count: raw_data["data"]["subscribers"],
       url: raw_data["data"]["url"],
       name: raw_data["data"]["display_name"],
       description: raw_data["data"]["public_description"]
@@ -69,7 +69,7 @@ class SubredditApi
     if Subreddit.where(url: raw_data["data"]["url"]).empty?
       subreddit.save
     end
-    
+
   end
 
   def get_top_subreddit_data(n)
@@ -124,7 +124,7 @@ class SubredditApi
   end
 
   def get_sub_count(name)
-    data = HTTParty.get("https://oauth.reddit.com/r/#{subreddit.to_s}",
+    data = HTTParty.get("https://oauth.reddit.com/r/#{name.to_s}",
       :headers => {"Authorization" => "bearer #{oath_token}",
         'user-agent' => agent },
       )
@@ -159,7 +159,7 @@ class SubredditApi
   end
 
   def generate_score(array)
-    #this needs to be refactored to reflect actual values, right now, each time a user has posted in a different subreddit, its worth a flat one point. 
+    #this needs to be refactored to reflect actual values, right now, each time a user has posted in a different subreddit, its worth a flat one point.
     scores_hash = {}
     array.each do |sub|
       if !scores_hash[sub]
@@ -171,7 +171,7 @@ class SubredditApi
 
   def gen_subreddit(subreddit_name)
     if Subreddit.where(name: subreddit_name).empty?
-      subreddit = Subreddit.new(name: subreddit_name, 
+      subreddit = Subreddit.new(name: subreddit_name,
                                 url: "/r/#{subreddit_name}",
                                 subscriber_count: get_sub_count(subreddit_name))
       subreddit.save
@@ -194,7 +194,7 @@ class SubredditApi
                                 subreddit_to_id: adj_sub_record.id,
                                 connection_weight: score)
         connection.save
-      else 
+      else
         connection = SubredditConnection.where({
                                   subreddit_from_id: subreddit.id,
                                   subreddit_to_id: adj_sub_record.id,}).last
@@ -208,9 +208,4 @@ end
 s = SubredditApi.new
 #first number is number of subreddits(it'll keep going after that)
 #second is how many users to querry
-s.populate_database(50, 100)
-
-
-
-
-
+s.populate_database(50, 20)

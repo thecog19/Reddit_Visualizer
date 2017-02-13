@@ -18,4 +18,5 @@ Bundler.require(*Rails.groups)
 
 module RedditVisualizer
   class Application < Rails::Application
+  end
 end
