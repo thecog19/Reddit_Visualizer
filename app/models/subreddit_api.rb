@@ -25,23 +25,27 @@ class SubredditApi
     authors.keys
   end
 
+  def get_commented_subreddits_for(author)
+    sleep(1)
+    get_comments_for(author).map do |comment|
+      comment["data"]["subreddit"]
+    end
+  end
+
   private
   attr_reader :agent, :username, :password, :id, :secret, :client
 
-  def oath_token
-    basic_auth = { username: id,
-                   password: secret }
-    headers = { "user-agent" => agent }
-    body = { grant_type:  "password",
-             username:  username,
-             password: password }
-    token_info = client.post("https://www.reddit.com/api/v1/access_token",
-                             basic_auth: basic_auth,
-                             headers: headers,
-                             body: body
-                            )
-    token_info["access_token"]
+  def get_comments_for(author)
+    headers = {"Authorization" => "bearer #{oath_token}",
+               'user-agent' => agent }
+    query = {limit: 100}
+    response = client.get("https://oauth.reddit.com/user/#{author}/comments.json",
+                          headers: headers,
+                          query: query
+                         )
+    response["data"]["children"]
   end
+
 
   def cleanse_all_subreddit_data(all_subreddit_data)
     all_subreddit_data.map! do |subreddit_data|
@@ -87,6 +91,21 @@ class SubredditApi
       authors[author] = true
       break if authors.length == count
     end
+  end
+
+  def oath_token
+    basic_auth = { username: id,
+                   password: secret }
+    headers = { "user-agent" => agent }
+    body = { grant_type:  "password",
+             username:  username,
+             password: password }
+    token_info = client.post("https://www.reddit.com/api/v1/access_token",
+                             basic_auth: basic_auth,
+                             headers: headers,
+                             body: body
+                            )
+    token_info["access_token"]
   end
 
 end

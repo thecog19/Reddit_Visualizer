@@ -29,6 +29,10 @@ class SubredditPersister
       subreddit.save if subreddit.valid?
     end
 
+    def persist_subreddit_connections(subreddit_connections)
+puts subreddit_connections
+    end
+
     def generate_all_subreddit_connections(user_count)
       Subreddit.all.each do |subreddit|
         generate_subreddit_connections(subreddit, user_count)
@@ -37,6 +41,18 @@ class SubredditPersister
 
     def generate_subreddit_connections(subreddit, user_count)
       authors = api.get_subreddit_authors(subreddit, user_count)
+      scores = Hash.new(0)
+      authors.each do |author|
+        subreddits = get_commented_subreddits_for(author)
+        calculate_scores(subreddits, scores)
+      end
+      scores
+    end
+
+    def calculate_scores(subreddits, scores)
+      subreddits.each do |subreddit|
+        scores[subreddit] += 1
+      end
     end
 
 end
