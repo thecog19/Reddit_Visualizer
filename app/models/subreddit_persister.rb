@@ -30,7 +30,14 @@ class SubredditPersister
     end
 
     def persist_subreddit_connections(subreddit_connections)
-puts subreddit_connections
+      subreddit_connections.each do |connection|
+        persist_subreddit_connection(connection)
+      end
+    end
+
+    def persist_subreddit_connection(connection_params)
+      connection = SubredditConnection.new(subreddit_connection)
+      connection.save if connection.valid?
     end
 
     def generate_all_subreddit_connections(user_count)
@@ -40,6 +47,8 @@ puts subreddit_connections
     end
 
     def generate_subreddit_connections(subreddit, user_count)
+      # { subreddit_from_id: , subreddit_to_id: , connection_weight:  }
+      puts subreddit
       authors = api.get_subreddit_authors(subreddit, user_count)
       scores = Hash.new(0)
       authors.each do |author|
@@ -57,7 +66,7 @@ puts subreddit_connections
 
 end
 
-#s = SubredditPersister.new
+s = SubredditPersister.new
 
 #s.collect_subreddits
 #s.collect_subreddit_connections
