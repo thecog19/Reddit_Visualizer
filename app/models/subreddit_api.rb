@@ -13,22 +13,53 @@ class SubredditApi
 
   def top_subreddits(n)
     raw_subreddit_data = get_top_subreddit_data(n)
-    cleanse_all_data(raw_subreddit_data)
+    cleanse_all_subreddit_data(raw_subreddit_data)
+  end
+
+  def get_subreddit_authors(subreddit, count)
+    authors = {}
+    while authors.length < count
+      posts = get_subreddit_posts(subreddit, count)
+      get_authors_of(posts, count, authors)
+    end
+    authors.keys
+  end
+
+  def get_subreddits_commented_on(author)
+    sleep(1)
+    get_comments_for(author).map do |comment|
+      comment["data"]["subreddit"]
+    end
   end
 
   private
   attr_reader :agent, :username, :password, :id, :secret, :client
 
-  def cleanse_all_data(raw_subreddit_data)
-    raw_subreddit_data.map! do |subreddit_data|
+  def get_comments_for(author)
+    headers = {"Authorization" => "bearer #{oath_token}",
+               'user-agent' => agent }
+    query = {limit: 100}
+    response = client.get("https://oauth.reddit.com/user/#{author}/comments.json",
+                          headers: headers,
+                          query: query
+                         )
+    response["data"]["children"]
+  end
+
+
+  def cleanse_all_subreddit_data(all_subreddit_data)
+    all_subreddit_data.map! do |subreddit_data|
       cleanse_subreddit_data(subreddit_data)
     end
   end
 
-  def cleanse_subreddit_data(raw_data)
-    # cleansed_data = {}
-    # cleansed_data["name"] = raw_data["data"]["display_name"]
-    
+  def cleanse_subreddit_data(subreddit_data)
+    {
+      subscriber_count: subreddit_data["data"]["subscribers"],
+      url: subreddit_data["data"]["url"],
+      name: subreddit_data["data"]["display_name"],
+      description: subreddit_data["data"]["public_description"]
+    }
   end
 
   def get_top_subreddit_data(n)
@@ -36,10 +67,31 @@ class SubredditApi
                 "user-agent" => agent }
     query = { limit: n }
     api_response = client.get("https://oauth.reddit.com/subreddits/default.json",
-                                headers: headers,
-                                query: query
-                               )
+                              headers: headers,
+                              query: query
+                             )
     api_response["data"]["children"]
+  end
+
+  def get_subreddit_posts(subreddit, limit, type = "hot")
+    sleep(1)
+    headers = {"Authorization" => "bearer #{oath_token}",
+               "user-agent" => agent }
+    query = {limit: limit}
+    uri = URI.encode("https://oauth.reddit.com/r/#{subreddit.name}/#{type}.json")
+    response = client.get(uri,
+                          headers: headers,
+                          query: query
+                         )
+    response["data"]["children"]
+  end
+
+  def get_authors_of(posts, count, authors)
+    posts.each do |post|
+      author = post["data"]["author"]
+      authors[author] = true
+      break if authors.length == count
+    end
   end
 
   def oath_token
@@ -50,60 +102,11 @@ class SubredditApi
              username:  username,
              password: password }
     token_info = client.post("https://www.reddit.com/api/v1/access_token",
-                               basic_auth: basic_auth,
-                               headers: headers,
-                               body: body
-                              )
+                             basic_auth: basic_auth,
+                             headers: headers,
+                             body: body
+                            )
     token_info["access_token"]
-  end
-
-end
-
-
-
-
-# user connections
-
-  def run
-    # posts = get_subreddit_posts("hot", "pics")
-    # authors = get_authors(posts)
-    # authors.each do |author|
-      get_subreddits_for_author("spez")
-    # end
-  end
-
-  def get_subreddit_posts(type, subreddit)
-    #returns an array of posts
-    posts = HTTParty.get("https://oauth.reddit.com/r/#{subreddit.to_s}/#{type.to_s}.json",
-      :headers => {"Authorization" => "bearer #{@token}",
-        'user-agent' => "uniquenameforsupercoolbot191919" },
-      :query => {limit: 1}
-      )
-    return posts
-  end
-
-  def get_authors(posts)
-    authors = []
-    posts["data"]["children"].each do |post|
-      unless post['data']['stickied']
-        authors.push(post['data']['author'])
-      end
-    end
-    puts authors.count
-    return authors
-  end
-
-  def get_subreddits_for_author(author)
-    author_subreddits = HTTParty.get("https://oauth.reddit.com/user/#{author}/comments.json",
-      :headers => {"Authorization" => "bearer #{@token}",
-        'user-agent' => "uniquenameforsupercoolbot191919" },
-      :query => {limit: 10}
-      )
-    commented_subreddits = []
-    author_subreddits["data"]["children"].each do |comment|
-      commented_subreddits.push(comment["data"]["subreddit"])
-    end
-    puts commented_subreddits
   end
 
 end
