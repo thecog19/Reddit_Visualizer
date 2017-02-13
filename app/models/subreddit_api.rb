@@ -42,7 +42,7 @@ class SubredditApi
   def populate_database(num_sr = 200, num_users = 25)
     top_subreddits(num_sr)
     subreddits = Subreddit.all
-    #not sure if this is updating dynamically which would be a problem
+    #this is updating dynamically. which is a problem. 
     subreddits.each do |subreddit|
       sub_connectivity(subreddit.name, num_users)
     end
