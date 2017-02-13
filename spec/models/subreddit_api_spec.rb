@@ -19,7 +19,26 @@ describe SubredditApi do
 
       subreddit_api.top_subreddits(1)
     end
+  end
 
+  describe "#get_subreddit_authors" do
+    it "returns an array of unique authors" do
+      client = double()
+      posts = [
+        { "data" => { "author" => "author1" }},
+        { "data" => { "author" => "author2" }},
+        { "data" => { "author" => "author1" }}
+              ]
+      response = { "data" => { "children" => posts }}
+      allow(client).to receive(:get).and_return(response)
+      allow(client).to receive(:post).and_return({})
+      subreddit_api = SubredditApi.new(client: client)
+
+      authors = subreddit_api.get_subreddit_authors("subreddit", 2)
+
+      expect(authors).to be_a(Array)
+      expect(authors.length).to eq(2)
+    end
   end
 
 end
