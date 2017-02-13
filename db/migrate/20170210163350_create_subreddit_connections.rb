@@ -3,6 +3,7 @@ class CreateSubredditConnections < ActiveRecord::Migration[5.0]
     create_table :subreddit_connections do |t|
       t.integer :subreddit_from_id
       t.integer :subreddit_to_id
+      t.bigint  :connection_weight
       t.timestamps
     end
     add_index :subreddit_connections,

@@ -8,5 +8,6 @@ class CreateSubreddits < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+    add_index :subreddits, :url, unique: true
   end
 end
