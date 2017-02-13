@@ -9,7 +9,7 @@ class SubredditPersister
     persist_subreddits(subreddits)
   end
 
-  def collect_subreddit_connections(user_count = 25)
+  def collect_subreddit_connections(user_count = 1)
     subreddit_connections = generate_all_subreddit_connections(user_count)
     persist_subreddit_connections(subreddit_connections)
   end
@@ -43,7 +43,7 @@ puts subreddit_connections
       authors = api.get_subreddit_authors(subreddit, user_count)
       scores = Hash.new(0)
       authors.each do |author|
-        subreddits = get_commented_subreddits_for(author)
+        subreddits = api.get_subreddits_commented_on(author)
         calculate_scores(subreddits, scores)
       end
       scores
@@ -56,3 +56,8 @@ puts subreddit_connections
     end
 
 end
+
+#s = SubredditPersister.new
+
+#s.collect_subreddits
+#s.collect_subreddit_connections

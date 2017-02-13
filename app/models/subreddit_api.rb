@@ -20,12 +20,12 @@ class SubredditApi
     authors = {}
     while authors.length < count
       posts = get_subreddit_posts(subreddit, count)
-      get_authors_of(authors, posts, count)
+      get_authors_of(posts, count, authors)
     end
     authors.keys
   end
 
-  def get_commented_subreddits_for(author)
+  def get_subreddits_commented_on(author)
     sleep(1)
     get_comments_for(author).map do |comment|
       comment["data"]["subreddit"]
@@ -78,14 +78,15 @@ class SubredditApi
     headers = {"Authorization" => "bearer #{oath_token}",
                "user-agent" => agent }
     query = {limit: limit}
-    response = client.get("https://oauth.reddit.com/r/#{subreddit.to_s}/#{type.to_s}.json",
+    uri = URI.encode("https://oauth.reddit.com/r/#{subreddit.name}/#{type}.json")
+    response = client.get(uri,
                           headers: headers,
                           query: query
                          )
     response["data"]["children"]
   end
 
-  def get_authors_of(authors, posts, count)
+  def get_authors_of(posts, count, authors)
     posts.each do |post|
       author = post["data"]["author"]
       authors[author] = true
