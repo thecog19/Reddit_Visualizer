@@ -47,19 +47,9 @@ class SubredditPersister
     end
 
     def generate_subreddit_connections(subreddit, user_count)
-      puts subreddit
       authors = api.get_subreddit_authors(subreddit, user_count)
       scores = get_scores(authors, 5)
       build_connections(scores, subreddit)
-      # scores = {
-      #  "askReddit" => 120123
-      #  "trees" => 12
-      #  ... 100 times
-      # }
-      # top 5 scores each do |name, score|
-      # second_sub = SubredditConnect.find_or_fetch_by_name(name)
-      # connection_params = { subreddit_from_id: subreddit.id, subreddit_to_id: second_sub.id, connection_weight:  score }
-      # persist_subreddit_connection(connection_params)
     end
 
     def get_scores(authors, limit = 5)
@@ -85,12 +75,10 @@ class SubredditPersister
 
     def build_connections(scores, subreddit)
       scores.map do |subreddit_name, score|
-
+        {subreddit_from_id: subreddit.id,
+          subreddit_to_id: Subreddit.find_or_create_by_name(subreddit_name).id,
+          connection_weight: score}
       end
     end
 end
 
-s = SubredditPersister.new
-
-#s.collect_subreddits
-#s.collect_subreddit_connections

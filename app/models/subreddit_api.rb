@@ -32,6 +32,16 @@ class SubredditApi
     end
   end
 
+  def get_sub_count(subreddit_name)
+    headers = {"Authorization" => "bearer #{oath_token}",
+    'user-agent' => agent }
+    
+    data = client.get("https://oauth.reddit.com/r/#{subreddit_name}/about.json",
+      headers: headers,
+    )
+    data["data"]["subscribers"]
+  end
+
   private
   attr_reader :agent, :username, :password, :id, :secret, :client
 
@@ -93,6 +103,7 @@ class SubredditApi
       break if authors.length == count
     end
   end
+
 
   def oath_token
     basic_auth = { username: id,
