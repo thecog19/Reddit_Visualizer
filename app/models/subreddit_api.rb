@@ -1,5 +1,3 @@
-require "httparty"
-
 class SubredditApi
 
   def initialize(args = {})
