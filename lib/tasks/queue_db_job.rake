@@ -1,3 +1,5 @@
+require 'SubredditPersister'
+
 namespace :reddit do
   desc 'Continuously run populate_database_job for set period of time'
   task populate_db: [] do
