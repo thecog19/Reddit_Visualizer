@@ -26,7 +26,7 @@ RV.config = {
     base: '/api/v1/subreddits/',
     suffix: '.json',
     // TODO change to root id
-    rootId: '2',
+    rootId: '5',
     accessor: 'id'
   }
 };
