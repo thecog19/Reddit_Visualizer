@@ -9,11 +9,12 @@ class SubredditApi
     @id = ENV["REDDIT_ID"]
     @secret = ENV["REDDIT_SECRET"]
     @client = args.fetch(:client, HTTParty)
+    @after
   end
 
   def top_subreddits(count, offset)
     # get subreddits [101, 200] etc. ???
-    raw_subreddit_data = get_top_subreddit_data(count)
+    raw_subreddit_data = get_top_subreddit_data(count, offset)
     cleanse_all_subreddit_data(raw_subreddit_data)
   end
 
@@ -41,8 +42,11 @@ class SubredditApi
     response["data"]["subscribers"]
   end
 
+  protected
+  attr_writer :after
+
   private
-  attr_reader :agent, :username, :password, :id, :secret, :client
+  attr_reader :agent, :username, :password, :id, :secret, :client, :after
 
   def get_comments_for(author)
     return [] if author == "[deleted]"
@@ -71,13 +75,15 @@ class SubredditApi
     }
   end
 
-  def get_top_subreddit_data(n)
+  def get_top_subreddit_data(n, offset)
     headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
-    query = { limit: n  }
+    query = { limit: n, count: offset }
+    query[:after] = @after if @after
     api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                               headers: headers,
                               query: query)
+    @after = 't5_' + api_response["data"]["children"][-1]['data']['id'] if api_response['data']['children'].any?
     api_response["data"]["children"]
   end
 

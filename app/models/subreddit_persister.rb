@@ -5,7 +5,8 @@ class SubredditPersister
     @api = args.fetch(:api, SubredditApi.new)
   end
 
-  def collect_subreddits(total = 200)
+  def collect_subreddits(total = 100)
+    raise ArgumentError unless total % 100.0 == 0
     captured = 0
     capture_rate = 100
     while captured < total
@@ -16,9 +17,11 @@ class SubredditPersister
     end
   end
 
-  def collect_subreddit_connections(user_count = 1)
-    subreddit_connections = generate_all_subreddit_connections(user_count)
-    persist_subreddit_connections(subreddit_connections)
+  def collect_subreddit_connections(user_count = 3)
+    Subreddit.all[0..4].each do |subreddit|
+      subreddit_connections = generate_subreddit_connections(subreddit, user_count)
+      persist_subreddit_connections(subreddit_connections)
+    end
   end
 
   private
@@ -43,15 +46,16 @@ class SubredditPersister
   end
 
   def persist_subreddit_connection(connection_params)
-    connection = SubredditConnection.new(subreddit_connection)
+    connection = SubredditConnection.new(connection_params)
     connection.save if connection.valid?
   end
 
-  def generate_all_subreddit_connections(user_count)
-    Subreddit.all.each do |subreddit|
-      generate_subreddit_connections(subreddit, user_count)
-    end
-  end
+  # def generate_all_subreddit_connections(user_count)
+  #   Subreddit.all.each do |subreddit|
+  #     subreddit_connection = generate_subreddit_connections(subreddit, user_count)
+  #     persist_subreddit_connection(subreddit_connection)
+  #   end
+  # end
 
   def generate_subreddit_connections(subreddit, user_count)
     authors = api.get_subreddit_authors(subreddit, user_count)
@@ -88,3 +92,7 @@ class SubredditPersister
     end
   end
 end
+
+s = SubredditPersister.new
+s.collect_subreddits
+s.collect_subreddit_connections

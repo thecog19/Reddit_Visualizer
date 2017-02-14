@@ -6,7 +6,7 @@ describe SubredditApi do
     it "returns an array of subreddit data" do
       subreddit_api = SubredditApi.new
 
-      subreddits = subreddit_api.top_subreddits(1)
+      subreddits = subreddit_api.top_subreddits(1, 0)
 
       expect(subreddits.length).to eq(1)
     end
@@ -17,7 +17,7 @@ describe SubredditApi do
       expect(client).to receive(:post).and_return({})
       subreddit_api = SubredditApi.new(client: client)
 
-      subreddit_api.top_subreddits(2)
+      subreddit_api.top_subreddits(2, 0)
     end
   end
 
