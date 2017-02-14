@@ -17,6 +17,7 @@ class SubredditApi
   end
 
   def get_subreddit_authors(subreddit, count)
+    p "getting authors for #{subreddit.name}"
     authors = {}
     while authors.length < count
       posts = get_subreddit_posts(subreddit, count)
@@ -32,6 +33,16 @@ class SubredditApi
     end
   end
 
+  def get_sub_count(subreddit_name)
+    headers = {"Authorization" => "bearer #{oath_token}",
+    'user-agent' => agent }
+    uri = URI.encode("https://oauth.reddit.com/r/#{subreddit_name}/about.json")
+    data = client.get(uri,
+      headers: headers,
+    )
+    data["data"]["subscribers"]
+  end
+
   private
   attr_reader :agent, :username, :password, :id, :secret, :client
 
@@ -39,7 +50,8 @@ class SubredditApi
     headers = {"Authorization" => "bearer #{oath_token}",
                "user-agent" => agent }
     query = {limit: 100}
-    response = client.get("https://oauth.reddit.com/user/#{author}/comments.json",
+    uri = URI.encode("https://oauth.reddit.com/user/#{author}/comments.json")
+    response = client.get(uri,
                           headers: headers,
                           query: query
                          )

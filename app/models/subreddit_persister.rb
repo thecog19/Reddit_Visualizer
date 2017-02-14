@@ -34,21 +34,23 @@ class SubredditPersister
       subreddit.save if subreddit.valid?
     end
 
-    def persist_subreddit_connections(connections)
-      connections.each do |connection|
-        persist_subreddit_connection(connection)
+    def persist_subreddit_connections(subreddit_connections)
+      subreddit_connections.each do |connections|
+        connections.each do |connection|
+          persist_subreddit_connection(connection)
+        end
       end
     end
 
     def persist_subreddit_connection(connection_params)
-
       ##TODO Validations
-      connection = SubredditConnection.new(subreddit_connection)
+      connection = SubredditConnection.new(connection_params)
       connection.save if connection.valid?
     end
 
     def generate_all_subreddit_connections(user_count)
-      Subreddit.all.each do |subreddit|
+      Subreddit.all.map do |subreddit|
+        p "generating connections for #{subreddit.name}"
         generate_subreddit_connections(subreddit, user_count)
       end
     end
@@ -62,6 +64,7 @@ class SubredditPersister
     def get_scores(authors, limit = 5)
       all_scores = get_all_scores(authors)
       sorted_scores = all_scores.sort_by { |subreddit, score| score }
+      # TODO Returns nil if sorted_scores.length < limit
       sorted_scores[-limit..-1].to_h
     end
 
@@ -89,3 +92,6 @@ class SubredditPersister
     end
 end
 
+
+p = SubredditPersister.new
+p.collect_subreddit_connections
