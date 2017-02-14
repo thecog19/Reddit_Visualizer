@@ -1,3 +1,4 @@
+
 class Subreddit < ApplicationRecord
   has_many :subreddit_origin_connections,
     foreign_key: "subreddit_to_id",
@@ -11,6 +12,8 @@ class Subreddit < ApplicationRecord
   has_many :destination_subreddits,
     through: :subreddit_destination_connections,
     source: :subreddit_to
+  validates :url, uniqueness: true
+
 
   API = SubredditApi.new
 

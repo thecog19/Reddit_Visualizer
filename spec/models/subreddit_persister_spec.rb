@@ -4,12 +4,13 @@ describe SubredditPersister do
 
   describe "#collect_subreddits" do
     it "persists n subreddits to database" do
+      Subreddit.destroy_all
+      n = 1
       persister = SubredditPersister.new
       expect{
-        persister.collect_subreddits(1)
-      }.to change {Subreddit.count}.by(1)
+        persister.collect_subreddits(n)
+      }.to change {Subreddit.count}.by(n)
     end
-
   end
 
 end

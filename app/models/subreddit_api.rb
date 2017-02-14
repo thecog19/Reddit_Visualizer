@@ -47,6 +47,9 @@ class SubredditApi
   attr_reader :agent, :username, :password, :id, :secret, :client
 
   def get_comments_for(author)
+
+    return [] if author == "[deleted]"
+
     headers = {"Authorization" => "bearer #{oath_token}",
                "user-agent" => agent }
     query = {limit: 100}
@@ -70,14 +73,15 @@ class SubredditApi
       url: subreddit_data["data"]["url"],
       name: subreddit_data["data"]["display_name"],
       description: subreddit_data["data"]["public_description"]
-
     }
   end
 
   def get_top_subreddit_data(n)
     headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
-    query = { limit: n  }
+
+    query = { limit: n }
+
     api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                               headers: headers,
                               query: query
@@ -95,6 +99,7 @@ class SubredditApi
                           headers: headers,
                           query: query
                          )
+    return [] if response["error"]
     response["data"]["children"]
   end
 
@@ -105,7 +110,6 @@ class SubredditApi
       break if authors.length == count
     end
   end
-
 
   def oath_token
     basic_auth = { username: id,
@@ -123,4 +127,3 @@ class SubredditApi
   end
 
 end
-

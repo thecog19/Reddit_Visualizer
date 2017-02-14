@@ -12,6 +12,7 @@ gem 'figaro', '~> 1.1.1'
 gem 'httparty', '~> 0.14.0'
 gem 'jbuilder', '~> 1.2'
 gem 'jquery-rails'
+gem 'delayed_job_active_record'
 
 group :development, :test do
   gem 'byebug', platform: :mri
