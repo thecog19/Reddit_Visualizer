@@ -4,7 +4,7 @@ describe SubredditPersister do
 
   describe "#collect_subreddits" do
     it "persists n subreddits to database" do
-      skip
+      Subreddit.destroy_all
       n = 1
       persister = SubredditPersister.new
       expect{
