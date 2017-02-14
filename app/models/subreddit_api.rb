@@ -46,6 +46,9 @@ class SubredditApi
   attr_reader :agent, :username, :password, :id, :secret, :client
 
   def get_comments_for(author)
+
+    return [] if author == "[deleted]"
+
     headers = {"Authorization" => "bearer #{oath_token}",
                "user-agent" => agent }
     query = {limit: 100}
@@ -95,6 +98,7 @@ class SubredditApi
                           headers: headers,
                           query: query
                          )
+    return [] if response["error"]
     response["data"]["children"]
   end
 
@@ -123,4 +127,3 @@ class SubredditApi
   end
 
 end
-
