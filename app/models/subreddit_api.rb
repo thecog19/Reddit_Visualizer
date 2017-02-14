@@ -80,7 +80,6 @@ class SubredditApi
     response["data"]["children"]
   end
 
-
   def cleanse_all_subreddit_data(all_subreddit_data)
     all_subreddit_data.map! do |subreddit_data|
       cleanse_subreddit_data(subreddit_data)
@@ -100,7 +99,7 @@ class SubredditApi
     headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
     query = { limit: n }
-    api_response = client.get("https://oauth.reddit.com/subreddits/default.json",
+    api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                               headers: headers,
                               query: query
                              )
@@ -127,6 +126,7 @@ class SubredditApi
       break if authors.length == count
     end
   end
+
 
   def oath_token
     basic_auth = { username: id,

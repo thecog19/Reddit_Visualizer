@@ -1,3 +1,4 @@
+
 class SubredditPersister
 
   def initialize(args = {})
@@ -5,13 +6,17 @@ class SubredditPersister
   end
 
   def collect_subreddits(n = 200)
+    p "collecting subs"
     subreddits = api.top_subreddits(n)
     persist_subreddits(subreddits)
+    p "subs collected"
   end
 
   def collect_subreddit_connections(user_count = 1)
+    p "collecting users"
     subreddit_connections = generate_all_subreddit_connections(user_count)
     persist_subreddit_connections(subreddit_connections)
+    p "done with users"
   end
 
   private
@@ -36,6 +41,8 @@ class SubredditPersister
     end
 
     def persist_subreddit_connection(connection_params)
+
+      ##TODO Validations
       connection = SubredditConnection.new(subreddit_connection)
       connection.save if connection.valid?
     end
@@ -47,23 +54,24 @@ class SubredditPersister
     end
 
     def generate_subreddit_connections(subreddit, user_count)
-      puts subreddit
       authors = api.get_subreddit_authors(subreddit, user_count)
+      scores = get_scores(authors, 5)
+      build_connections(scores, subreddit)
+    end
+
+    def get_scores(authors, limit = 5)
+      all_scores = get_all_scores(authors)
+      sorted_scores = all_scores.sort_by { |subreddit, score| score }
+      sorted_scores[-limit..-1].to_h
+    end
+
+    def get_all_scores(authors)
       scores = Hash.new(0)
       authors.each do |author|
         subreddits = api.get_subreddits_commented_on(author)
         calculate_scores(subreddits, scores)
       end
       scores
-      # scores = {
-      #  "askReddit" => 120123
-      #  "trees" => 12
-      #  ... 100 times
-      # }
-      # top 5 scores each do |name, score|
-      # second_sub = SubredditConnect.find_or_fetch_by_name(name)
-      # connection_params = { subreddit_from_id: subreddit.id, subreddit_to_id: second_sub.id, connection_weight:  score }
-      # persist_subreddit_connection(connection_params)
     end
 
     def calculate_scores(subreddits, scores)
@@ -72,9 +80,12 @@ class SubredditPersister
       end
     end
 
+    def build_connections(scores, subreddit)
+      scores.map do |subreddit_name, score|
+        {subreddit_from_id: subreddit.id,
+         subreddit_to_id: Subreddit.find_or_create_by_name(subreddit_name).id,
+         connection_weight: score}
+      end
+    end
 end
 
-s = SubredditPersister.new
-
-#s.collect_subreddits
-#s.collect_subreddit_connections
