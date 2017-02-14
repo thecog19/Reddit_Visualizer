@@ -17,7 +17,7 @@ class SubredditPersister
     end
   end
 
-  def collect_subreddit_connections(user_count = 20)
+  def collect_subreddit_connections(user_count = 10)
     Subreddit.all.each do |subreddit|
       subreddit_connections = generate_subreddit_connections(subreddit, user_count)
       persist_subreddit_connections(subreddit_connections)

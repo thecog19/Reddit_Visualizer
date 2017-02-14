@@ -18,10 +18,8 @@ class SubredditApi
 
   def get_subreddit_authors(subreddit, count)
     authors = {}
-    while authors.length < count
-      posts = get_subreddit_posts(subreddit, count)
-      get_authors_of(posts, count, authors)
-    end
+    posts = get_subreddit_posts(subreddit, count)
+    get_authors_of(posts, count, authors)  
     authors.keys
   end
 
