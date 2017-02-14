@@ -35,7 +35,7 @@ class SubredditApi
   def get_sub_count(subreddit_name)
     headers = {"Authorization" => "bearer #{oath_token}",
     'user-agent' => agent }
-    
+
     data = client.get("https://oauth.reddit.com/r/#{subreddit_name}/about.json",
       headers: headers,
     )
@@ -76,7 +76,7 @@ class SubredditApi
     headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
     query = { limit: n }
-    api_response = client.get("https://oauth.reddit.com/subreddits/default.json",
+    api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                               headers: headers,
                               query: query
                              )
