@@ -8,7 +8,7 @@ RV.graph = function(config) {
   var width = config.width,
     height = config.height,
     // force
-    linkDistance = config.linkDistance || 50,
+    linkDistance = config.linkDistance || 150,
     linkStrength = config.linkStrength || .8,
     charge = config.charge || -100,
     gravity = config.gravity || .05,
@@ -24,6 +24,11 @@ RV.graph = function(config) {
         min: config.scales.color.min,
         max: config.scales.color.max,
         accessor: config.scales.color.accessor
+      },
+      connection_weight: {
+        min: config.scales.connection_weight.min,
+        max: config.scales.connection_weight.max,
+        accessor: config.scales.connection_weight.accessor
       }
     },
     rootId = config.json.rootId,
@@ -40,7 +45,7 @@ RV.graph = function(config) {
     .attr('width', width)
     .attr('height', height);
 
-  console.log(svg);
+  // console.log(svg);
   // Configure force settings to adjust physics interaction between nodes.
   var force = d3.layout.force()
     .linkDistance(linkDistance)
@@ -52,6 +57,7 @@ RV.graph = function(config) {
   // Configure scales
   var rScale = d3.scale.linear().range([scales.radius.min, scales.radius.max]);
   var colScale = d3.scale.linear().range([scales.color.min, scales.color.max]);
+  var weightScale = d3.scale.log().range([scales.connection_weight.min, scales.connection_weight.max]);
 
   // SelectAll links and nodes
   var link = svg.selectAll('.link'),
@@ -61,6 +67,7 @@ RV.graph = function(config) {
     // /api/v1/subreddits/1.json
     if (error) throw error;
     root = json;
+    console.log(root)
     update();
   });
 
@@ -69,7 +76,7 @@ RV.graph = function(config) {
     nodes = flatten(root),
     // 'nodes' must have a 'children' attr
     links = d3.layout.tree().links(nodes);
-    console.log(links);
+    // console.log(links);
 
     // Feed the force layout current nodes and links.
     force
@@ -91,7 +98,10 @@ RV.graph = function(config) {
 
     // Add new data nodes and connecting lines to canvas
     link.enter().insert('line', '.node')
-      .attr('class', 'link');
+      .attr('class', 'link')
+      .attr('stroke-width', function(d) {
+        return weightScale(d.target[scales.connection_weight.accessor])
+      });
     node = node.data(nodes, function(d) { return d[config.json.accessor]; });
     node.exit().remove();
 
