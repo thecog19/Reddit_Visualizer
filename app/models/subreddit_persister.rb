@@ -5,13 +5,17 @@ class SubredditPersister
   end
 
   def collect_subreddits(n = 200)
+    p "collecting subs"
     subreddits = api.top_subreddits(n)
     persist_subreddits(subreddits)
+    p "subs collected"
   end
 
   def collect_subreddit_connections(user_count = 1)
+    p "collecting users"
     subreddit_connections = generate_all_subreddit_connections(user_count)
     persist_subreddit_connections(subreddit_connections)
+    p "done with users"
   end
 
   private
@@ -36,6 +40,8 @@ class SubredditPersister
     end
 
     def persist_subreddit_connection(connection_params)
+
+      ##TODO Validations
       connection = SubredditConnection.new(subreddit_connection)
       connection.save if connection.valid?
     end
@@ -82,3 +88,8 @@ class SubredditPersister
     end
 end
 
+s = SubredditPersister.new
+s.collect_subreddits(200)
+s.collect_subreddit_connections(100)
+#s.collect_subreddits
+#s.collect_subreddit_connections

@@ -15,8 +15,8 @@ class Subreddit < ApplicationRecord
 
   API = SubredditApi.new
 
-  def find_or_create_by_name(subreddit_name)
-    if Subreddit.exists?(name: subreddit_name)
+  def self.find_or_create_by_name(subreddit_name)
+    if exists?(name: subreddit_name)
       subreddit = where(name: subreddit_name).last
     else
       subreddit = new(name: subreddit_name, 
