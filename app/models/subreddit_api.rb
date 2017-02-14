@@ -11,8 +11,9 @@ class SubredditApi
     @client = args.fetch(:client, HTTParty)
   end
 
-  def top_subreddits(n)
-    raw_subreddit_data = get_top_subreddit_data(n)
+  def top_subreddits(count, offset)
+    # get subreddits [101, 200] etc. ???
+    raw_subreddit_data = get_top_subreddit_data(count)
     cleanse_all_subreddit_data(raw_subreddit_data)
   end
 

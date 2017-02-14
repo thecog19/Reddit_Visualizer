@@ -1,14 +1,19 @@
 
-
 class SubredditPersister
 
   def initialize(args = {})
     @api = args.fetch(:api, SubredditApi.new)
   end
 
-  def collect_subreddits(n = 200)
-    subreddits = api.top_subreddits(n)
-    persist_subreddits(subreddits)
+  def collect_subreddits(total = 200)
+    captured = 0
+    capture_rate = 100
+    while captured < total
+      offset = captured
+      subreddits = api.top_subreddits(capture_rate, offset)
+      persist_subreddits(subreddits)
+      captured += capture_rate
+    end
   end
 
   def collect_subreddit_connections(user_count = 1)
