@@ -71,7 +71,6 @@ class SubredditApi
       url: subreddit_data["data"]["url"],
       name: subreddit_data["data"]["display_name"],
       description: subreddit_data["data"]["public_description"]
-
     }
   end
 
@@ -109,7 +108,6 @@ class SubredditApi
       break if authors.length == count
     end
   end
-
 
   def oath_token
     basic_auth = { username: id,
