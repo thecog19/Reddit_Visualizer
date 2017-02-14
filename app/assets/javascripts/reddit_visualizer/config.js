@@ -13,7 +13,7 @@ RV.config = {
     radius: {
       min: 5,
       max: 15,
-      accessor: 'numSubscribers'
+      accessor: 'subscriber_count'
     },
     color: {
       min: '#fff',
@@ -25,7 +25,8 @@ RV.config = {
   json: {
     base: '/api/v1/subreddits/',
     suffix: '.json',
-    rootId: '1',
+    // TODO change to root id
+    rootId: '2',
     accessor: 'id'
   }
 };
