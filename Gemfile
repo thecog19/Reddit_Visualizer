@@ -10,6 +10,8 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'figaro', '~> 1.1.1'
 gem 'httparty', '~> 0.14.0'
+gem 'jbuilder', '~> 1.2'
+gem 'jquery-rails'
 
 group :development, :test do
   gem 'byebug', platform: :mri
