@@ -58,6 +58,7 @@ RV.graph = function(config) {
       node = svg.selectAll('.node');
 
   d3.json(jsonRoute(rootId), function(error, json) {
+    // /api/v1/subreddits/1.json
     if (error) throw error;
     root = json;
     update();
@@ -109,6 +110,7 @@ RV.graph = function(config) {
     nodeEnter.append('text')
       .attr('dx', 12)
       .attr('dy', '.35em')
+      .style('font-size', '1em')
       // TODO? change name to an accessor
       .text(function(d) { return d.name; });
   };

@@ -1,3 +1,4 @@
+
 class SubredditPersister
 
   def initialize(args = {})
@@ -61,7 +62,7 @@ class SubredditPersister
     def get_scores(authors, limit = 5)
       all_scores = get_all_scores(authors)
       sorted_scores = all_scores.sort_by { |subreddit, score| score }
-      sorted_scores.to_h
+      sorted_scores[-limit..-1].to_h
     end
 
     def get_all_scores(authors)
@@ -82,14 +83,9 @@ class SubredditPersister
     def build_connections(scores, subreddit)
       scores.map do |subreddit_name, score|
         {subreddit_from_id: subreddit.id,
-          subreddit_to_id: Subreddit.find_or_create_by_name(subreddit_name).id,
-          connection_weight: score}
+         subreddit_to_id: Subreddit.find_or_create_by_name(subreddit_name).id,
+         connection_weight: score}
       end
     end
 end
 
-s = SubredditPersister.new
-s.collect_subreddits(200)
-s.collect_subreddit_connections(100)
-#s.collect_subreddits
-#s.collect_subreddit_connections

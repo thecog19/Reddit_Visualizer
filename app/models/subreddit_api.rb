@@ -47,7 +47,7 @@ class SubredditApi
 
   def get_comments_for(author)
     headers = {"Authorization" => "bearer #{oath_token}",
-               'user-agent' => agent }
+               "user-agent" => agent }
     query = {limit: 100}
     response = client.get("https://oauth.reddit.com/user/#{author}/comments.json",
                           headers: headers,
@@ -55,7 +55,6 @@ class SubredditApi
                          )
     response["data"]["children"]
   end
-
 
   def cleanse_all_subreddit_data(all_subreddit_data)
     all_subreddit_data.map! do |subreddit_data|
@@ -69,13 +68,16 @@ class SubredditApi
       url: subreddit_data["data"]["url"],
       name: subreddit_data["data"]["display_name"],
       description: subreddit_data["data"]["public_description"]
+
     }
   end
 
   def get_top_subreddit_data(n)
     headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
+
     query = { limit: n }
+
     api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                               headers: headers,
                               query: query
@@ -108,7 +110,7 @@ class SubredditApi
   def oath_token
     basic_auth = { username: id,
                    password: secret }
-    headers = { "user-agent" => agent }
+    headers = { "user-agent" => agent  }
     body = { grant_type:  "password",
              username:  username,
              password: password }
@@ -121,3 +123,4 @@ class SubredditApi
   end
 
 end
+
