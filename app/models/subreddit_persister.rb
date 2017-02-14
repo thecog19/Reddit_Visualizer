@@ -92,7 +92,3 @@ class SubredditPersister
     end
   end
 end
-
-s = SubredditPersister.new
-s.collect_subreddits
-s.collect_subreddit_connections
