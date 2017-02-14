@@ -13,11 +13,11 @@ describe SubredditApi do
 
     it "uses client to communicate with the API" do
       client = double()
-      expect(client).to receive(:get).and_return({'data' => {'children' => []}})
+      expect(client).to receive(:get).and_return({"data" => {"children" => []}})
       expect(client).to receive(:post).and_return({})
       subreddit_api = SubredditApi.new(client: client)
 
-      subreddit_api.top_subreddits(1)
+      subreddit_api.top_subreddits(2)
     end
   end
 
@@ -34,7 +34,8 @@ describe SubredditApi do
       allow(client).to receive(:post).and_return({})
       subreddit_api = SubredditApi.new(client: client)
 
-      authors = subreddit_api.get_subreddit_authors("subreddit", 2)
+      subreddit = create(:subreddit)
+      authors = subreddit_api.get_subreddit_authors(subreddit, 2)
 
       expect(authors).to be_a(Array)
       expect(authors.length).to eq(2)
