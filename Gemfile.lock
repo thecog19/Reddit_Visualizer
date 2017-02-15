@@ -97,6 +97,9 @@ GEM
       pry-byebug (~> 3.4)
       pry-coolline (~> 0.2)
       pry-doc (~> 0.6)
+    jbuilder (2.6.1)
+      activesupport (>= 3.0.0, < 5.1)
+      multi_json (~> 1.2)
     jquery-rails (4.2.2)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -115,6 +118,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    multi_json (1.12.1)
     multi_xml (0.6.0)
     nenv (0.3.0)
     nio4r (1.2.1)
@@ -231,6 +235,7 @@ DEPENDENCIES
   guard-rspec (~> 4.7)
   httparty (~> 0.14.0)
   jazz_fingers (~> 4.0.1)
+  jbuilder
   jquery-rails
   listen (~> 3.0.5)
   pg (~> 0.18)
