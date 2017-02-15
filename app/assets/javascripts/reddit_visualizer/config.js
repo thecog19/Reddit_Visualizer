@@ -18,7 +18,12 @@ RV.config = {
     color: {
       min: '#fff',
       max: '#3182bd',
-      accessor: 'activeUsers'
+      accessor: 'subscriber_count'
+    },
+    connection_weight: {
+      min: 1,
+      max: 5,
+      accessor: 'connection_weight'
     }
   },
 
@@ -26,7 +31,7 @@ RV.config = {
     base: '/api/v1/subreddits/',
     suffix: '.json',
     // TODO change to root id
-    rootId: '2',
+    rootId: '1',
     accessor: 'id'
   }
 };

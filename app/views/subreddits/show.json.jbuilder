@@ -7,5 +7,5 @@ json.children @children do |child|
   json.name child.name
   json.subscriber_count child.subscriber_count
   # json.active_users @children.active_user
-  json.weight child.get_weight(@subreddit.id)
+  json.connection_weight child.get_weight(@subreddit.id)
 end

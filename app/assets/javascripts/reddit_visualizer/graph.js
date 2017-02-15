@@ -9,9 +9,10 @@ RV.graph = function(config) {
     height = config.height,
     // force
     linkDistance = config.linkDistance || 50,
-    linkStrength = config.linkStrength || .8,
-    charge = config.charge || -100,
-    gravity = config.gravity || .05,
+    linkStrength = config.linkStrength || 1.0,
+    charge = config.charge || -30,
+    gravity = config.gravity || .01,
+    friction = config.friction || 0.9,
     // scales
     // # TODO handle undefined keys from config?
     scales = {
@@ -24,6 +25,11 @@ RV.graph = function(config) {
         min: config.scales.color.min,
         max: config.scales.color.max,
         accessor: config.scales.color.accessor
+      },
+      connection_weight: {
+        min: config.scales.connection_weight.min,
+        max: config.scales.connection_weight.max,
+        accessor: config.scales.connection_weight.accessor
       }
     },
     rootId = config.json.rootId,
@@ -40,18 +46,20 @@ RV.graph = function(config) {
     .attr('width', width)
     .attr('height', height);
 
-  console.log(svg);
+  // console.log(svg);
   // Configure force settings to adjust physics interaction between nodes.
   var force = d3.layout.force()
     .linkDistance(linkDistance)
     .linkStrength(linkStrength)
     .charge(charge)
     .gravity(gravity)
+    .friction(friction)
     .size([width, height]);
 
   // Configure scales
-  var rScale = d3.scale.linear().range([scales.radius.min, scales.radius.max]);
-  var colScale = d3.scale.linear().range([scales.color.min, scales.color.max]);
+  var rScale = d3.scale.sqrt().range([scales.radius.min, scales.radius.max]);
+  var colScale = d3.scale.log().range([scales.color.min, scales.color.max]);
+  var weightScale = d3.scale.log().range([scales.connection_weight.min, scales.connection_weight.max]);
 
   // SelectAll links and nodes
   var link = svg.selectAll('.link'),
@@ -62,15 +70,17 @@ RV.graph = function(config) {
     // /api/v1/subreddits/1.json
     if (error) throw error;
     root = json;
+
     update();
   });
 
   var update = function update() {
     // Format data for use in force.start()
     nodes = flatten(root),
+    // console.log(nodes)
     // 'nodes' must have a 'children' attr
     links = d3.layout.tree().links(nodes);
-    console.log(links);
+    // console.log(links);
 
     // Feed the force layout current nodes and links.
     force
@@ -92,7 +102,10 @@ RV.graph = function(config) {
 
     // Add new data nodes and connecting lines to canvas
     link.enter().insert('line', '.node')
-      .attr('class', 'link');
+      .attr('class', 'link')
+      .attr('stroke-width', function(d) {
+        return weightScale(d.target[scales.connection_weight.accessor])
+      });
     node = node.data(nodes, function(d) { return d[config.json.accessor]; });
     node.exit().remove();
 
@@ -159,7 +172,7 @@ RV.graph = function(config) {
       d3.json(jsonRoute(d[config.json.accessor]), function(error, json) {
         if (error) throw error;
         // TODO dependency on 'children' - JSON response must contain 'children' attr
-        d.children = json.children;
+        d.children = uniqueChildren(json.children);
         // Update needs to be called within the callback so that we know the new data is ready.
         update();
       });
@@ -167,16 +180,32 @@ RV.graph = function(config) {
     update();
   };
 
+  var uniqueChildren = function(children){
+    // TODO less iteration
+    for (var j = children.length - 1; j >= 0; j--) {
+      var child = children[j]
+      for(var i = 0; i < nodes.length; i++){
+           if(nodes[i].id === child.id){
+             children.splice(j, 1)
+           }
+         }
+       }
+    return children
+  }
+
   var flatten = function flatten(root) {
     var nodes = [], i = 0;
-
     // Keep adding each node's children to the flat array as long as children are present
     var recurse = function recurse(node) {
       // TODO dependency on a 'children' attr
+      //the reason this breaks is because the node with children
+      //is the node that gets excluded by check_if_exists
       if (node.children) node.children.forEach(recurse);
       if (!node.id) node.id = ++i;
       nodes.push(node);
+
     }
+
 
     // Starting with the root
     recurse(root);
@@ -193,6 +222,7 @@ RV.graph = function(config) {
     // This callback takes the node of the quadtree and its bounds.
     return function(quad, treeX1, treeY1, treeX2, treeY2) {
       var treeNode = quad.point;
+      // console.log(treeNode)
       if (treeNode && (treeNode[config.json.accessor] !== dataNode[config.json.accessor])) {
         // Calculate the distance between the two nodes.
         var absXLength = dataNode.x - treeNode.x,
