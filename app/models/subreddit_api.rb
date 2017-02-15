@@ -53,6 +53,8 @@ class SubredditApi
     response = client.get("https://oauth.reddit.com/user/#{author}/comments.json",
                           headers: headers,
                           query: query)
+
+    return [] if !response["data"] 
     response["data"]["children"]
   end
 
