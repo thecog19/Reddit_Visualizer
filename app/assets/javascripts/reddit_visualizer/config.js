@@ -16,7 +16,7 @@ RV.config = {
       accessor: 'subscriber_count'
     },
     color: {
-      min: '#ff0000',
+      min: '#fff',
       max: '#3182bd',
       accessor: 'subscriber_count'
     },

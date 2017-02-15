@@ -55,8 +55,8 @@ RV.graph = function(config) {
     .size([width, height]);
 
   // Configure scales
-  var rScale = d3.scale.linear().range([scales.radius.min, scales.radius.max]);
-  var colScale = d3.scale.linear().range([scales.color.min, scales.color.max]);
+  var rScale = d3.scale.sqrt().range([scales.radius.min, scales.radius.max]);
+  var colScale = d3.scale.log().range([scales.color.min, scales.color.max]);
   var weightScale = d3.scale.log().range([scales.connection_weight.min, scales.connection_weight.max]);
 
   // SelectAll links and nodes
@@ -169,7 +169,7 @@ RV.graph = function(config) {
       d3.json(jsonRoute(d[config.json.accessor]), function(error, json) {
         if (error) throw error;
         // TODO dependency on 'children' - JSON response must contain 'children' attr
-        d.children = unique_children(json.children);
+        d.children = uniqueChildren(json.children);
         // Update needs to be called within the callback so that we know the new data is ready.
         update();
       });
@@ -177,7 +177,7 @@ RV.graph = function(config) {
     update();
   };
 
-  var unique_children = function(children){
+  var uniqueChildren = function(children){
     //this may be the cause of severe brakage
     //like. severe severe
     //the tldr is this fuction is supposed to stop cousin nodes
