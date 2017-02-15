@@ -10,11 +10,17 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'figaro', '~> 1.1.1'
 gem 'httparty', '~> 0.14.0'
-
 gem 'jquery-rails'
 gem 'delayed_job_active_record'
 gem 'uglifier', '~> 3.0', '>= 3.0.4'
 gem 'jbuilder'
+gem 'angularjs-rails'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-ui-router'
+  gem 'rails-assets-lodash'
+  gem 'rails-assets-restangular'
+end
 
 group :development, :test do
   gem 'byebug', platform: :mri

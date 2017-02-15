@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html ng-app="ngApp">
 <html>
   <head>
     <title>FinalProject</title>
@@ -8,7 +8,7 @@
     <%= javascript_include_tag 'application' %>
   </head>
 
-  <body>
+  <body ng-controller="graphShowCtrl">
     <%= yield %>
   </body>
 </html>
