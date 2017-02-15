@@ -11,14 +11,19 @@ RV.config = {
   // required, for now
   scales: {
     radius: {
-      min: 5,
-      max: 15,
+      min: 15,
+      max: 50,
       accessor: 'subscriber_count'
     },
     color: {
-      min: '#fff',
+      min: '#ff0000',
       max: '#3182bd',
-      accessor: 'activeUsers'
+      accessor: 'subscriber_count'
+    },
+    connection_weight: {
+      min: 1,
+      max: 5,
+      accessor: 'connection_weight'
     }
   },
 
@@ -26,7 +31,7 @@ RV.config = {
     base: '/api/v1/subreddits/',
     suffix: '.json',
     // TODO change to root id
-    rootId: '5',
+    rootId: '1',
     accessor: 'id'
   }
 };
