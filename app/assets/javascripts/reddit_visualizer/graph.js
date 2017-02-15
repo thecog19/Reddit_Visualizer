@@ -64,6 +64,7 @@ RV.graph = function(config) {
       node = svg.selectAll('.node');
 
   d3.json(jsonRoute(rootId), function(error, json) {
+    console.log(json);
     // /api/v1/subreddits/1.json
     if (error) throw error;
     root = json;
