@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="RedditViz">
   <head>
     <title>FinalProject</title>
     <%= csrf_meta_tags %>
@@ -8,7 +8,7 @@
     <%= javascript_include_tag 'application' %>
   </head>
 
-  <body>
+  <body ng-controller="GraphShowCtrl">
     <%= yield %>
   </body>
 </html>

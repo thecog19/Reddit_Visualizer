@@ -6,7 +6,7 @@ RV.config = {
 
   width: 1200,
   height: 600,
-  container: 'body',
+  container: '#graph',
 
   // required, for now
   scales: {
@@ -35,8 +35,3 @@ RV.config = {
     accessor: 'id'
   }
 };
-
-$(function() {
-  var s = RV.graph()
-  s.initialize(RV.config);
-});

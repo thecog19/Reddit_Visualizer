@@ -225,12 +225,11 @@ RV.graph = function() {
     for (var j = children.length - 1; j >= 0; j--) {
       var child = children[j]
       for(var i = 0; i < options.nodes.length; i++){
-             if(options.nodes[i].id === child.id){
-               children.slice(j, 1)
-             }
-           }
-         }
-       }
+        if(options.nodes[i].id === child.id){
+          children.slice(j, 1)
+        }
+      }
+    }
     return children
   }
 
