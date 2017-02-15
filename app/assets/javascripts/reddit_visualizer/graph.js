@@ -256,4 +256,8 @@ RV.graph = function(config) {
              treeY2 < dataY1;
     };
   };
+
+  return {jsonRoute: jsonRoute,
+          update: update,
+          root: root}
 };
