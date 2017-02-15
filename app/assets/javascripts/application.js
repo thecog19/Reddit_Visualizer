@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require angular
 //= require lodash
+//= require restangular
 //= require ui-router
 //= require d3
 //= require reddit_visualizer/graph

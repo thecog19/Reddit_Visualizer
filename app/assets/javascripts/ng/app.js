@@ -1,3 +1,11 @@
 var RV = RV || {}
 
-RV.ngApp = angular.module('ngApp', ['ui.router'])
+RV.RedditViz = angular.module('RedditViz', ['restangular'])
+  .constant('_', window._)
+  .config(['RestangularProvider', function(RestangularProvider) {
+    RestangularProvider.setBaseUrl('/api/v1')
+    RestangularProvider.setRequestSuffix('.json')
+    RestangularProvider.setDefaultHttpFields({
+      "content-type": 'application/json'
+    })
+  }])

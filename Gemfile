@@ -15,6 +15,7 @@ gem 'delayed_job_active_record'
 gem 'uglifier', '~> 3.0', '>= 3.0.4'
 gem 'jbuilder'
 gem 'angularjs-rails'
+gem 'bootstrap-sass'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-ui-router'

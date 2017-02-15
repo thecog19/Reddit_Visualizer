@@ -3,7 +3,6 @@
 var RV = RV || {};
 
 RV.graph = function(config) {
-
   // Init opts
   var width = config.width,
     height = config.height,
@@ -41,7 +40,7 @@ RV.graph = function(config) {
   var jsonRoute = function jsonRoute(id) {
     return config.json.base + id + config.json.suffix;
   };
-
+  d3.select(config.container).selectAll('svg').remove()
   var svg = d3.select(config.container).append('svg')
     .attr('width', width)
     .attr('height', height);
