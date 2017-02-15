@@ -12,11 +12,12 @@ RV.graph = function() {
     options = {
       width: config.width,
       height: config.height,
-    // force
-      linkDistance: config.linkDistance || 150,
-      linkStrength: config.linkStrength || .8,
-      charge: config.charge || -100,
-      gravity: config.gravity || .05,
+      // force
+      linkDistance: config.linkDistance || 50,
+      linkStrength: config.linkStrength || 1.0,
+      charge: config.charge || -30,
+      gravity: config.gravity || .01,
+      friction: config.friction || 0.9,
       // scales
       // # TODO handle undefined keys from config?
       scales: {
@@ -79,6 +80,7 @@ RV.graph = function() {
     .linkStrength(options.linkStrength)
     .charge(options.charge)
     .gravity(options.gravity)
+    .friction(options.friction)
     .size([options.width, options.height]);
   }
 
