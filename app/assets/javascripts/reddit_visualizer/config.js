@@ -37,5 +37,6 @@ RV.config = {
 };
 
 $(function() {
-  RV.graph(RV.config);
+  var s = RV.graph()
+  s.initialize(RV.config);
 });

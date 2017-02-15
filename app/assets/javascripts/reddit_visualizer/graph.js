@@ -2,121 +2,163 @@
 
 var RV = RV || {};
 
-RV.graph = function(config) {
+RV.graph = function() {
+  var options
+  var d3Selectors = {console: "wob"}
+  var config
 
-  // Init opts
-  var width = config.width,
-    height = config.height,
+  var initialize = function(configObj){
+    config = configObj
+    options = {
+      width: config.width,
+      height: config.height,
     // force
-    linkDistance = config.linkDistance || 150,
-    linkStrength = config.linkStrength || .8,
-    charge = config.charge || -100,
-    gravity = config.gravity || .05,
-    // scales
-    // # TODO handle undefined keys from config?
-    scales = {
-      radius: {
-        min: config.scales.radius.min,
-        max: config.scales.radius.max,
-        accessor: config.scales.radius.accessor
+      linkDistance: config.linkDistance || 150,
+      linkStrength: config.linkStrength || .8,
+      charge: config.charge || -100,
+      gravity: config.gravity || .05,
+      // scales
+      // # TODO handle undefined keys from config?
+      scales: {
+        radius: {
+          min: config.scales.radius.min,
+          max: config.scales.radius.max,
+          accessor: config.scales.radius.accessor
+        },
+        color: {
+          min: config.scales.color.min,
+          max: config.scales.color.max,
+          accessor: config.scales.color.accessor
+        },
+        connection_weight: {
+          min: config.scales.connection_weight.min,
+          max: config.scales.connection_weight.max,
+          accessor: config.scales.connection_weight.accessor
+        }
       },
-      color: {
-        min: config.scales.color.min,
-        max: config.scales.color.max,
-        accessor: config.scales.color.accessor
-      },
-      connection_weight: {
-        min: config.scales.connection_weight.min,
-        max: config.scales.connection_weight.max,
-        accessor: config.scales.connection_weight.accessor
-      }
-    },
-    rootId = config.json.rootId,
-    nodes,
-    links,
-    root;
+      rootId: config.json.rootId,
+      nodes: undefined,
+      links: undefined,
+      root: undefined
+    }
 
-  // Build json request route
-  var jsonRoute = function jsonRoute(id) {
+    d3Selectors = {
+      force: initializeForce(), 
+      svg: svg(),
+      rScale: initializeRScale(options.scales.radius),
+      colScale: initializeColScale(options.scales.color),
+      weightScale: initializeWeightScale(options.scales.connection_weight),
+    }
+    d3Selectors.node = node()
+    d3Selectors.link = link()
+    getRootNode()
+    
+  }
+
+   // Build json request route
+   var jsonRoute = function jsonRoute(id) {
     return config.json.base + id + config.json.suffix;
   };
 
-  var svg = d3.select(config.container).append('svg')
-    .attr('width', width)
-    .attr('height', height);
+  var svg = function(){
 
-  // console.log(svg);
-  // Configure force settings to adjust physics interaction between nodes.
-  var force = d3.layout.force()
-    .linkDistance(linkDistance)
-    .linkStrength(linkStrength)
-    .charge(charge)
-    .gravity(gravity)
-    .size([width, height]);
+    return d3.select(config.container).append('svg')
+    .attr('width', options.width)
+    .attr('height', options.height);
+  }
 
-  // Configure scales
-  var rScale = d3.scale.sqrt().range([scales.radius.min, scales.radius.max]);
-  var colScale = d3.scale.log().range([scales.color.min, scales.color.max]);
-  var weightScale = d3.scale.log().range([scales.connection_weight.min, scales.connection_weight.max]);
+  var initializeForce = function(){ 
+   return d3.layout.force()
+    .linkDistance(options.linkDistance)
+    .linkStrength(options.linkStrength)
+    .charge(options.charge)
+    .gravity(options.gravity)
+    .size([options.width, options.height]);
+  }
 
-  // SelectAll links and nodes
-  var link = svg.selectAll('.link'),
-      node = svg.selectAll('.node');
 
-  d3.json(jsonRoute(rootId), function(error, json) {
-    console.log(json);
+  var initializeRScale = function(radius){
+    return d3.scale.sqrt().range([radius.min, radius.max]);
+  }
+
+  var initializeColScale =  function(color){
+    return d3.scale.log().range([color.min, color.max]);
+  }
+
+  var initializeWeightScale = function(connection_weight){
+    return d3.scale.log().range([connection_weight.min, connection_weight.max]);
+  }
+
+  var link = function(){
+    return d3Selectors.svg.selectAll('.link')
+  }
+
+  var node = function(){
+    return d3Selectors.svg.selectAll('.node');
+  }
+
+  var getRootNode = function(){
+    d3.json(jsonRoute(options.rootId), function(error, json) {
     // /api/v1/subreddits/1.json
     if (error) throw error;
-    root = json;
+      options.root = json;
+      update(options.root)
+    })
+  }
 
-    update();
-  });
-
-  var update = function update() {
+  var update = function update(root) {
     // Format data for use in force.start()
-    nodes = flatten(root),
+    options.nodes = flatten(root),
 
     // 'nodes' must have a 'children' attr
-    links = d3.layout.tree().links(nodes);
+    options.links = d3.layout.tree().links(options.nodes);
     // console.log(links);
 
     // Feed the force layout current nodes and links.
-    force
-      .nodes(nodes)
-      .links(links)
+    d3Selectors.force
+      .nodes(options.nodes)
+      .links(options.links)
       .on("tick", tick)
       .start();
 
     // Convert data numbers into our graph scales
-    rScale.domain(d3.extent(nodes, function(d) { return d[scales.radius.accessor]; }));
-    colScale.domain(d3.extent(nodes, function(d) { return d[scales.color.accessor]; }));
+    d3Selectors.rScale.domain(
+      d3.extent(options.nodes, function(d) 
+        { 
+          return d[options.scales.radius.accessor]; 
+        }));
+    d3Selectors.colScale.domain(
+      d3.extent(options.nodes, function(d) 
+        { 
+          return d[options.scales.color.accessor]; 
+        }));
 
     // Bind links data to all '.link' elements in canvas.
-    link = link.data(links, function(d) {
+    d3Selectors.link = d3Selectors.link.data(options.links, function(d) {
       // Keep binding consistent by using the target's accessor.
       return d.target[config.json.accessor];
     });
-    link.exit().remove();
+    d3Selectors.link.exit().remove();
 
     // Add new data nodes and connecting lines to canvas
-    link.enter().insert('line', '.node')
+     d3Selectors.link.enter().insert('line', '.node')
       .attr('class', 'link')
       .attr('stroke-width', function(d) {
-        return weightScale(d.target[scales.connection_weight.accessor])
+        return d3Selectors.weightScale(d.target[options.scales.connection_weight.accessor])
       });
-    node = node.data(nodes, function(d) { return d[config.json.accessor]; });
-    node.exit().remove();
+    d3Selectors.node = d3Selectors.node.data(options.nodes, function(d) { return d[config.json.accessor]; });
+    d3Selectors.node.exit().remove();
 
     // Because nodes contain both circles and text, we will bind each object in 'nodes' to a <g> element (like a generic <div> container but for svg).
-    var nodeEnter = node.enter().append('g')
+    var nodeEnter = d3Selectors.node.enter().append('g')
       .attr('class', 'node')
       .on('click', expand)
-      .call(force.drag);
+      .call(d3Selectors.force.drag);
 
     // Add a color/radius scaled circle to our <g> container.
     nodeEnter.append('circle')
-      .attr('r', function(d) { return rScale(d[scales.radius.accessor]); })
-      .style('fill', function(d) { return colScale(d[scales.color.accessor]); });
+      .attr('r', function(d) { return d3Selectors.rScale(d[options.scales.radius.accessor]); })
+      .style('fill', function(d) { return d3Selectors.colScale(d[options.scales.color.accessor]); });
 
     // Add a text element to the <g>.
     nodeEnter.append('text')
@@ -127,24 +169,23 @@ RV.graph = function(config) {
       .text(function(d) { return d.name; });
   };
 
-  // Called repeatedly as long as nodes/links are moving.
   var tick = function tick() {
     // Sort our nodes into a quadtree (https://github.com/d3/d3-3.x-api-reference/blob/master/Quadtree-Geom.md)
-    var qTree = d3.geom.quadtree(nodes);
+    var qTree = d3.geom.quadtree(options.nodes);
 
-    nodes.forEach(function(node) {
+    options.nodes.forEach(function(node) {
       // Run every node in the quadtree through the callback returned by collide(node).
       qTree.visit(collide(node));
     });
 
     // Redraw lines
-    link.attr('x1', function(d) { return d.source.x; })
+    d3Selectors.link.attr('x1', function(d) { return d.source.x; })
         .attr('y1', function(d) { return d.source.y; })
         .attr('x2', function(d) { return d.target.x; })
         .attr('y2', function(d) { return d.target.y; });
 
     // Redraw nodes
-    node.attr('transform', function(d) {
+    d3Selectors.node.attr('transform', function(d) {
       return 'translate(' + d.x + ',' + d.y + ')';
     });
   };
@@ -172,11 +213,12 @@ RV.graph = function(config) {
         // TODO dependency on 'children' - JSON response must contain 'children' attr
         d.children = uniqueChildren(json.children);
         // Update needs to be called within the callback so that we know the new data is ready.
-        update();
+        update(options.root);
       });
     }
-    update();
+    update(options.root);
   };
+
 
   var uniqueChildren = function(children){
     //this may be the cause of severe brakage
@@ -187,8 +229,8 @@ RV.graph = function(config) {
     //which is lovely
     for(var j = children.length; j < 0; j--){ 
       var child = children[j]
-      for(var i = 0; i < nodes.length; i++){
-             if(nodes[i].id === child.id){
+      for(var i = 0; i < options.nodes.length; i++){
+             if(options.nodes[i].id === child.id){
                children.slice(j, 1)
              }
            }
@@ -208,8 +250,6 @@ RV.graph = function(config) {
       nodes.push(node);
     
     }
-
-
     // Starting with the root
     recurse(root);
     return nodes;
@@ -217,11 +257,11 @@ RV.graph = function(config) {
 
   var collide = function collide(dataNode) {
     // Define the bounds of the given node.
-    var radius = rScale(dataNode[scales.radius.accessor]),
-        dataX1 = dataNode.x - radius,
-        dataX2 = dataNode.x + radius,
-        dataY1 = dataNode.y - radius,
-        dataY2 = dataNode.y + radius;
+    var radius = d3Selectors.rScale(dataNode[options.scales.radius.accessor]),
+        dataX1 = dataNode.x - options.radius,
+        dataX2 = dataNode.x + options.radius,
+        dataY1 = dataNode.y - options.radius,
+        dataY2 = dataNode.y + options.radius;
     // This callback takes the node of the quadtree and its bounds.
     return function(quad, treeX1, treeY1, treeX2, treeY2) {
       var treeNode = quad.point;
@@ -233,7 +273,7 @@ RV.graph = function(config) {
             // Pythagoras!
             distance = Math.sqrt(absXLength * absXLength + absYLength * absYLength),
             // Add radii together to find the minimum distance apart the nodes can be without colliding.
-            min = radius + rScale(treeNode[scales.radius.accessor]);
+            min = radius + d3Selectors.rScale(treeNode[options.scales.radius.accessor]);
 
         // If nodes collide...
         if (distance < min) {
@@ -257,7 +297,9 @@ RV.graph = function(config) {
     };
   };
 
-  return {jsonRoute: jsonRoute,
-          update: update,
-          root: root}
-};
+
+  return {
+    initialize: initialize,
+    jsonRoute: jsonRoute
+  }
+}
