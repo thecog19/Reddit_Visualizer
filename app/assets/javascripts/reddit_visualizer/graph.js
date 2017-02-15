@@ -8,10 +8,11 @@ RV.graph = function(config) {
   var width = config.width,
     height = config.height,
     // force
-    linkDistance = config.linkDistance || 150,
-    linkStrength = config.linkStrength || .8,
-    charge = config.charge || -100,
-    gravity = config.gravity || .05,
+    linkDistance = config.linkDistance || 50,
+    linkStrength = config.linkStrength || 1.0,
+    charge = config.charge || -30,
+    gravity = config.gravity || .01,
+    friction = config.friction || 0.9,
     // scales
     // # TODO handle undefined keys from config?
     scales = {
@@ -52,6 +53,7 @@ RV.graph = function(config) {
     .linkStrength(linkStrength)
     .charge(charge)
     .gravity(gravity)
+    .friction(friction)
     .size([width, height]);
 
   // Configure scales
@@ -74,7 +76,7 @@ RV.graph = function(config) {
   var update = function update() {
     // Format data for use in force.start()
     nodes = flatten(root),
-
+    // console.log(nodes)
     // 'nodes' must have a 'children' attr
     links = d3.layout.tree().links(nodes);
     // console.log(links);
@@ -178,20 +180,15 @@ RV.graph = function(config) {
   };
 
   var uniqueChildren = function(children){
-    //this may be the cause of severe brakage
-    //like. severe severe
-    //the tldr is this fuction is supposed to stop cousin nodes
-    //from appearing
-    //however, we also have a bad case of ghost nodes
-    //which is lovely
-    for(var j = children.length; j < 0; j--){ 
+    // TODO less iteration
+    for (var j = children.length - 1; j >= 0; j--) {
       var child = children[j]
       for(var i = 0; i < nodes.length; i++){
-             if(nodes[i].id === child.id){
-               children.slice(j, 1)
-             }
+           if(nodes[i].id === child.id){
+             children.splice(j, 1)
            }
          }
+       }
     return children
   }
 
@@ -205,7 +202,7 @@ RV.graph = function(config) {
       if (node.children) node.children.forEach(recurse);
       if (!node.id) node.id = ++i;
       nodes.push(node);
-    
+
     }
 
 

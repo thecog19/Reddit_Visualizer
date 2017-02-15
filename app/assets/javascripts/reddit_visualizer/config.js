@@ -11,8 +11,8 @@ RV.config = {
   // required, for now
   scales: {
     radius: {
-      min: 15,
-      max: 50,
+      min: 5,
+      max: 15,
       accessor: 'subscriber_count'
     },
     color: {
