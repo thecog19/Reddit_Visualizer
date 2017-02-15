@@ -10,9 +10,21 @@ describe SubredditConnection do
 
       invalid_connection = build(:subreddit_connection,
                             subreddit_from: valid_connection.subreddit_from,
-                            subreddit_to: valid_connection.subreddit_to,)
+                            subreddit_to: valid_connection.subreddit_to)
 
-      expect(invalid_connection.valid?).to be false
+      expect(invalid_connection).to_not be_valid
+    end
+  end
+
+  describe '#not_self_referencing' do
+    it 'does not allow a self-referencing connection' do
+      subreddit = create(:subreddit)
+      
+      invalid_connection = build(:subreddit_connection,
+                            subreddit_from: subreddit,
+                            subreddit_to: subreddit)
+
+      expect(invalid_connection).to_not be_valid
     end
   end
 

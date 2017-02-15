@@ -10,7 +10,7 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'figaro', '~> 1.1.1'
 gem 'httparty', '~> 0.14.0'
-gem 'jbuilder', '~> 1.2'
+
 gem 'jquery-rails'
 gem 'delayed_job_active_record'
 gem 'uglifier', '~> 3.0', '>= 3.0.4'
@@ -19,6 +19,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'pry-rails'
 end
 
 group :development do
