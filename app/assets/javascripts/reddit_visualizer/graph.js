@@ -42,6 +42,8 @@ RV.graph = function() {
       root: undefined
     }
 
+    clearSvg();
+
     d3Selectors = {
       force: initializeForce(),
       svg: svg(),
@@ -54,6 +56,10 @@ RV.graph = function() {
     getRootNode()
 
   }
+
+  var clearSvg = function clearSvg() {
+    d3.select(config.container).selectAll('svg').remove();
+  };
 
    // Build json request route
    var jsonRoute = function jsonRoute(id) {
