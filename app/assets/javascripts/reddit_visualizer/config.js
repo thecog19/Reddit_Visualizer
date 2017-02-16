@@ -18,9 +18,9 @@ RV.config = {
       max: '#1a386a',
       accessor: 'subscriber_count'
     },
-    connection_weight: {
+    connectionWeight: {
       min: 1,
-      max: 2,
+      max: 5,
       accessor: 'connection_weight'
     }
   },
