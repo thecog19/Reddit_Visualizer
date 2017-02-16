@@ -82,6 +82,7 @@ RV.graph = function() {
     return d3.select(config.container).append('svg')
     .attr('width', options.width)
     .attr('height', options.height)
+    .attr('class', 'graph-container')
   .append('g')
     .call(zoom);
   };
