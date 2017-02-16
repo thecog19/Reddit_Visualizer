@@ -4,8 +4,6 @@ var RV = RV || {};
 
 RV.config = {
 
-  width: 1200,
-  height: 600,
   container: '#graph',
 
   // required, for now

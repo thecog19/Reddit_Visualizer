@@ -4,14 +4,14 @@ var RV = RV || {};
 
 RV.graph = function() {
   var options
-  var d3Selectors = {console: "wob"}
+  var d3Selectors = {}
   var config
 
   var initialize = function(configObj){
     config = configObj
     options = {
-      width: config.width,
-      height: config.height,
+      width: config.width || 1200,
+      height: config.height || 600,
       // force
       linkDistance: config.linkDistance || 50,
       linkStrength: config.linkStrength || 1.0,
@@ -57,7 +57,7 @@ RV.graph = function() {
     getRootNode()
 
   }
-
+  
   var clearSvg = function clearSvg() {
     d3.select(config.container).selectAll('svg').remove();
   };
@@ -160,9 +160,13 @@ RV.graph = function() {
     // Because nodes contain both circles and text, we will bind each object in 'nodes' to a <g> element (like a generic <div> container but for svg).
     var nodeEnter = d3Selectors.node.enter().append('g')
       .attr('class', 'node')
-      .on('click', expand)
+      .on('click', function(d) {
+        expand(d);
+        config.nodeClickHandlers.forEach(function(callback) {
+          callback(d);
+        })
+      })
       .call(d3Selectors.force.drag);
-
     // Add a color/radius scaled circle to our <g> container.
     nodeEnter.append('circle')
       .attr('r', function(d) { return d3Selectors.rScale(d[options.scales.radius.accessor]); })
@@ -234,7 +238,7 @@ RV.graph = function() {
       var child = children[j]
       for(var i = 0; i < options.nodes.length; i++){
         if(options.nodes[i].id === child.id){
-          children.slice(j, 1)
+          children.splice(j, 1)
         }
       }
     }
