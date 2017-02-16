@@ -18,9 +18,8 @@ class SubredditPersister
   end
 
   def collect_subreddit_connections(user_count = 10)
-    subreddits =  Subreddit.where(children_added_at: nil)
+    subreddits = Subreddit.where(children_added_at: nil)
     subreddits.each do |subreddit|
-      puts "on #{subreddit.id}"
       subreddit_connections = generate_subreddit_connections(subreddit, user_count)
       persist_subreddit_connections(subreddit_connections)
       subreddit.update(children_added_at: Time.now)
@@ -53,23 +52,20 @@ class SubredditPersister
     connection.save if connection.valid?
   end
 
-  # def generate_all_subreddit_connections(user_count)
-  #   Subreddit.all.each do |subreddit|
-  #     subreddit_connection = generate_subreddit_connections(subreddit, user_count)
-  #     persist_subreddit_connection(subreddit_connection)
-  #   end
-  # end
-
   def generate_subreddit_connections(subreddit, user_count)
     authors = api.get_subreddit_authors(subreddit, user_count)
     scores = get_scores(authors, 5)
     build_connections(scores, subreddit)
   end
 
-  def get_scores(authors, limit = 7)
+  def get_scores(authors, limit = 5)
     all_scores = get_all_scores(authors)
     sorted_scores = all_scores.sort_by { |subreddit, score| score  }
-    sorted_scores[-limit..-1].to_h
+    if sorted_scores.length < limit
+      sorted_scores.to_h
+    else
+      sorted_scores[-limit..-1].to_h
+    end
   end
 
   def get_all_scores(authors)
