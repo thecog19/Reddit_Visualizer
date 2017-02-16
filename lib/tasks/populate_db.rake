@@ -3,8 +3,8 @@ namespace :reddit do
 
   task populate_db: [:environment] do
     s = SubredditPersister.new
-    s.collect_subreddits(1000)
-    s.collect_subreddit_connections(100)
+    s.delay.collect_subreddits(1000)
+    s.delay.collect_subreddit_connections(100)
   end
 end
 
