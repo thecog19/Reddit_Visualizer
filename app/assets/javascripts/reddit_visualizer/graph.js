@@ -3,12 +3,12 @@
 var RV = RV || {};
 
 RV.graph = function() {
-  var options
-  var d3Selectors = {}
-  var config
+  var options,
+    d3Selectors = {},
+    config;
 
   var initialize = function(configObj){
-    config = configObj
+    config = configObj;
     options = {
       width: config.width || 1200,
       height: config.height || 600,
@@ -51,28 +51,52 @@ RV.graph = function() {
       rScale: initializeRScale(options.scales.radius),
       colScale: initializeColScale(options.scales.color),
       weightScale: initializeWeightScale(options.scales.connection_weight),
-    }
-    d3Selectors.node = node()
-    d3Selectors.link = link()
-    getRootNode()
+    };
 
-  }
-  
+    d3Selectors.rect = rect();
+    d3Selectors.container = container();
+    d3Selectors.node = node();
+    d3Selectors.link = link();
+    getRootNode();
+  };
+
   var clearSvg = function clearSvg() {
     d3.select(config.container).selectAll('svg').remove();
   };
 
-   // Build json request route
-   var jsonRoute = function jsonRoute(id) {
+  // Build json request route
+  var jsonRoute = function jsonRoute(id) {
     return config.json.base + id + config.json.suffix;
   };
 
-  var svg = function(){
+  var zoomed = function zoomed() {
+    console.log('zooming');
+    d3Selectors.container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+  };
 
+  var zoom = d3.behavior.zoom()
+    .scaleExtent([1,10])
+    .on('zoom', zoomed);
+
+  var svg = function svg(){
     return d3.select(config.container).append('svg')
     .attr('width', options.width)
-    .attr('height', options.height);
-  }
+    .attr('height', options.height)
+  .append('g')
+    .call(zoom);
+  };
+
+  var rect = function rect() {
+    return d3Selectors.svg.append('rect')
+    .attr("width", options.width)
+    .attr("height", options.height)
+    .style("fill", "none")
+    .style("pointer-events", "all");
+  };
+
+  var container = function container() {
+    return d3Selectors.svg.append('g');
+  };
 
   var initializeForce = function(){
    return d3.layout.force()
@@ -98,11 +122,11 @@ RV.graph = function() {
   }
 
   var link = function(){
-    return d3Selectors.svg.selectAll('.link')
+    return d3Selectors.container.selectAll('.link')
   }
 
   var node = function(){
-    return d3Selectors.svg.selectAll('.node');
+    return d3Selectors.container.selectAll('.node');
   }
 
   var getRootNode = function(){
