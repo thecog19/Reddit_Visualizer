@@ -18,9 +18,11 @@ class SubredditPersister
   end
 
   def collect_subreddit_connections(user_count = 10)
-    Subreddit.all.each do |subreddit|
+    subreddits =  Subreddit.where(children_added_at: nil)
+    subreddits.each do |subreddit|
       subreddit_connections = generate_subreddit_connections(subreddit, user_count)
       persist_subreddit_connections(subreddit_connections)
+      subreddit.update(children_added_at: Time.now)
     end
   end
 
@@ -63,7 +65,7 @@ class SubredditPersister
     build_connections(scores, subreddit)
   end
 
-  def get_scores(authors, limit = 5)
+  def get_scores(authors, limit = 7)
     all_scores = get_all_scores(authors)
     sorted_scores = all_scores.sort_by { |subreddit, score| score  }
     sorted_scores[-limit..-1].to_h
