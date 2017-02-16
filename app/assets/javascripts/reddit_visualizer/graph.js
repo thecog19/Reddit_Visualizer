@@ -94,7 +94,7 @@ RV.graph = function() {
   }
 
   var initializeWeightScale = function(connection_weight){
-    return d3.scale.log().range([connection_weight.min, connection_weight.max]);
+    return d3.scale.sqrt().range([connection_weight.min, connection_weight.max]);
   }
 
   var link = function(){
@@ -161,6 +161,9 @@ RV.graph = function() {
     var nodeEnter = d3Selectors.node.enter().append('g')
       .attr('class', 'node')
       .on('click', function(d) {
+        if(d3.event.defaultPrevented) return;
+        d3Selectors.node.attr('class', 'node')
+        this.classList += " active-d3-node";
         expand(d);
         config.nodeClickHandlers.forEach(function(callback) {
           callback(d);
@@ -176,7 +179,7 @@ RV.graph = function() {
     nodeEnter.append('text')
       .attr('dx', 12)
       .attr('dy', '.35em')
-      .style('font-size', '1em')
+      .style('font-size', '.8em')
       // TODO? change name to an accessor
       .text(function(d) { return d.name; });
   };
@@ -204,7 +207,6 @@ RV.graph = function() {
 
   var expand = function expand(d) {
     // Clicking to drag - d3 prevents default, allows node dragging without expansion
-    if(d3.event.defaultPrevented) return;
     // If expanded...
     if(d.children) {
       // Hide children in _children.
