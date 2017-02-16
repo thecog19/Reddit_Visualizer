@@ -4,14 +4,14 @@ var RV = RV || {};
 
 RV.graph = function() {
   var options
-  var d3Selectors = {console: "wob"}
+  var d3Selectors = {}
   var config
 
   var initialize = function(configObj){
     config = configObj
     options = {
-      width: config.width,
-      height: config.height,
+      width: config.width || 1200,
+      height: config.height || 600,
       // force
       linkDistance: config.linkDistance || 50,
       linkStrength: config.linkStrength || 1.0,
@@ -57,7 +57,7 @@ RV.graph = function() {
     getRootNode()
 
   }
-
+  
   var clearSvg = function clearSvg() {
     d3.select(config.container).selectAll('svg').remove();
   };
@@ -94,7 +94,7 @@ RV.graph = function() {
   }
 
   var initializeWeightScale = function(connection_weight){
-    return d3.scale.log().range([connection_weight.min, connection_weight.max]);
+    return d3.scale.sqrt().range([connection_weight.min, connection_weight.max]);
   }
 
   var link = function(){
@@ -160,9 +160,16 @@ RV.graph = function() {
     // Because nodes contain both circles and text, we will bind each object in 'nodes' to a <g> element (like a generic <div> container but for svg).
     var nodeEnter = d3Selectors.node.enter().append('g')
       .attr('class', 'node')
-      .on('click', expand)
+      .on('click', function(d) {
+        if(d3.event.defaultPrevented) return;
+        d3Selectors.node.attr('class', 'node')
+        this.classList += " active-d3-node";
+        expand(d);
+        config.nodeClickHandlers.forEach(function(callback) {
+          callback(d);
+        })
+      })
       .call(d3Selectors.force.drag);
-
     // Add a color/radius scaled circle to our <g> container.
     nodeEnter.append('circle')
       .attr('r', function(d) { return d3Selectors.rScale(d[options.scales.radius.accessor]); })
@@ -172,7 +179,7 @@ RV.graph = function() {
     nodeEnter.append('text')
       .attr('dx', 12)
       .attr('dy', '.35em')
-      .style('font-size', '1em')
+      .style('font-size', '.8em')
       // TODO? change name to an accessor
       .text(function(d) { return d.name; });
   };
@@ -200,7 +207,6 @@ RV.graph = function() {
 
   var expand = function expand(d) {
     // Clicking to drag - d3 prevents default, allows node dragging without expansion
-    if(d3.event.defaultPrevented) return;
     // If expanded...
     if(d.children) {
       // Hide children in _children.
