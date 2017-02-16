@@ -234,7 +234,7 @@ RV.graph = function() {
       var child = children[j]
       for(var i = 0; i < options.nodes.length; i++){
         if(options.nodes[i].id === child.id){
-          children.slice(j, 1)
+          children.splice(j, 1)
         }
       }
     }
