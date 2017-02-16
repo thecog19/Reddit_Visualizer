@@ -7,6 +7,8 @@ json.url @subreddit.url
 json.children @children do |child|
   json.id child.id
   json.name child.name
+  json.url child.url
+  json.description child.description
   json.subscriber_count child.subscriber_count
   # json.active_users @children.active_user
   json.connection_weight child.get_weight(@subreddit.id)

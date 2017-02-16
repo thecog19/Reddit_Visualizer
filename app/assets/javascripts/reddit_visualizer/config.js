@@ -14,13 +14,13 @@ RV.config = {
       accessor: 'subscriber_count'
     },
     color: {
-      min: '#fff',
-      max: '#3182bd',
+      min: '#C8E2F2',
+      max: '#1a386a',
       accessor: 'subscriber_count'
     },
     connection_weight: {
       min: 1,
-      max: 5,
+      max: 2,
       accessor: 'connection_weight'
     }
   },
