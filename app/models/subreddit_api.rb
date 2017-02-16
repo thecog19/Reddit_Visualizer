@@ -15,7 +15,7 @@ class SubredditApi
     cleanse_all_subreddit_data(raw_subreddit_data)
   end
 
-  def get_subreddit_authors(subreddit, count)
+  def get_subreddit_posters(subreddit, count)
     authors = {}
     posts = get_subreddit_posts(subreddit, count)
     get_authors_of(posts, count, authors)
