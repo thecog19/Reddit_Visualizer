@@ -75,7 +75,7 @@ RV.graph = function() {
   };
 
   var zoom = d3.behavior.zoom()
-    .scaleExtent([1,10])
+    .scaleExtent([-10,10])
     .on('zoom', zoomed);
 
   var svg = function svg(){
