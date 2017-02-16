@@ -2,8 +2,8 @@ require "rails_helper"
 
 describe SubredditConnection do
 
-  describe "#unique_both_directions" do
-    it "checks to see if a connection is unique in both directions" do
+  describe "#unique_from_to" do
+    it "checks to see if a child already exists" do
 
       valid_connection = create(:subreddit_connection)
 

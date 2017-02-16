@@ -19,7 +19,7 @@ class SubredditApi
   def get_subreddit_authors(subreddit, count)
     authors = {}
     posts = get_subreddit_posts(subreddit, count)
-    get_authors_of(posts, count, authors)  
+    get_authors_of(posts, count, authors)
     authors.keys
   end
 
@@ -54,7 +54,7 @@ class SubredditApi
                           headers: headers,
                           query: query)
 
-    return [] if !response["data"] 
+    return [] if !response["data"]
     response["data"]["children"]
   end
 

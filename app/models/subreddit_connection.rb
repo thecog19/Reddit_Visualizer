@@ -7,15 +7,13 @@ class SubredditConnection < ApplicationRecord
     foreign_key: "subreddit_to_id",
     class_name: "Subreddit"
 
-  validate :unique_both_directions
+  validate :unique_from_to
   validate :not_self_referencing
 
-  def unique_both_directions
+  def unique_from_to
     if SubredditConnection.exists?(subreddit_from_id: subreddit_from_id,
-        subreddit_to_id: subreddit_to_id) ||
-       SubredditConnection.exists?(subreddit_from_id: subreddit_to_id,
-                                   subreddit_to_id: subreddit_from_id)
-      errors.add(:connection, "must be unique in both directions")
+        subreddit_to_id: subreddit_to_id)
+      errors.add(:connection, "must not already posses that child")
     end
   end
 

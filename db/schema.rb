@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216153433) do
+ActiveRecord::Schema.define(version: 20170216162736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20170216153433) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.index ["subreddit_from_id", "subreddit_to_id"], name: "from_to", unique: true, using: :btree
-    t.index ["subreddit_to_id", "subreddit_from_id"], name: "to_from", unique: true, using: :btree
+    t.index ["subreddit_to_id", "subreddit_from_id"], name: "to_from", using: :btree
   end
 
   create_table "subreddits", force: :cascade do |t|

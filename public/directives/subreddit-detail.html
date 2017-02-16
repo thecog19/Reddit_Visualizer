@@ -1,0 +1,16 @@
+ <section id="subreddit-detail">
+  <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
+    <h3>{{ subreddit.name }}</h3>
+  </a>
+  <p>Subscribers: {{ subreddit.subscriber_count }}</p>
+  <p>{{ subreddit.description }}</p>
+  <p><a href="https://www.reddit.com{{subreddit.url}}" target="_blank">{{subreddit.url}}</a></p>
+  <p>Related Subreddits:</p>
+  <ul>
+    <li ng-repeat="child in subreddit.children">
+      <a href="https://www.reddit.com{{child.url}}" target="_blank">
+        {{ child.name }}
+      </a>
+    </li>
+  </ul>
+</section>
