@@ -1,13 +1,17 @@
-<h1> FILE SERVED </h1>
-<div class="container">
-  <div class="row">
-    <div class="col-xs-9" id="graph">
-    </div>
-    <div class="col-xs-3">
-      <form ng-submit="drawGraph()">
-        <input type="text" ng-model="subredditName">
-        <input type="submit">
-      </form>
-    </div>
+<div id="graph-container">
+  <div id="graph">
+  </div>
+  <div id="sidebar">
+    <form ng-submit="drawGraph()">
+      <div class="form-group">
+        <label for="subreddit-name">Find a Subreddit:</label>
+        <input type="text" 
+               ng-model="subredditName" 
+               name="subreddit-name" 
+               class="form-control">
+      </div>
+      <input type="submit" class="btn btn-primary">
+    </form>
+    <subreddit-detail subreddit="subreddit"></subreddit-detail>
   </div>
 </div>

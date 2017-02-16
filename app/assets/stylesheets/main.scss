@@ -1,2 +1,27 @@
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
+
+#graph-container {
+  position: relative;
+  height: 100vh;
+}
+
+#sidebar {
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: rgba(255, 69, 0, 0.4);
+  padding: 2em;
+  width: 25%;
+}
+
+#subreddit-detail {
+  text-wrap: break-word;
+}
+
+#graph {
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
