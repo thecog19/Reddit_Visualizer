@@ -20,6 +20,7 @@ class SubredditPersister
   def collect_subreddit_connections(user_count = 10)
     subreddits =  Subreddit.where(children_added_at: nil)
     subreddits.each do |subreddit|
+      puts "on #{subreddit.id}"
       subreddit_connections = generate_subreddit_connections(subreddit, user_count)
       persist_subreddit_connections(subreddit_connections)
       subreddit.update(children_added_at: Time.now)
