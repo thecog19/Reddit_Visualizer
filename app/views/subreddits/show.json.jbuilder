@@ -13,5 +13,5 @@ json.children @children do |child|
   json.subscriber_count child.subscriber_count
   # json.active_users @children.active_user
   json.connection_weight child.get_weight(@subreddit.id)
-  json.subreddit_icon childgi.subreddit_icon
+  json.subreddit_icon child.subreddit_icon
 end
