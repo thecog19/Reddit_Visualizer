@@ -5,19 +5,19 @@ class SubredditConnector
     @api = args.fetch(:api)
   end
 
-  def generate_connections(subreddit, user_count)
+  def generate_connections(subreddit, user_count, connections = 5)
     posters = api.get_subreddit_posters(subreddit, user_count)
-    scores = get_scores(posters, 10)
-    build_connections(scores, subreddit)
+    scores = get_scores(posters, connections)
+    build_connections(subreddit, scores)
   end
 
   private
   attr_reader :api
 
-  def get_scores(posters, limit = 5)
+  def get_scores(posters, connections)
     all_scores = get_all_scores(posters)
     sorted_scores = sort_scores(all_scores)
-    top_scores(sorted_scores, limit)
+    top_scores(sorted_scores, connections)
   end
 
   def get_all_scores(posters)
@@ -33,11 +33,11 @@ class SubredditConnector
     scores.sort_by { |subreddit, score| score }
   end
 
-  def top_scores(sorted_scores, limit)
-    if sorted_scores.length < limit
+  def top_scores(sorted_scores, connections)
+    if sorted_scores.length < connections
       sorted_scores.to_h
     else
-      sorted_scores[-limit..-1].to_h
+      sorted_scores[-connections..-1].to_h
     end
   end
 
@@ -47,7 +47,7 @@ class SubredditConnector
     end
   end
 
-  def build_connections(scores, subreddit)
+  def build_connections(subreddit, scores)
     scores.map do |subreddit_name, score|
       build_connection(subreddit, subreddit_name, score)
     end
