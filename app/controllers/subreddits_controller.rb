@@ -12,7 +12,10 @@ class SubredditsController < ApplicationController
       respond_to do |format|
         format.json
       end
+    else
+      render json: "subreddit not found", status: 404
     end
+
   end
 
 end

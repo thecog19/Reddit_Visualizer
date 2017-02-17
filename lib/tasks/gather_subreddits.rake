@@ -7,4 +7,4 @@ namespace :reddit do
   end
 end
 
-# heroku run rake reddit:populate_db
+# heroku run rake reddit:gather_subreddits

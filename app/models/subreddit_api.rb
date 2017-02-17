@@ -73,7 +73,6 @@ class SubredditApi
       active_users: subreddit_data["data"]["accounts_active"],
       nsfw: subreddit_data["data"]["over18"]
     }
-      binding.pry
   end
 
   def get_top_subreddit_data(count, offset)
