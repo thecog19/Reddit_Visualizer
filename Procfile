@@ -1,1 +1,1 @@
-worker: rake jobs:work
+worker: bundle exec rake reddit:form_connections
