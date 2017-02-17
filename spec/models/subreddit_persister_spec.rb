@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SubredditPersister do
+describe SubredditPersister, :vcr do
 
   describe "#collect_subreddits" do
     it "persists n subreddits to the database" do
@@ -44,7 +44,10 @@ describe SubredditPersister do
       persister = SubredditPersister.new
 
       expect {
-        persister.collect_subreddits(count)
+        VCR.use_cassette('SubredditpersisterCollectSubreddits.yml',
+                         record: :new_episodes) do
+          persister.collect_subreddits(count)
+        end
       }.to change {Subreddit.count}.by(count)
     end
   end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SubredditConnector do
+describe SubredditConnector, :vcr do
 
   describe "#generate_connections" do
     it "gets subreddit users based on posts" do
