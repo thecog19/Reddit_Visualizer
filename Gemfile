@@ -13,22 +13,23 @@ gem 'httparty', '~> 0.14.0'
 gem 'jquery-rails'
 gem 'delayed_job_active_record'
 gem 'uglifier', '~> 3.0', '>= 3.0.4'
-gem 'jbuilder'
-gem 'angularjs-rails'
-gem 'bootstrap-sass'
+gem 'jbuilder', '~> 2.6.1'
+gem 'angularjs-rails', '~> 1.6.1'
+gem 'bootstrap-sass', '~> 3.3.7'
+gem 'reddit_api', '~> 0.1.2'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-ui-router'
-  gem 'rails-assets-lodash'
-  gem 'rails-assets-restangular'
+  gem 'rails-assets-ui-router', '~> 0.4.2'
+  gem 'rails-assets-lodash', '~> 4.17.4'
+  gem 'rails-assets-restangular', '~> 1.6.1'
 end
 
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.0'
-  gem 'pry-rails'
-  gem 'jasmine'
+  gem 'pry-rails', '~> 0.3.5'
+  gem 'jasmine', '~> 2.5.2'
 end
 
 group :development do
@@ -43,8 +44,8 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'vcr'
-  gem 'webmock'
+  gem 'vcr', '~> 3.0.3'
+  gem 'webmock', '~> 2.3.2'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
