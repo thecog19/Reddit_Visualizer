@@ -7,7 +7,7 @@ class SubredditConnector
 
   def generate_connections(subreddit, user_count)
     posters = api.get_subreddit_posters(subreddit, user_count)
-    scores = get_scores(posters, 5)
+    scores = get_scores(posters, 10)
     build_connections(scores, subreddit)
   end
 
@@ -56,7 +56,7 @@ class SubredditConnector
   def build_connection(subreddit, subreddit_name, score)
     {
       subreddit_from_id: subreddit.id,
-      subreddit_to_id: Subreddit.find_or_create_by_name(subreddit_name).id,
+      subreddit_to_id: Subreddit.find_or_fetch_by_name(subreddit_name).id,
       connection_weight: score
     }
   end

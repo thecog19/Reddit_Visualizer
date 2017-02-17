@@ -29,12 +29,12 @@ class SubredditApi
     end
   end
 
-  def get_sub_count(subreddit_name)
+  def get_sub_data(subreddit_name)
     headers = {"Authorization" => "bearer #{oath_token}",
                "user-agent" => agent }
     response = client.get("https://oauth.reddit.com/r/#{subreddit_name}/about.json",
                           headers: headers)
-    response["data"]["subscribers"]
+    cleanse_subreddit_data(response)
   end
 
   protected
@@ -68,8 +68,12 @@ class SubredditApi
       url: subreddit_data["data"]["url"],
       name: subreddit_data["data"]["display_name"],
       description: subreddit_data["data"]["public_description"],
-      subreddit_icon: subreddit_data["data"]["header_img"]
+      subreddit_icon: subreddit_data["data"]["header_img"],
+      category: subreddit_data["data"]["advertiser_category"],
+      active_users: subreddit_data["data"]["accounts_active"],
+      nsfw: subreddit_data["data"]["over18"]
     }
+      binding.pry
   end
 
   def get_top_subreddit_data(count, offset)
