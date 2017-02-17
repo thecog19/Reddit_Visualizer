@@ -1,9 +1,9 @@
 var RV = RV || {}
-RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService',
-  function($scope, subredditService) {
+RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeout',
+  function($scope, subredditService, $timeout) {
 
     var _showSubreddit = function(d) {
-      $scope.subreddit = d;      
+      $scope.subreddit = d;
       $scope.$apply()
     }
 

@@ -46,9 +46,17 @@ a {
   font-size: 1.5em!important;
   fill: #ddeee5;
   stroke-width: 0;
-  z-index: 1000;
+  z-index: 2;
 }
 
 body {
  background:#404040;
+}
+
+#help li, strong, h4, span {
+  color: #000 !important;
+}
+
+#help a {
+  color: #D11F6A;
 }

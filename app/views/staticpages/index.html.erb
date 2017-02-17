@@ -6,13 +6,26 @@
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
-        <input type="text" 
-               ng-model="subredditName" 
-               name="subreddit-name" 
+        <input type="text"
+               ng-model="subredditName"
+               name="subreddit-name"
                class="form-control">
       </div>
       <input type="submit" class="btn btn-primary">
     </form>
     <subreddit-detail subreddit="subreddit"></subreddit-detail>
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#help">
+      View tips on using site
+    </button>
+    <help-pane></help-pane>
   </div>
 </div>
+<script src="/assets/js-cookie.js"></script>
+<script type="text/javascript">
+    setTimeout(function () {
+      if (!Cookies.get('visited')) {
+        angular.element("#help").modal();
+        Cookies.set('visited', true);
+      }
+    }, 500);
+</script>
