@@ -13,8 +13,11 @@ a {
   height: 100vh;
 }
 
+
+
 #sidebar {
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   position: absolute;
   right: 0;
   top: 0;
@@ -53,10 +56,22 @@ body {
  background:#404040;
 }
 
-#help li, strong, h4, span {
+#help li, strong, span {
   color: #000 !important;
 }
 
 #help a {
   color: #D11F6A;
+}
+
+#help h4 {
+  color: #000;
+}
+
+.inline-h4 {
+  display: inline;
+}
+
+.google-icon {
+  height: 25px;
 }

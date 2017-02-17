@@ -2,7 +2,6 @@
   <div id="graph">
   </div>
   <div id="sidebar">
-    <h1>RedditViz</h1>
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
@@ -14,7 +13,7 @@
       <input type="submit" class="btn btn-primary">
     </form>
     <subreddit-detail subreddit="subreddit"></subreddit-detail>
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#help">
+    <button type="button" class="btn btn-primary btn-sml" data-toggle="modal" data-target="#help">
       View tips on using site
     </button>
     <help-pane></help-pane>
