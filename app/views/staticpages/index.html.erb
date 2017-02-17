@@ -5,12 +5,16 @@
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
-        <input type="text"
-               ng-model="subredditName"
-               name="subreddit-name"
-               class="form-control">
+        <div class="input-group">
+          <input type="text"
+          ng-model="subredditName"
+          name="subreddit-name"
+          class="form-control">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </span>
+        </div>
       </div>
-      <input type="submit" class="btn btn-primary">
     </form>
     <subreddit-detail subreddit="subreddit"></subreddit-detail>
     <button type="button" class="btn btn-primary btn-sml" data-toggle="modal" data-target="#help">
