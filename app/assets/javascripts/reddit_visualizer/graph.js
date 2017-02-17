@@ -3,12 +3,12 @@
 var RV = RV || {};
 
 RV.graph = function() {
-  var options
-  var d3Selectors = {}
-  var config
+  var options,
+    d3Selectors = {},
+    config;
 
   var initialize = function(configObj){
-    config = configObj
+    config = configObj;
     options = {
       width: config.width || 1200,
       height: config.height || 600,
@@ -31,10 +31,10 @@ RV.graph = function() {
           max: config.scales.color.max,
           accessor: config.scales.color.accessor
         },
-        connection_weight: {
-          min: config.scales.connection_weight.min,
-          max: config.scales.connection_weight.max,
-          accessor: config.scales.connection_weight.accessor
+        connectionWeight: {
+          min: config.scales.connectionWeight.min,
+          max: config.scales.connectionWeight.max,
+          accessor: config.scales.connectionWeight.accessor
         }
       },
       rootId: config.json.rootId,
@@ -50,29 +50,54 @@ RV.graph = function() {
       svg: svg(),
       rScale: initializeRScale(options.scales.radius),
       colScale: initializeColScale(options.scales.color),
-      weightScale: initializeWeightScale(options.scales.connection_weight),
-    }
-    d3Selectors.node = node()
-    d3Selectors.link = link()
-    getRootNode()
+      weightScale: initializeWeightScale(options.scales.connectionWeight),
+    };
 
-  }
-  
+    d3Selectors.rect = rect();
+    d3Selectors.container = container();
+    d3Selectors.node = node();
+    d3Selectors.link = link();
+    getRootNode();
+  };
+
   var clearSvg = function clearSvg() {
     d3.select(config.container).selectAll('svg').remove();
   };
 
-   // Build json request route
-   var jsonRoute = function jsonRoute(id) {
+  // Build json request route
+  var jsonRoute = function jsonRoute(id) {
     return config.json.base + id + config.json.suffix;
   };
 
-  var svg = function(){
+  var zoomed = function zoomed() {
+    console.log('zooming');
+    d3Selectors.container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+  };
 
+  var zoom = d3.behavior.zoom()
+    .scaleExtent([-10,10])
+    .on('zoom', zoomed);
+
+  var svg = function svg(){
     return d3.select(config.container).append('svg')
     .attr('width', options.width)
-    .attr('height', options.height);
-  }
+    .attr('height', options.height)
+    .attr('class', 'graph-container')
+  .append('g')
+    .call(zoom);
+  };
+
+  var rect = function rect() {
+    return d3Selectors.svg.append('rect')
+    .attr("width", options.width)
+    .attr("height", options.height)
+    .style("fill", "none")
+    .style("pointer-events", "all");
+  };
+
+  var container = function container() {
+    return d3Selectors.svg.append('g');
+  };
 
   var initializeForce = function(){
    return d3.layout.force()
@@ -93,16 +118,16 @@ RV.graph = function() {
     return d3.scale.log().range([color.min, color.max]);
   }
 
-  var initializeWeightScale = function(connection_weight){
-    return d3.scale.sqrt().range([connection_weight.min, connection_weight.max]);
+  var initializeWeightScale = function(connectionWeight){
+    return d3.scale.sqrt().range([connectionWeight.min, connectionWeight.max]);
   }
 
   var link = function(){
-    return d3Selectors.svg.selectAll('.link')
+    return d3Selectors.container.selectAll('.link')
   }
 
   var node = function(){
-    return d3Selectors.svg.selectAll('.node');
+    return d3Selectors.container.selectAll('.node');
   }
 
   var getRootNode = function(){
@@ -131,15 +156,22 @@ RV.graph = function() {
 
     // Convert data numbers into our graph scales
     d3Selectors.rScale.domain(
-      d3.extent(options.nodes, function(d)
-        {
-          return d[options.scales.radius.accessor];
-        }));
+      d3.extent(options.nodes, function(d) {
+        return d[options.scales.radius.accessor];
+      })
+    );
+    
     d3Selectors.colScale.domain(
-      d3.extent(options.nodes, function(d)
-        {
-          return d[options.scales.color.accessor];
-        }));
+      d3.extent(options.nodes, function(d) {
+        return d[options.scales.color.accessor];
+      })
+    );
+
+    d3Selectors.weightScale.domain(
+      d3.extent(options.nodes, function(d) {
+        return d[options.scales.connectionWeight.accessor];
+      })
+    );
 
     // Bind links data to all '.link' elements in canvas.
     d3Selectors.link = d3Selectors.link.data(options.links, function(d) {
@@ -152,7 +184,7 @@ RV.graph = function() {
      d3Selectors.link.enter().insert('line', '.node')
       .attr('class', 'link')
       .attr('stroke-width', function(d) {
-        return d3Selectors.weightScale(d.target[options.scales.connection_weight.accessor])
+        return d3Selectors.weightScale(d.target[options.scales.connectionWeight.accessor])
       });
     d3Selectors.node = d3Selectors.node.data(options.nodes, function(d) { return d[config.json.accessor]; });
     d3Selectors.node.exit().remove();
@@ -177,9 +209,9 @@ RV.graph = function() {
 
     // Add a text element to the <g>.
     nodeEnter.append('text')
-      .attr('dx', 12)
+      .attr('dx', 16)
       .attr('dy', '.35em')
-      .style('font-size', '.8em')
+      .style('font-size', '.7em')
       // TODO? change name to an accessor
       .text(function(d) { return d.name; });
   };
