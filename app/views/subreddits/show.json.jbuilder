@@ -3,6 +3,7 @@ json.name @subreddit.name
 json.subscriber_count @subreddit.subscriber_count
 json.description @subreddit.description
 json.url @subreddit.url
+json.subreddit_icon @subreddit.subreddit_icon
 
 json.children @children do |child|
   json.id child.id

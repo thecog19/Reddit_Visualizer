@@ -1,0 +1,1 @@
+{"kind"=>"t2", "data"=>{"name"=>"spez", "is_friend"=>false, "created"=>1118059200.0, "hide_from_robots"=>false, "created_utc"=>1118030400.0, "link_karma"=>38394, "comment_karma"=>473481, "is_gold"=>true, "is_mod"=>true, "has_verified_email"=>true, "id"=>"1w72"}}

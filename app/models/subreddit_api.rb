@@ -69,7 +69,8 @@ class SubredditApi
       subscriber_count: subreddit_data["data"]["subscribers"],
       url: subreddit_data["data"]["url"],
       name: subreddit_data["data"]["display_name"],
-      description: subreddit_data["data"]["public_description"]
+      description: subreddit_data["data"]["public_description"],
+      subreddit_icon: subreddit_data["data"]["header_img"]
     }
   end
 

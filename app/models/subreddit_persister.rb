@@ -54,11 +54,13 @@ class SubredditPersister
 
   def generate_subreddit_connections(subreddit, user_count)
     authors = api.get_subreddit_authors(subreddit, user_count)
-    scores = get_scores(authors, 5)
+    scores = get_scores(authors)
     build_connections(scores, subreddit)
   end
 
-  def get_scores(authors, limit = 5)
+  def get_scores(authors, limit = 8)
+    ##TODO change limit, and play around with Rails API so 
+    ##that we can display variable amounts
     all_scores = get_all_scores(authors)
     sorted_scores = all_scores.sort_by { |subreddit, score| score  }
     if sorted_scores.length < limit

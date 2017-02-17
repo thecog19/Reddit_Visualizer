@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216162736) do
+ActiveRecord::Schema.define(version: 20170216211613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20170216162736) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.datetime "children_added_at"
+    t.text     "subreddit_icon"
     t.index ["url"], name: "index_subreddits_on_url", unique: true, using: :btree
   end
 
