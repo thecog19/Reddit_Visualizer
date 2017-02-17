@@ -70,7 +70,6 @@ RV.graph = function() {
   };
 
   var zoomed = function zoomed() {
-    console.log('zooming');
     d3Selectors.container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
   };
 
