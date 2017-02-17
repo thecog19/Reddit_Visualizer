@@ -11,12 +11,11 @@ class SubredditApi
   end
 
   def top_subreddits(count, offset)
-    # get subreddits [101, 200] etc. ???
     raw_subreddit_data = get_top_subreddit_data(count, offset)
     cleanse_all_subreddit_data(raw_subreddit_data)
   end
 
-  def get_subreddit_authors(subreddit, count)
+  def get_subreddit_posters(subreddit, count)
     authors = {}
     posts = get_subreddit_posts(subreddit, count)
     get_authors_of(posts, count, authors)
@@ -46,7 +45,6 @@ class SubredditApi
 
   def get_comments_for(author)
     return [] if author == "[deleted]"
-
     headers = {"Authorization" => "bearer #{oath_token}",
                "user-agent" => agent }
     query = {limit: 100}
@@ -73,10 +71,10 @@ class SubredditApi
     }
   end
 
-  def get_top_subreddit_data(n, offset)
+  def get_top_subreddit_data(count, offset)
     headers = { "Authorization" => "bearer #{oath_token}",
                 "user-agent" => agent }
-    query = { limit: n, count: offset }
+    query = { limit: count, count: offset }
     query[:after] = @after if @after
     api_response = client.get("https://oauth.reddit.com/subreddits/popular.json",
                               headers: headers,
