@@ -35,7 +35,7 @@ describe SubredditApi do
       subreddit_api = SubredditApi.new(client: client)
 
       subreddit = create(:subreddit)
-      authors = subreddit_api.get_subreddit_authors(subreddit, 2)
+      authors = subreddit_api.get_subreddit_posters(subreddit, 2)
 
       expect(authors).to be_a(Array)
       expect(authors.length).to eq(2)

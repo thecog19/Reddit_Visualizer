@@ -109,7 +109,6 @@ RV.graph = function() {
     .size([options.width, options.height]);
   }
 
-
   var initializeRScale = function(radius){
     return d3.scale.sqrt().range([radius.min, radius.max]);
   }
@@ -135,9 +134,9 @@ RV.graph = function() {
     // /api/v1/subreddits/1.json
     if (error) throw error;
       options.root = json;
-      update(options.root)
-    })
-  }
+      update(options.root);
+    });
+  };
 
   var update = function update(root) {
     // Format data for use in force.start()
@@ -160,7 +159,7 @@ RV.graph = function() {
         return d[options.scales.radius.accessor];
       })
     );
-    
+
     d3Selectors.colScale.domain(
       d3.extent(options.nodes, function(d) {
         return d[options.scales.color.accessor];
@@ -226,10 +225,11 @@ RV.graph = function() {
     });
 
     // Redraw lines
-    d3Selectors.link.attr('x1', function(d) { return d.source.x; })
-        .attr('y1', function(d) { return d.source.y; })
-        .attr('x2', function(d) { return d.target.x; })
-        .attr('y2', function(d) { return d.target.y; });
+    d3Selectors.link
+      .attr('x1', function(d) { return d.source.x; })
+      .attr('y1', function(d) { return d.source.y; })
+      .attr('x2', function(d) { return d.target.x; })
+      .attr('y2', function(d) { return d.target.y; });
 
     // Redraw nodes
     d3Selectors.node.attr('transform', function(d) {
@@ -264,7 +264,6 @@ RV.graph = function() {
     }
     update(options.root);
   };
-
 
   var uniqueChildren = function(children){
     // TODO less iteration
@@ -341,6 +340,9 @@ RV.graph = function() {
 
   return {
     initialize: initialize,
-    jsonRoute: jsonRoute
-  }
-}
+
+    // Private methods, de-comment for testing
+    jsonRoute: jsonRoute,
+    update: update
+  };
+};
