@@ -1,24 +1,14 @@
-# README
+# Reddit Visualizer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Currently a work in progress!
 
-Things you may want to cover:
+See how it live [on heroku](https://reddit-visualizer.herokuapp.com/).
 
-* Ruby version
 
-* System dependencies
+# Highlights
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- [D3.js](https://d3js.org/) for interactive, physics-driven data visualization
+- [Reddit API](https://www.reddit.com/dev/api/) for all the data
+- [Rails](http://rubyonrails.org/) and Postgres for API interaction and data storage
+- [Rspec](http://rspec.info/) for back end unit testing
+- [Jasmine](https://jasmine.github.io/) for front end unit testing
