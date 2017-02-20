@@ -15,10 +15,10 @@ describe SubredditPersister, :vcr do
     it "does not persist more than requested" do
       Subreddit.destroy_all
       count = 75
-      api = double()
+      subeddit_api = double()
       subreddits = Array.new(100) { |n| { url: "a#{n}", name: "a#{n}" } }
-      allow(api).to receive(:top_subreddits).and_return(subreddits)
-      persister = SubredditPersister.new(api: api)
+      allow(subeddit_api).to receive(:top).and_return(subreddits)
+      persister = SubredditPersister.new(subeddit_api: subeddit_api)
 
       expect {
         persister.collect_subreddits(count)
@@ -28,10 +28,10 @@ describe SubredditPersister, :vcr do
     it "does not make unnecessary api requests" do
       Subreddit.destroy_all
       count = 150
-      api = double()
+      subeddit_api = double()
       subreddits = Array.new(count + 1) { |n| { url: "a#{n}", name: "a#{n}" } }
-      expect(api).to receive(:top_subreddits).and_return(subreddits)
-      persister = SubredditPersister.new(api: api)
+      expect(subeddit_api).to receive(:top).and_return(subreddits)
+      persister = SubredditPersister.new(subeddit_api: subeddit_api)
 
       expect {
         persister.collect_subreddits(count)

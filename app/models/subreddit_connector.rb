@@ -2,28 +2,32 @@
 class SubredditConnector
 
   def initialize(args = {})
-    @api = args.fetch(:api)
+    @users_api = args.fetch(:users_api, RedditApi::Users.new)
+    @comments_api = args.fetch(:comments_api, RedditApi::Comments.new)
   end
 
   def generate_connections(subreddit, user_count, connections = 5)
-    posters = api.get_subreddit_posters(subreddit, user_count)
+    posters = users_api.top_posters(subreddit, user_count)
     scores = get_scores(posters, connections)
     build_connections(subreddit, scores)
   end
 
   private
-  attr_reader :api
+  attr_reader :users_api, :comments_api
 
   def get_scores(posters, connections)
     all_scores = get_all_scores(posters)
     sorted_scores = sort_scores(all_scores)
+p "BELOW SORTED SCORES"
     top_scores(sorted_scores, connections)
   end
 
   def get_all_scores(posters)
     scores = Hash.new(0)
     posters.each do |poster|
-      subreddits = api.get_subreddits_commented_on(poster)
+p poster
+      subreddits = comments_api.most_recent_subreddits(poster, 10)
+p subreddits
       calculate_scores(subreddits, scores)
     end
     scores

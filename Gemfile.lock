@@ -43,7 +43,7 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     angularjs-rails (1.6.1)
     arel (7.1.4)
-    autoprefixer-rails (6.7.3)
+    autoprefixer-rails (6.7.4)
       execjs
     awesome_print (1.7.0)
     better_errors (2.1.1)
@@ -163,7 +163,7 @@ GEM
     pry-rails (0.3.5)
       pry (>= 0.9.10)
     public_suffix (2.0.5)
-    puma (3.7.0)
+    puma (3.7.1)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -201,7 +201,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
-    reddit_api (0.1.2)
+    reddit_api (0.1.14)
       dotenv (~> 2.2.0)
       httparty (~> 0.14.0)
     rspec (3.5.0)
@@ -286,7 +286,7 @@ DEPENDENCIES
   rails-assets-lodash (~> 4.17.4)!
   rails-assets-restangular (~> 1.6.1)!
   rails-assets-ui-router (~> 0.4.2)!
-  reddit_api (~> 0.1.2)
+  reddit_api
   rspec-rails (~> 3.5)
   shoulda-matchers (~> 3.1)
   spring (~> 2.0.1)
@@ -297,4 +297,4 @@ DEPENDENCIES
   webmock (~> 2.3.2)
 
 BUNDLED WITH
-   1.14.3
+   1.14.4

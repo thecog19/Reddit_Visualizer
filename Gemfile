@@ -16,7 +16,7 @@ gem 'uglifier', '~> 3.0', '>= 3.0.4'
 gem 'jbuilder', '~> 2.6.1'
 gem 'angularjs-rails', '~> 1.6.1'
 gem 'bootstrap-sass', '~> 3.3.7'
-gem 'reddit_api', '~> 0.1.2'
+gem 'reddit_api'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-ui-router', '~> 0.4.2'

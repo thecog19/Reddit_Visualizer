@@ -10,13 +10,13 @@ describe SubredditConnector, :vcr do
       allow(api).to receive(:get_subreddits_commented_on).and_return([])
       connector = SubredditConnector.new(api: api)
 
-      connector.generate_connections(subreddit, 1)
+      connector.generate_connections(subreddit, 5)
     end
 
     it "only gets the specified number of users" do
       api = double()
       subreddit = build(:subreddit)
-      user_count = 1
+      user_count = 5
       expect(api).to receive(:get_subreddit_posters)
         .with(subreddit, user_count).and_return([])
       allow(api).to receive(:get_subreddits_commented_on).and_return([])
@@ -33,7 +33,7 @@ describe SubredditConnector, :vcr do
       expect(api).to receive(:get_subreddits_commented_on).and_return([])
       connector = SubredditConnector.new(api: api)
 
-      connector.generate_connections(subreddit, 1)
+      connector.generate_connections(subreddit, 5)
     end
 
     it "returns n connections" do

@@ -14,25 +14,22 @@ class Subreddit < ApplicationRecord
     source: :subreddit_to
   validates :url, uniqueness: true
 
-
-  API = SubredditApi.new
+  API = RedditApi::Subreddits.new
 
   def children
     subreddit_destination_connections + destination_subreddits
   end
-  
+
   def get_weight(parent_id)
     self.subreddit_origin_connections.find_by(subreddit_from_id: parent_id).connection_weight
   end
 
   def self.find_or_fetch_by_name(subreddit_name)
     if exists?(name: subreddit_name)
-      subreddit = where(name: subreddit_name).last
+      find_by(name: subreddit_name)
     else
-      subreddit = new(API.get_sub_data(subreddit_name))
-      subreddit.save
+      create(API.data_for(subreddit_name))
     end
-    subreddit
   end
 
 end
