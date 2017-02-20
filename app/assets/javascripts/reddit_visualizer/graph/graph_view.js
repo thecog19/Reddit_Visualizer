@@ -16,6 +16,15 @@ GRAPH.view = (function(d3) {
     // select inital dom elements
     var svg, zoom;
     _config = config;
+
+    _config.width = config.width || 1200;
+    _config.height = config.height || 600;
+    _config.linkDistance = config.linkDistance || 50;
+    _config.linkStrength = config.linkStrength || 1.0;
+    _config.charge = config.charge || -30;
+    _config.gravity = config.gravity || .01;
+    _config.friction = config.friction || 0.9;
+
     _callbacks = callbacks;
     _setForce();
     zoom = _zoomCallback();
@@ -31,40 +40,53 @@ GRAPH.view = (function(d3) {
 
   var update = function update(graphData)  {
     _graphData = graphData;
+
+    _updateForce();
+
     _bindNodes();
     _bindLinks();
     _linkEnter();
     _nodeEnter();
+
   };
 
-
-  // FEB17 left off
   var redraw = function redraw() {
     // Redraw lines
-    d3Selectors.link
+    _viewData.links
       .attr('x1', function(d) { return d.source.x; })
       .attr('y1', function(d) { return d.source.y; })
       .attr('x2', function(d) { return d.target.x; })
       .attr('y2', function(d) { return d.target.y; });
 
     // Redraw nodes
-    d3Selectors.node.attr('transform', function(d) {
+    _viewData.nodes.attr('transform', function(d) {
       return 'translate(' + d.x + ',' + d.y + ')';
     });
   };
 
+  var _updateForce = function _updateForce() {
+    _force
+      .nodes(_graphData.nodes)
+      .links(_graphData.links)
+      .on('tick', _callbacks.tick)
+      .start();
+  };
+
   var _bindNodes = function _bindNodes() {
-    _viewData.nodes.data(_graphData.nodes, function(d) {
+    _viewData.nodes = _viewData.nodes.data(_graphData.nodes, function(d) {
       return d[_config.accessor];
     });
-    _viewData.node.exit().remove();
+    _viewData.nodes.exit().remove();
   };
 
   var _bindLinks = function _bindLinks() {
-    _viewData.links.data(_graphData.links, function(d) {
-      return d[_config.accessor];
+    console.log('graphData', _graphData.links);
+    _viewData.links = _viewData.links.data(_graphData.links, function(d) {
+      console.log('d', d);
+      return d.target[_config.accessor];
     });
-    _viewData.link.exit().remove();
+    console.log(_viewData.links);
+    _viewData.links.exit().remove();
   };
 
   var _linkEnter = function _linkEnter() {
@@ -76,25 +98,22 @@ GRAPH.view = (function(d3) {
   };
 
   var _nodeEnter = function _nodeEnter() {
-    var nodeEnter = _viewData.nodes.enter();
+    var nodeEnter = _viewData.nodes.enter().append('g');
 
     _appendG(nodeEnter);
     _appendCircle(nodeEnter);
     _appendText(nodeEnter);
-
-    nodeEnter
-      .on('tick', _callbacks.tick);
   };
 
   var _appendG = function _appendG(nodeEnter) {
-    nodeEnter.append('g')
+    nodeEnter
       .attr('class', 'node')
       .on('click', function(d) {
         if(d3.event.defaultPrevented) return;
         _viewData.nodes.attr('class', 'node');
         this.classList += " active-d3-node";
-        _callbacks.expand(d); // from callbacks
-        config.nodeClickHandlers.forEach(function(callback) {
+        _callbacks.toggleChildren(d);
+        _callbacks.nodeClickHandlers.forEach(function(callback) {
           callback(d);
         }); // from angular callback
       })

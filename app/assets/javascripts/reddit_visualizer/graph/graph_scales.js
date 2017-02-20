@@ -8,7 +8,7 @@ GRAPH.scales = (function(d3) {
   var _config;
 
   var init = function init(configScales) {
-    _config = configScales
+    _config = configScales;
     _setScales();
   };
 
@@ -47,7 +47,8 @@ GRAPH.scales = (function(d3) {
 
   return {
     init: init,
-    setScaleDomains: setScaleDomains
+    setScaleDomains: setScaleDomains,
+    getScales: getScales
   };
 
-}());
+}(d3));

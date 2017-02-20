@@ -18,5 +18,8 @@
 //= require restangular
 //= require ui-router
 //= require d3
-//= require reddit_visualizer/graph
+//= require reddit_visualizer/graph/graph_scales
+//= require reddit_visualizer/graph/graph_model
+//= require reddit_visualizer/graph/graph_view
+//= require reddit_visualizer/graph/graph_controller
 //= require_tree .

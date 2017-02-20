@@ -6,7 +6,6 @@ RV.config = {
 
   container: '#graph',
   accessor: 'id',
-
   // required, for now
   scales: {
     radius: {

@@ -2,7 +2,7 @@
 
 var RV = RV || {};
 
-RV.graph = function() {
+RV.oldGraph = function() {
   var options,
     d3Selectors = {},
     config;
