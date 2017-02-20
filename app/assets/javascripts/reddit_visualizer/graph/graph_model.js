@@ -113,20 +113,20 @@ GRAPH.model = (function(d3, scales) {
 
   var expandChildren = function(){
     return Promise.all(_generatePromises())
-    .then(
-      function(){return _graphData}
-      )
+      .then(function(){return _graphData})
   }
 
   var _generatePromises = function(){
     return _graphData.nodes.map(function(node){
       if(node._children){
+        console.log('hidden children', node)
         _showChildren(node)
-        return true
-      }else if(!(node.children)){
+      } else if(!(node.children)){
         return _fetchChildren(node);
       }
-      return true
+      return new Promise(function(resolve, reject) {
+        resolve(node);
+      })
     })
   }
 

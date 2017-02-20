@@ -33,7 +33,10 @@ GRAPH.controller = (function(model, view, d3) {
   };
 
   var expandChildren = function(){
-    model.expandChildren().then( view.update)
+    model.expandChildren().then(function(r) {
+      console.log('all promises resolved', r)
+      view.update(r)
+    })
   }
 
   return {

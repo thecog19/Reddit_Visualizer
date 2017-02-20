@@ -19,7 +19,7 @@ GRAPH.view = (function(d3) {
 
     _config.width = config.width || 1200;
     _config.height = config.height || 600;
-    _config.linkDistance = config.linkDistance || 100;
+    _config.linkDistance = config.linkDistance || 65;
     _config.linkStrength = config.linkStrength || 1.0;
     _config.charge = config.charge || -60;
     _config.gravity = config.gravity || .01;
@@ -155,7 +155,6 @@ GRAPH.view = (function(d3) {
     return d3.behavior.zoom()
     .scaleExtent([-10,10])
     .on('zoom', function() {
-      console.log(d3.event.translate)
       _container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
     });
   };
