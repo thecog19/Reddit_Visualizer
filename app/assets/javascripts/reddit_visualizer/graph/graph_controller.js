@@ -33,7 +33,12 @@ GRAPH.controller = (function(model, view, d3) {
     });
   };
 
+  var expandChildren = function(){
+    model.expandChildren().then( view.update)
+  }
+
   return {
     init: init
+    expandChildren: expandChildren
   };
 }(GRAPH.model, GRAPH.view, d3));
