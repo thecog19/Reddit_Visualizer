@@ -5,19 +5,19 @@
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
-        <div class="input-group">
+        <div class="input-group" id="the-basics">
           <input type="text"
           ng-model="subredditName"
           name="subreddit-name"
-          class="form-control">
+          class="form-control typeahead">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-info" type="submit">Search</button>
           </span>
         </div>
       </div>
     </form>
     <subreddit-detail subreddit="subreddit"></subreddit-detail>
-    <button type="button" class="btn btn-primary btn-sml" data-toggle="modal" data-target="#help">
+    <button type="button" class="btn btn-info btn-sml" data-toggle="modal" data-target="#help">
       View tips on using site
     </button>
     <help-pane></help-pane>
@@ -25,10 +25,10 @@
 </div>
 <script src="/assets/js-cookie.js"></script>
 <script type="text/javascript">
-    setTimeout(function () {
-      if (!Cookies.get('visited')) {
-        angular.element("#help").modal();
-        Cookies.set('visited', true);
-      }
-    }, 500);
+  setTimeout(function () {
+    if (!Cookies.get('visited')) {
+      angular.element("#help").modal();
+      Cookies.set('visited', true);
+    }
+  }, 500);
 </script>

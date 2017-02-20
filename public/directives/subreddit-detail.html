@@ -1,10 +1,10 @@
- <section id="subreddit-detail">
-   <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
-     <img src="{{subreddit.subreddit_icon}}">
-   </a>
-   <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
-     <h2>{{subreddit.name}}</h2>
-   </a>
+<section id="subreddit-detail">
+  <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
+    <img src="{{subreddit.subreddit_icon}}">
+  </a>
+  <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
+    <h2>{{subreddit.name}}</h2>
+  </a>
   <p>Subscribers: {{ subreddit.subscriber_count }}</p>
   <p>{{ subreddit.description }}</p>
   <hr>
@@ -17,5 +17,4 @@
       <a href="https://google.com/#q={{ subreddit.name }} + {{ child.name }}" target="_blank"><img src="assets/google-favicon-vector.png" class="google-icon"></a>
     </li>
   </ul>
-  <!-- https://www.google.com/#q=askreddit+donaldglover -->
 </section>
