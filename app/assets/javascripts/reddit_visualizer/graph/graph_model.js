@@ -119,20 +119,20 @@ GRAPH.model = (function(d3, scales) {
   var _generatePromises = function(){
     return _graphData.nodes.map(function(node){
       if(node._children){
-        console.log('hidden children', node)
         _showChildren(node)
       } else if(!(node.children)){
         return _fetchChildren(node);
       }
+      update();
       return new Promise(function(resolve, reject) {
-        resolve(node);
+        resolve(_graphData);
       })
     })
   }
 
   var _showChildren = function(d){
     d.children = d._children;
-    d._children = null;
+    d._children = null;  
   }
 
   var _hideChildren = function(d){
