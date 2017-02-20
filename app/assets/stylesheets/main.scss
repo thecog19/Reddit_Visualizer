@@ -4,6 +4,7 @@
 a {
   color: #C8E2F2;
 }
+
 #graph-container {
   position: relative;
   height: 100vh;
@@ -18,10 +19,6 @@ a {
   background: #3165b0;
   padding: 2em;
   width: 25%;
-}
-
-#subreddit-detail {
-  text-wrap: break-word;
 }
 
 #graph {
@@ -50,16 +47,8 @@ body {
  background:#404040;
 }
 
-#help li, strong, span {
-  color: #000 !important;
-}
-
 #help a {
   color: #D11F6A;
-}
-
-#help h4 {
-  color: #000;
 }
 
 .inline-h4 {
@@ -68,6 +57,19 @@ body {
 
 .google-icon {
   height: 25px;
+}
+
+subreddit-detail {
+  color: #fff;
+  text-wrap: break-word;
+}
+
+#sidebar label {
+  color: #fff;
+}
+
+.subreddit-icon {
+  max-height: 100px;
 }
 
 // styles borrowed from https://github.com/hyspace/typeahead.js-bootstrap3.less/blob/master/typeahead.css to fix weirdness with typeahead breaking bootstrap styling on input group
@@ -214,7 +216,7 @@ fieldset[disabled] .twitter-typeahead .tt-input {
   cursor: pointer;
   text-decoration: none;
   outline: 0;
-  background-color: #f5f5f5;
+  background-color: #5bc0de;
   color: #262626;
 }
 .tt-dropdown-menu .tt-suggestion.tt-cursor a,
