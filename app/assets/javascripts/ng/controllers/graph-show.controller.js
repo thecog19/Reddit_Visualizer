@@ -18,5 +18,9 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
         });
     }
 
+    $scope.expandChildren = function(){
+      RV.graph.expandChildren()
+    }
+
     $scope.drawGraph()
   }])

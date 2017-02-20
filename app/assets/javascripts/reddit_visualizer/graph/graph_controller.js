@@ -24,7 +24,6 @@ GRAPH.controller = (function(model, view, d3) {
 
     _callbacks.nodeClickHandlers = config.nodeClickHandlers;
 
-    console.log(_callbacks);
     viewData = view.init(config, _callbacks);
     config.viewData = viewData;
 
@@ -33,7 +32,12 @@ GRAPH.controller = (function(model, view, d3) {
     });
   };
 
+  var expandChildren = function(){
+    model.expandChildren().then( view.update)
+  }
+
   return {
-    init: init
+    init: init,
+    expandChildren: expandChildren
   };
 }(GRAPH.model, GRAPH.view, d3));

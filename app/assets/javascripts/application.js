@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require typeahead
+//= require autocomplete
 //= require bootstrap-sprockets
 //= require angular
 //= require lodash

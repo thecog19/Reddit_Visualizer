@@ -111,16 +111,43 @@ GRAPH.model = (function(d3, scales) {
     };
   };
 
+  var expandChildren = function(){
+    return Promise.all(_generatePromises())
+    .then(
+      function(){return _graphData}
+      )
+  }
+
+  var _generatePromises = function(){
+    return _graphData.nodes.map(function(node){
+      if(node._children){
+        _showChildren(node)
+        return true
+      }else if(!(node.children)){
+        return _fetchChildren(node);
+      }
+      return true
+    })
+  }
+
+  var _showChildren = function(d){
+    d.children = d._children;
+    d._children = null;
+  }
+
+  var _hideChildren = function(d){
+    d._children = d.children;
+    d.children = null;
+  }
+
   var toggleChildren = function toggleChildren(d) {
     if(d.children) {
       // Hide children in _children.
-      d._children = d.children;
-      d.children = null;
+      _hideChildren(d)
     }
     else if (d._children) {
       // Show hidden children.
-      d.children = d._children;
-      d._children = null;
+      _showChildren(d)
     } else {
       return _fetchChildren(d);
     }
@@ -156,6 +183,7 @@ GRAPH.model = (function(d3, scales) {
     init: init,
     update: update,
     toggleChildren: toggleChildren,
-    checkCollision: checkCollision
+    checkCollision: checkCollision,
+    expandChildren: expandChildren
   };
 }(d3, GRAPH.scales));

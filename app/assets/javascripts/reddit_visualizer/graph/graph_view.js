@@ -19,9 +19,9 @@ GRAPH.view = (function(d3) {
 
     _config.width = config.width || 1200;
     _config.height = config.height || 600;
-    _config.linkDistance = config.linkDistance || 50;
+    _config.linkDistance = config.linkDistance || 100;
     _config.linkStrength = config.linkStrength || 1.0;
-    _config.charge = config.charge || -30;
+    _config.charge = config.charge || -60;
     _config.gravity = config.gravity || .01;
     _config.friction = config.friction || 0.9;
 
@@ -104,10 +104,16 @@ GRAPH.view = (function(d3) {
 
   var _appendG = function _appendG(nodeEnter) {
     nodeEnter
-      .attr('class', 'node')
+      .attr('class', function(d) {
+        if (d.nsfw) {
+          return 'nsfw-node node'
+        } else {
+          return 'node'
+        }
+      })
       .on('click', function(d) {
         if(d3.event.defaultPrevented) return;
-        _viewData.nodes.attr('class', 'node');
+        _viewData.nodes.classed('active-d3-node', false);
         this.classList += " active-d3-node";
         _callbacks.toggleChildren(d);
         _callbacks.nodeClickHandlers.forEach(function(callback) {
@@ -122,16 +128,15 @@ GRAPH.view = (function(d3) {
       .attr('r', function(d) {
         return _graphData.scales.radius(d[_config.scales.radius.accessor]);
       })
-      .style('fill', function(d) {
-        return _graphData.scales.color(d[_config.scales.color.accessor]);
-      });
+      // .style('fill', function(d) {
+      //   return _graphData.scales.color(d[_config.scales.color.accessor]);
+      // });
   };
 
   var _appendText = function _appendText(nodeEnter) {
     nodeEnter.append('text')
-      .attr('dx', 16)
       .attr('dy', '.35em')
-      .style('font-size', '.7em')
+      .style('font-size', '.8em')
       // TODO? change name to an accessor
       .text(function(d) { return d.name; });
   };
@@ -151,6 +156,14 @@ GRAPH.view = (function(d3) {
     .scaleExtent([-10,10])
     .on('zoom', function() {
       console.log(d3.event.translate)
+      _container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+    });
+  };
+
+  var _centerGraph = function() {
+    return d3.behavior.zoom()
+    .scaleExtent([-10,10])
+    .on('zoom', function() {
       _container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
     });
   };

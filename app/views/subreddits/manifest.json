@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "Spreaddit Extension",
+  "description": "This is an extension for reddit to integrate the relationships seen via the Spreaddit visualizer",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
