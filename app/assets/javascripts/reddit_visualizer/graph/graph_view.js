@@ -150,6 +150,7 @@ GRAPH.view = (function(d3) {
     return d3.behavior.zoom()
     .scaleExtent([-10,10])
     .on('zoom', function() {
+      console.log(d3.event.translate)
       _container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
     });
   };
