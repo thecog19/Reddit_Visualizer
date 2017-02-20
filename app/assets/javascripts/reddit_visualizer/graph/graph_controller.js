@@ -5,7 +5,6 @@ var GRAPH = GRAPH || {};
 GRAPH.controller = (function(model, view, d3) {
 
   var _tick = function _tick() {
-    // Sort our nodes into a quadtree (https://github.com/d3/d3-3.x-api-reference/blob/master/Quadtree-Geom.md)
     model.checkCollision();
 
     view.redraw();
@@ -21,7 +20,6 @@ GRAPH.controller = (function(model, view, d3) {
   };
 
   var init = function(config) {
-    // init the model
     var viewData, graphData;
 
     _callbacks.nodeClickHandlers = config.nodeClickHandlers;
@@ -33,7 +31,6 @@ GRAPH.controller = (function(model, view, d3) {
     graphData = model.init(config).then(function(graphData) {
       view.update(graphData);
     });
-    // init the view w/ the model response
   };
 
   return {

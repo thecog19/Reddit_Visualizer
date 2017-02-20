@@ -132,7 +132,7 @@ GRAPH.model = (function(d3, scales) {
 
   var _fetchChildren = function _fetchChildren(d) {
     return new Promise(function(resolve, reject) {
-      d3.json(_jsonRoute(d[config.accessor]), function(error, json) {
+      d3.json(_jsonRoute(d[_config.accessor]), function(error, json) {
         if (error) throw error;
         d.children = _uniqueChildren(json.children);
         update();
@@ -143,12 +143,12 @@ GRAPH.model = (function(d3, scales) {
 
   var _uniqueChildren = function _uniqueChildren(children) {
     return children.filter(function(child) {
-      for (var i = 0; i > _graphData.nodes.length; i++) {
+      for (var i = 0; i < _graphData.nodes.length; i++) {
         if (_graphData.nodes[i].id === child.id) {
           return false;
         }
-        return true;
       }
+      return true;
     });
   };
 

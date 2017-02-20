@@ -80,12 +80,9 @@ GRAPH.view = (function(d3) {
   };
 
   var _bindLinks = function _bindLinks() {
-    console.log('graphData', _graphData.links);
     _viewData.links = _viewData.links.data(_graphData.links, function(d) {
-      console.log('d', d);
       return d.target[_config.accessor];
     });
-    console.log(_viewData.links);
     _viewData.links.exit().remove();
   };
 
