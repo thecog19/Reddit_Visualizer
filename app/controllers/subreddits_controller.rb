@@ -1,5 +1,12 @@
 class SubredditsController < ApplicationController
 
+  def index
+    @subreddits = Subreddit.all
+    respond_to do |format|
+      format.json {render json: @subreddits}
+    end
+  end
+
   def show
     if params[:id] == '0'
       @subreddit = Subreddit.find_by(name: params[:name])
@@ -17,5 +24,4 @@ class SubredditsController < ApplicationController
     end
 
   end
-
 end

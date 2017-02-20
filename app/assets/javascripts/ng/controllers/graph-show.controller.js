@@ -14,8 +14,8 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
           RV.config.json.rootId = response.id;
           RV.config.nodeClickHandlers = [ _showSubreddit ];
           $scope.subreddit = response;
-          RV.graph().initialize(RV.config);
-        })
+          RV.graph.init(RV.config);
+        });
     }
 
     $scope.drawGraph()
