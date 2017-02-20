@@ -127,7 +127,7 @@ GRAPH.model = (function(d3, scales) {
         return _fetchChildren(node);
       }
       return true
-    }) 
+    })
   }
 
   var _showChildren = function(d){

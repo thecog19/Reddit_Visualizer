@@ -27,8 +27,31 @@ a {
   height: 100%;
 }
 
+.node circle {
+  cursor: pointer;
+  stroke: #3182bd;
+  stroke-width: 1.5px;
+  fill: #1a386a;
+}
+
+.node text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-anchor: middle;
+  stroke:#333;
+}
+
+line.link {
+  fill: none;
+  stroke: #3182bd;
+}
+
 .active-d3-node circle {
-  fill: #D11F6A!important;
+  fill: rgba(46, 204, 113,1.0)!important;
+}
+
+.nsfw-node circle {
+  fill: #D11F6A!important
 }
 
 .node text {

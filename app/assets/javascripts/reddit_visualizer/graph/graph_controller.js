@@ -24,7 +24,6 @@ GRAPH.controller = (function(model, view, d3) {
 
     _callbacks.nodeClickHandlers = config.nodeClickHandlers;
 
-    console.log(_callbacks);
     viewData = view.init(config, _callbacks);
     config.viewData = viewData;
 
