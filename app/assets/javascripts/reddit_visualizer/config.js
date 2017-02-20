@@ -5,6 +5,7 @@ var RV = RV || {};
 RV.config = {
 
   container: '#graph',
+  accessor: 'id',
 
   // required, for now
   scales: {
@@ -18,7 +19,7 @@ RV.config = {
       max: '#1a386a',
       accessor: 'subscriber_count'
     },
-    connectionWeight: {
+    weight: {
       min: 1,
       max: 5,
       accessor: 'connection_weight'
@@ -29,7 +30,6 @@ RV.config = {
     base: '/api/v1/subreddits/',
     suffix: '.json',
     // TODO change to root id
-    rootId: '1',
-    accessor: 'id'
+    rootId: '1'
   }
 };
