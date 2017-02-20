@@ -38,7 +38,7 @@ GRAPH.controller = (function(model, view, d3) {
   }
 
   return {
-    init: init
+    init: init,
     expandChildren: expandChildren
   };
 }(GRAPH.model, GRAPH.view, d3));
