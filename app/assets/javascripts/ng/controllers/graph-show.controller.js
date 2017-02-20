@@ -3,6 +3,7 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
   function($scope, subredditService, $timeout) {
 
     var _showSubreddit = function(d) {
+      console.log(d.children, d)
       $scope.subreddit = d;
       $scope.$apply()
     }

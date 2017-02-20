@@ -115,11 +115,13 @@ GRAPH.view = (function(d3) {
         if(d3.event.defaultPrevented) return;
         _viewData.nodes.classed('active-d3-node', false);
         this.classList += " active-d3-node";
-        _callbacks.toggleChildren(d);
-        _callbacks.nodeClickHandlers.forEach(function(callback) {
-          callback(d);
-        }); // from angular callback
-      })
+        _callbacks.toggleChildren(d)
+          .then(function(something) {
+            _callbacks.nodeClickHandlers.forEach(function(callback) {
+              callback(d);
+            }); // from angular callback
+          })
+        })
       .call(_force.drag);
     };
 

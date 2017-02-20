@@ -11,7 +11,7 @@ GRAPH.controller = (function(model, view, d3) {
   };
 
   var _toggleChildren = function _toggleChildren(d) {
-    model.toggleChildren(d).then(view.update);
+    return model.toggleChildren(d).then(view.update);
   };
 
   var _callbacks = {
