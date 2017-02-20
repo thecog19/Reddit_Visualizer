@@ -24,5 +24,4 @@ class SubredditsController < ApplicationController
     end
 
   end
-
 end
