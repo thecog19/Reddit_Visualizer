@@ -1,6 +1,6 @@
 var RV = RV || {}
-RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeout',
-  function($scope, subredditService, $timeout) {
+RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window',
+  function($scope, subredditService, $window) {
 
     var _showSubreddit = function(d) {
       $scope.subreddit = d;
@@ -12,6 +12,7 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
       subredditService.getSubreddit($scope.subredditName)
         .then(function(response) {
           RV.config.json.rootId = response.id;
+          RV.config.height = $window.innerHeight;
           RV.config.nodeClickHandlers = [ _showSubreddit ];
           $scope.subreddit = response;
           RV.graph.init(RV.config);
@@ -24,8 +25,16 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
     })
 
     $scope.expandChildren = function(){
+      $scope.loadingSubreddits = true;
+      console.log()
       RV.graph.expandChildren()
+        .then(function() {
+          console.log('done')
+          $scope.loadingSubreddits = false;
+          $scope.$apply()
+        })
     }
 
+    $scope.loadingSubreddits = false;
     $scope.drawGraph()
   }])

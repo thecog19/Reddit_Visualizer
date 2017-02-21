@@ -46,12 +46,12 @@ line.link {
   stroke: #3182bd;
 }
 
-.active-d3-node circle {
-  fill: rgba(46, 204, 113,1.0)!important;
-}
-
 .nsfw-node circle {
   fill: #D11F6A!important
+}
+
+.active-d3-node circle {
+  fill: rgba(46, 204, 113,1.0)!important;
 }
 
 .node text {
@@ -93,6 +93,7 @@ subreddit-detail {
 
 .subreddit-icon {
   max-height: 100px;
+  overflow: hidden;
 }
 
 // styles borrowed from https://github.com/hyspace/typeahead.js-bootstrap3.less/blob/master/typeahead.css to fix weirdness with typeahead breaking bootstrap styling on input group
