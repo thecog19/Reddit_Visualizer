@@ -190,6 +190,7 @@ GRAPH.model = (function(d3, scales) {
     update: update,
     toggleChildren: toggleChildren,
     checkCollision: checkCollision,
-    expandChildren: expandChildren
+    expandChildren: expandChildren,
+    _setRootData: _setRootData
   };
 }(d3, GRAPH.scales));

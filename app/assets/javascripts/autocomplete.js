@@ -17,9 +17,13 @@ var substringMatcher = function(strs) {
 };
 
 var subreddits = [];
-$.ajax({ url: 'api/v1/subreddits.json',
-  dataType: 'json' }).complete(function(response) {
-    extract_names(response.responseJSON)
+$.ajax( { url: 'api/v1/subreddits.json',
+        dataType: 'json',
+        success: function(response) {extract_names(response.responseJSON)},
+        error: function(response){ 
+          console.log("here")
+          return []
+        }
 })
 
 var extract_names = function(response) {
