@@ -50,7 +50,11 @@ line.link {
   fill: #D11F6A;
 }
 
-.active-d3-node circle {
+.expandable-node circle {
+  fill: rgba(230, 126, 34,1.0);
+}
+
+.active-node circle {
   fill: rgba(46, 204, 113,1.0);
 }
 

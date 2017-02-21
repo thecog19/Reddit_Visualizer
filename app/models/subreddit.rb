@@ -28,6 +28,10 @@ class Subreddit < ApplicationRecord
     self.subreddit_origin_connections.find_by(subreddit_from_id: parent_id).connection_weight
   end
 
+  def has_children
+    !!children_added_at
+  end
+
   def self.find_or_fetch_by_name(subreddit_name)
     if exists?(name: subreddit_name)
       subreddit = where(name: subreddit_name).last

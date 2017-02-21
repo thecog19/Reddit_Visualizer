@@ -47,7 +47,13 @@ GRAPH.view = (function(d3) {
     _bindLinks();
     _linkEnter();
     _nodeEnter();
-
+    for (var i = 0; i < _viewData.nodes[0].length; i++) {
+      var node = _viewData.nodes[0][i];
+      if (node.__data__.children) {
+        node.classList.remove('expandable-node')
+      }
+      console.log(node.__data__.children)
+    }
   };
 
   var redraw = function redraw() {
@@ -108,12 +114,15 @@ GRAPH.view = (function(d3) {
         var klass = 'node'
         if (d.nsfw) klass += ' nsfw-node';
         if (d.matchingId) klass += ' repeat-node';
+        if (d.has_children && !d.children) {
+          klass += ' expandable-node'
+        }
         return klass;
       })
       .on('click', function(d) {
         if (d3.event.defaultPrevented) return;
-        _viewData.nodes.classed('active-d3-node', false);
-          this.classList += " active-d3-node";
+        _viewData.nodes.classed('active-node', false);
+          this.classList += " active-node";
         if (d.matchingId) {
           _runNodeClickHandlers(d);
         } else {
