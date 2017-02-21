@@ -176,15 +176,19 @@ GRAPH.model = (function(d3, scales) {
   };
 
   var _uniqueChildren = function _uniqueChildren(children) {
-    return children.map(function(child) {
+    return children.reduce(function(array, child) {
+      console.log('child', child)
       for (var i = 0; i < _graphData.nodes.length; i++) {
         if (_graphData.nodes[i].id === child.id) {
           child.id = --_negativeId;
           child.matchingId = _graphData.nodes[i].id
         }
       }
-      return child;
-    });
+      if (child.subscriber_count < 11000000){
+        array.push(child);
+      }
+      return array;
+    }, []);
   };
 
   return {
