@@ -1,24 +1,26 @@
 
 class SubredditPersister
-  attr_reader :failures
+  attr_reader :captured, :failures
 
   CAPTURE_RATE = 100
-  REQUEST_LIMIT = 5
+  DEFAULT_REQUEST_LIMIT = 2
 
   def initialize(args = {})
     @subreddit_api = args.fetch(:subreddit_api, RedditApi::Subreddits.new)
     @captured = 0
     @captured_this_iteration = 0
-    @failures = 0
+    @failures = args.fetch(:failures, 0)
+    @request_limit = args.fetch(:limit, DEFAULT_REQUEST_LIMIT)
     @connector = SubredditConnector.new
   end
 
   def collect_subreddits(count)
-    while captured < count && failures < REQUEST_LIMIT
+    while captured < count && failures < request_limit
       subreddits_data = subreddit_api.top(count)
       persist_subreddits(subreddits_data, count)
       update_failures
     end
+    reset_collection_metrics
   end
 
   def collect_subreddit_connections(user_count = 10)
@@ -30,10 +32,10 @@ class SubredditPersister
   end
 
   protected
-  attr_accessor :captured, :captured_this_iteration
-  attr_writer :failures
+  attr_accessor :captured_this_iteration
+  attr_writer :captured, :failures
   private
-  attr_reader :subreddit_api, :connector
+  attr_reader :subreddit_api, :connector, :request_limit
 
   def persist_subreddits(subreddits_data, count)
     self.captured_this_iteration = 0
@@ -56,6 +58,11 @@ class SubredditPersister
     if captured_this_iteration.zero?
       self.failures += 1
     end
+  end
+
+  def reset_collection_metrics
+    self.captured = 0
+    self.failures = 0
   end
 
   def persist_subreddit_connections(connections)

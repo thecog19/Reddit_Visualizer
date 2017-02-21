@@ -48,6 +48,47 @@ describe SubredditPersister, :vcr do
         end
       }.to change {Subreddit.count}.by(count)
     end
+
+    it "stops collecting subreddits if failures reaches request limit" do
+      count = 5
+      subreddit_api = double()
+      subreddits_a = Array.new(count) { |n| { url: "a#{n}", name: "a#{n}" } }
+      allow(subreddit_api).to receive(:top).and_return(subreddits_a)
+      persister = SubredditPersister.new(subreddit_api: subreddit_api,
+                                         limit: 0,
+                                         failures: 2)
+
+
+      expect {
+        persister.collect_subreddits(count)
+      }.to change {Subreddit.count}.by(0)
+    end
+
+    it "sets failures to 0 once done collecting subreddits" do
+      subreddit_api = double()
+      subreddits_a = Array.new(1) { |n| { url: "a#{n}", name: "a#{n}" } }
+      allow(subreddit_api).to receive(:top).and_return(subreddits_a)
+      persister = SubredditPersister.new(subreddit_api: subreddit_api,
+                                         limit: 2,
+                                         failures: 2)
+
+      persister.collect_subreddits(2)
+
+      expect(persister.failures).to eq(0)
+    end
+
+    it "sets captured to 0 once done collecting subreddits" do
+      subreddit_api = double()
+      subreddits_a = Array.new(1) { |n| { url: "a#{n}", name: "a#{n}" } }
+      allow(subreddit_api).to receive(:top).and_return(subreddits_a)
+      persister = SubredditPersister.new(subreddit_api: subreddit_api,
+                                         limit: 2,
+                                         failures: 2)
+
+      persister.collect_subreddits(2)
+
+      expect(persister.captured).to eq(0)
+    end
   end
 
   describe "#collect_subreddit_connections" do
