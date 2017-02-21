@@ -93,6 +93,7 @@ subreddit-detail {
 
 .subreddit-icon {
   max-height: 100px;
+  overflow: hidden;
 }
 
 // styles borrowed from https://github.com/hyspace/typeahead.js-bootstrap3.less/blob/master/typeahead.css to fix weirdness with typeahead breaking bootstrap styling on input group
