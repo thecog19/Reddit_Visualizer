@@ -40,7 +40,7 @@ GRAPH.view = (function(d3) {
 
   var update = function update(graphData)  {
     _graphData = graphData;
-
+    console.log(_graphData)
     _updateForce();
 
     _bindNodes();
@@ -65,6 +65,7 @@ GRAPH.view = (function(d3) {
   };
 
   var _updateForce = function _updateForce() {
+
     _force
       .nodes(_graphData.nodes)
       .links(_graphData.links)

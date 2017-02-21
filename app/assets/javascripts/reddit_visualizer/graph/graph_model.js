@@ -34,6 +34,7 @@ GRAPH.model = (function(d3, scales) {
         if (error) throw error;
         _graphData.root = json;
         update();
+        console.log(_graphData)
         resolve(_graphData);
       });
     });
