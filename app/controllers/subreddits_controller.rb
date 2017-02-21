@@ -20,7 +20,7 @@ class SubredditsController < ApplicationController
         format.json
       end
     else
-      render json: "subreddit not found", status: 404
+      render json: "Subreddit not found.".to_json, status: 404
     end
 
   end

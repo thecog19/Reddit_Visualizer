@@ -2,6 +2,9 @@
   <div id="graph">
   </div>
   <div id="sidebar">
+    <div ng-click="clearErrors()" ng-if="errors" class="alert alert-danger clickable">
+      {{errors}}
+    </div>
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>

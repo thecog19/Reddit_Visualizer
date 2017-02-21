@@ -120,6 +120,10 @@ graph-legend {
   cursor: default!important;
 }
 
+.clickable {
+  cursor: pointer!important;
+}
+
 .legend-item {
   display: flex;
   align-items: center;
@@ -153,7 +157,7 @@ graph-legend {
 }
 
 ul {
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
 }
 
 // styles borrowed from https://github.com/hyspace/typeahead.js-bootstrap3.less/blob/master/typeahead.css to fix weirdness with typeahead breaking bootstrap styling on input group
