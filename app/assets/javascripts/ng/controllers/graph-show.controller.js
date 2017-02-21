@@ -3,7 +3,6 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
   function($scope, subredditService, $timeout) {
 
     var _showSubreddit = function(d) {
-      console.log(d.children, d)
       $scope.subreddit = d;
       $scope.$apply()
     }
@@ -18,6 +17,11 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$timeou
           RV.graph.init(RV.config);
         });
     }
+
+    $(".tt-dataset").on("click",".tt-suggestion", function(e){
+      var text = e.currentTarget.innerText
+      $scope.subredditName = text
+    })
 
     $scope.expandChildren = function(){
       RV.graph.expandChildren()
