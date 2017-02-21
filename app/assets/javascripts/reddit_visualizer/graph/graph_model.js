@@ -72,6 +72,7 @@ GRAPH.model = (function(d3, scales) {
   var _adjustCollision = function _adjustCollision(treeNode, dataNode, adjustment, absXLength, absYLength) {
     var xAdjustment = absXLength * adjustment;
     var yAdjustment = absYLength * adjustment;
+
     dataNode.x -= xAdjustment;
     dataNode.y -= yAdjustment;
     treeNode.x += xAdjustment;
@@ -99,6 +100,9 @@ GRAPH.model = (function(d3, scales) {
         if (distance < min) {
           // Find the amount of overlap and adjust each node half that distance.
           var adjustment = (distance - min) / distance * .5;
+          if(distance === 0){
+            adjustment = 1
+          }
           _adjustCollision(treeNode, dataNode, adjustment, absXLength, absYLength);
         }
       }
