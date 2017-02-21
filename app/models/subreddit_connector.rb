@@ -7,11 +7,9 @@ class SubredditConnector
   end
 
   def generate_connections(subreddit, user_count, connections = 5)
-p "SR: #{subreddit}"
-p "UC: #{user_count}"
     posters = users_api.top_posters(subreddit, user_count)
     scores = get_scores(posters, connections)
-    build_connections(subreddit, scores)
+    build_connections_params(subreddit, scores)
   end
 
   private
@@ -50,13 +48,13 @@ p "UC: #{user_count}"
     end
   end
 
-  def build_connections(subreddit, scores)
+  def build_connections_params(subreddit, scores)
     scores.map do |subreddit_name, score|
-      build_connection(subreddit, subreddit_name, score)
+      build_connection_params(subreddit, subreddit_name, score)
     end
   end
 
-  def build_connection(subreddit, subreddit_name, score)
+  def build_connection_params(subreddit, subreddit_name, score)
     {
       subreddit_from_id: subreddit.id,
       subreddit_to_id: Subreddit.find_or_fetch_by_name(subreddit_name).id,
