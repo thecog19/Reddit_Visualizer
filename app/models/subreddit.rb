@@ -17,12 +17,19 @@ class Subreddit < ApplicationRecord
 
   API = SubredditApi.new
 
-  def children
-    subreddit_destination_connections + destination_subreddits
+  def get_top_connections(limit)
+    top_connections = subreddit_destination_connections.order(connection_weight: :desc).limit(limit)
+    top_connections.map do |connection|
+      connection.subreddit_to
+    end
   end
-  
+
   def get_weight(parent_id)
     self.subreddit_origin_connections.find_by(subreddit_from_id: parent_id).connection_weight
+  end
+
+  def has_children
+    !!children_added_at
   end
 
   def self.find_or_fetch_by_name(subreddit_name)
