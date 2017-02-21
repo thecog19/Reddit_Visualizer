@@ -99,10 +99,12 @@ GRAPH.model = (function(d3, scales) {
         // If nodes collide...
         if (distance < min) {
           // Find the amount of overlap and adjust each node half that distance.
-          var adjustment = (distance - min) / distance * .5;
           if(distance === 0){
-            adjustment = 1
+            var adjustment = 1
+          }else{
+            var adjustment = (distance - min) / distance * .5;
           }
+          
           _adjustCollision(treeNode, dataNode, adjustment, absXLength, absYLength);
         }
       }
