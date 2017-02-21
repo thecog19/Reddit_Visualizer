@@ -26,10 +26,8 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
 
     $scope.expandChildren = function(){
       $scope.loadingSubreddits = true;
-      console.log()
       RV.graph.expandChildren()
         .then(function() {
-          console.log('done')
           $scope.loadingSubreddits = false;
           $scope.$apply()
         })
