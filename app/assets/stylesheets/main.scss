@@ -47,11 +47,15 @@ line.link {
 }
 
 .nsfw-node circle {
-  fill: #D11F6A!important
+  fill: #D11F6A;
 }
 
 .active-d3-node circle {
-  fill: rgba(46, 204, 113,1.0)!important;
+  fill: rgba(46, 204, 113,1.0);
+}
+
+.repeat-node circle {
+  fill: #8fa0bc;
 }
 
 .node text {

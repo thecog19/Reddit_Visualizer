@@ -105,23 +105,23 @@ GRAPH.view = (function(d3) {
   var _appendG = function _appendG(nodeEnter) {
     nodeEnter
       .attr('class', function(d) {
-        if (d.nsfw) {
-          return 'nsfw-node node'
-        } else {
-          return 'node'
-        }
+        var klass = 'node'
+        if (d.nsfw) klass += ' nsfw-node';
+        if (d.matchingId) klass += ' repeat-node';
+        return klass;
       })
       .on('click', function(d) {
-        if(d3.event.defaultPrevented) return;
+        if (d3.event.defaultPrevented) return;
         _viewData.nodes.classed('active-d3-node', false);
-        this.classList += " active-d3-node";
-        _callbacks.toggleChildren(d)
-          .then(function(something) {
-            _callbacks.nodeClickHandlers.forEach(function(callback) {
-              callback(d);
-            }); // from angular callback
+          this.classList += " active-d3-node";
+        if (d.matchingId) {
+          _runNodeClickHandlers(d);
+        } else {
+          _callbacks.toggleChildren(d).then(function() {
+            _runNodeClickHandlers(d);
           })
-        })
+        }
+      })
       .call(_force.drag);
     };
 
@@ -130,9 +130,6 @@ GRAPH.view = (function(d3) {
       .attr('r', function(d) {
         return _graphData.scales.radius(d[_config.scales.radius.accessor]);
       })
-      // .style('fill', function(d) {
-      //   return _graphData.scales.color(d[_config.scales.color.accessor]);
-      // });
   };
 
   var _appendText = function _appendText(nodeEnter) {
@@ -172,6 +169,12 @@ GRAPH.view = (function(d3) {
   var _clearSvg = function _clearSvg() {
     d3.select(_config.container).selectAll('svg').remove();
   };
+
+  var _runNodeClickHandlers = function _runNodeClickHandlers(d) {
+    _callbacks.nodeClickHandlers.forEach(function(callback) {
+      callback(d);
+    })
+  }
 
   var _setSvg = function _setSvg(zoom) {
     return d3.select(_config.container).append('svg')
