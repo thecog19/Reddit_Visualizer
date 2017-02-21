@@ -28,7 +28,8 @@ class Subreddit < ApplicationRecord
     if exists?(name: subreddit_name)
       find_by(name: subreddit_name)
     else
-      create(API.data_for(subreddit_name))
+      subreddit_data = API.data_for(subreddit_name)
+      create(subreddit_data.to_h)
     end
   end
 

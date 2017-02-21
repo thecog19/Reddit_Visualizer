@@ -28,14 +28,12 @@ describe SubredditPersister, :vcr do
     it "does not make unnecessary api requests" do
       Subreddit.destroy_all
       count = 150
-      subeddit_api = double()
-      subreddits = Array.new(count + 1) { |n| { url: "a#{n}", name: "a#{n}" } }
-      expect(subeddit_api).to receive(:top).and_return(subreddits)
-      persister = SubredditPersister.new(subeddit_api: subeddit_api)
+      subreddit_api = double()
+      subreddits_a = Array.new(count) { |n| { url: "a#{n}", name: "a#{n}" } }
+      expect(subreddit_api).to receive(:top).and_return(subreddits_a)
+      persister = SubredditPersister.new(subreddit_api: subreddit_api)
 
-      expect {
-        persister.collect_subreddits(count)
-      }.to change {Subreddit.count}.by(count)
+      persister.collect_subreddits(count)
     end
 
     it "persists a large number of subreddits to database" do
@@ -55,12 +53,9 @@ describe SubredditPersister, :vcr do
   describe "#collect_subreddit_connections" do
     it "persists subreddit connections to database" do
       SubredditConnection.destroy_all
-      create(:subreddit)
-      subreddit = create(:subreddit, name: "New Subreddit")
-      api = double()
-      allow(api).to receive(:get_subreddit_posters).and_return({ bob: 7 })
-      allow(api).to receive(:get_subreddits_commented_on).and_return([subreddit.name])
-      persister = SubredditPersister.new(api: api)
+      create(:subreddit, name: "A")
+      create(:subreddit, name: "B")
+      persister = SubredditPersister.new
 
       expect {
         persister.collect_subreddit_connections(1)

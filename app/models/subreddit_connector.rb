@@ -7,6 +7,8 @@ class SubredditConnector
   end
 
   def generate_connections(subreddit, user_count, connections = 5)
+p "SR: #{subreddit}"
+p "UC: #{user_count}"
     posters = users_api.top_posters(subreddit, user_count)
     scores = get_scores(posters, connections)
     build_connections(subreddit, scores)
@@ -18,16 +20,13 @@ class SubredditConnector
   def get_scores(posters, connections)
     all_scores = get_all_scores(posters)
     sorted_scores = sort_scores(all_scores)
-p "BELOW SORTED SCORES"
     top_scores(sorted_scores, connections)
   end
 
   def get_all_scores(posters)
     scores = Hash.new(0)
     posters.each do |poster|
-p poster
       subreddits = comments_api.most_recent_subreddits(poster, 10)
-p subreddits
       calculate_scores(subreddits, scores)
     end
     scores
@@ -66,3 +65,4 @@ p subreddits
   end
 
 end
+
