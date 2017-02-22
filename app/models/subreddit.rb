@@ -1,15 +1,13 @@
 class Subreddit < ApplicationRecord
   has_many :subreddit_origin_connections,
     foreign_key: "subreddit_to_id",
-    class_name: "SubredditConnection",
-    dependent: :destroy
+    class_name: "SubredditConnection"
   has_many :origin_subreddits,
     through: :subreddit_origin_connections, source: :subreddit_from
 
   has_many :subreddit_destination_connections,
     foreign_key: "subreddit_from_id",
-    class_name: "SubredditConnection",
-    dependent: :destroy
+    class_name: "SubredditConnection"
   has_many :destination_subreddits,
     through: :subreddit_destination_connections,
     source: :subreddit_to
@@ -41,27 +39,6 @@ class Subreddit < ApplicationRecord
       subreddit.save
     end
     subreddit
-  end
-
-  def find_path(id_start, id_end)
-    start_subreddit = Subreddit.find_by(id: id_start)
-    end_subreddit = Subreddit.find_by(id: id_end)
-
-    subreddits = {}
-    queue = []
-
-    subreddits[id_start] = true
-    unless end_subreddit
-      return 'Node does not exist'
-    else
-      queue + start_subreddit.children
-      queue.children.each do |child|
-        next if subreddits[child.id]
-        next if child.subscriber_count > 11_000_000
-        queue.push(child)
-        return if child == end_subreddit
-      end
-    end
   end
 
 end
