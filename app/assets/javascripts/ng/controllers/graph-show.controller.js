@@ -14,8 +14,12 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
           RV.config.json.rootId = response.id;
           RV.config.height = $window.innerHeight;
           RV.config.nodeClickHandlers = [ _showSubreddit ];
+          $scope.errors = null;
           $scope.subreddit = response;
           RV.graph.init(RV.config);
+        })
+        .catch(function(error) {
+          $scope.errors = error.data
         });
     }
 
@@ -33,6 +37,10 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
           $scope.loadingSubreddits = false;
           $scope.$apply()
         })
+    }
+
+    $scope.clearErrors = function() {
+      $scope.errors = null;
     }
 
     $scope.loadingSubreddits = false;
