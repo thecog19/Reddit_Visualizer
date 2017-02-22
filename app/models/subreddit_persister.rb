@@ -1,27 +1,29 @@
 
 class SubredditPersister
-  attr_reader :failures
+  attr_reader :captured, :failures
 
   CAPTURE_RATE = 100
-  REQUEST_LIMIT = 5
+  DEFAULT_REQUEST_LIMIT = 2
 
   def initialize(args = {})
-    @api = args.fetch(:api, SubredditApi.new)
+    @subreddit_api = args.fetch(:subreddit_api, RedditApi::Subreddits.new)
     @captured = 0
     @captured_this_iteration = 0
-    @failures = 0
-    @connector = SubredditConnector.new(api: api)
+    @failures = args.fetch(:failures, 0)
+    @request_limit = args.fetch(:limit, DEFAULT_REQUEST_LIMIT)
+    @connector = SubredditConnector.new
   end
 
   def collect_subreddits(count)
-    while captured < count && failures < REQUEST_LIMIT
-      subreddits_data = api.top_subreddits(CAPTURE_RATE, captured)
+    while captured < count && failures < request_limit
+      subreddits_data = subreddit_api.top(count)
       persist_subreddits(subreddits_data, count)
       update_failures
     end
+    reset_collection_metrics
   end
 
-  def collect_subreddit_connections(user_count = 10)
+  def collect_subreddit_connections(user_count = 5)
     subreddits = Subreddit.where(children_added_at: nil)
     subreddits.each do |subreddit|
       connections = connector.generate_connections(subreddit, user_count)
@@ -30,10 +32,10 @@ class SubredditPersister
   end
 
   protected
-  attr_accessor :captured, :captured_this_iteration
-  attr_writer :failures
+  attr_accessor :captured_this_iteration
+  attr_writer :captured, :failures
   private
-  attr_reader :api, :connector
+  attr_reader :subreddit_api, :connector, :request_limit
 
   def persist_subreddits(subreddits_data, count)
     self.captured_this_iteration = 0
@@ -44,7 +46,7 @@ class SubredditPersister
   end
 
   def persist_subreddit(subreddit_data)
-    subreddit = Subreddit.new(subreddit_data)
+    subreddit = Subreddit.new(subreddit_data.to_h)
     if subreddit.valid?
       subreddit.save
       self.captured += 1
@@ -56,6 +58,11 @@ class SubredditPersister
     if captured_this_iteration.zero?
       self.failures += 1
     end
+  end
+
+  def reset_collection_metrics
+    self.captured = 0
+    self.failures = 0
   end
 
   def persist_subreddit_connections(connections)
@@ -81,3 +88,4 @@ class SubredditPersister
   end
 
 end
+
