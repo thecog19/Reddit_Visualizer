@@ -24,12 +24,4 @@ class SubredditsController < ApplicationController
     end
   end
 
-  def path
-    start_subreddit = Subreddit.find_by(id: params)
-    end_subreddit = Subreddit.find_by(id: params)
-
-    path = Pathfinder.new
-    path.find_path(start_subreddit, end_subreddit)
-  end
-
 end

@@ -26,7 +26,6 @@ $.ajax( { url: 'api/v1/subreddits.json',
 })
 
 var extract_names = function(response) {
-  console.log("response", response)
   for (var i = 0; i < response.length; i++) {
     subreddits.push(response[i].name)
   }

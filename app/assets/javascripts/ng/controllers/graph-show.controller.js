@@ -23,6 +23,10 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
         });
     }
 
+    $scope.findPath = function(destinationSubreddit) {
+      subredditService.findPath($scope.subredditName, destinationSubreddit)
+    }
+
     $(".tt-dataset").on("click",".tt-suggestion", function(e){
       var text = e.currentTarget.innerText
       $scope.subredditName = text
