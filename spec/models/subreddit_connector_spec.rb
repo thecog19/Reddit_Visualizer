@@ -1,30 +1,64 @@
 require "rails_helper"
 
-describe SubredditConnector do
+describe SubredditConnector, :vcr do
 
+  context "subreddits exist"
   describe "#generate_connections" do
     it "gets subreddit users based on posts" do
-      api = double()
+      users_api = double()
       subreddit = build(:subreddit)
-      expect(api).to receive(:get_subreddit_posters).and_return([])
-      allow(api).to receive(:get_subreddits_commented_on).and_return([])
-      connector = SubredditConnector.new(api: api)
+      expect(users_api).to receive(:top_posters).and_return([])
+      connector = SubredditConnector.new(users_api: users_api)
 
-      connector.generate_connections(subreddit, 1)
+      connector.generate_connections(subreddit, 5)
     end
 
     it "gets connected subreddits based on users' comments" do
-      api = double()
-      subreddit = build(:subreddit)
+      users_api = double()
       posters = ["ExampleUser"]
-      allow(api).to receive(:get_subreddit_posters).and_return(posters)
-      expect(api).to receive(:get_subreddits_commented_on).and_return([])
-      connector = SubredditConnector.new(api: api)
+      allow(users_api).to receive(:top_posters).and_return(posters)
+      subreddit = build(:subreddit)
+      comments_api = double()
+      expect(comments_api).to receive(:most_recent_subreddits).and_return([])
 
-      connector.generate_connections(subreddit, 1)
+      connector = SubredditConnector.new(comments_api: comments_api,
+                                         users_api: users_api)
+
+      connector.generate_connections(subreddit, 5)
     end
 
-    # TODO more specs
+    it "returns an array of subreddit connections when they exist" do
+      subreddit = build(:subreddit, name: "AskReddit")
+      connector = SubredditConnector.new
+
+      connections = connector.generate_connections(subreddit, 5)
+
+      expect(connections.length).to be > 1
+    end
+
+    it "returns an array of hashes" do
+      subreddit = build(:subreddit, name: "AskReddit")
+      connector = SubredditConnector.new
+
+      connections = connector.generate_connections(subreddit, 5)
+      all_connections = connections.all? { |c| c.is_a?(Hash) }
+
+      expect(all_connections).to be true
+    end
+  end
+
+  context "subreddit does not exist" do
+    describe "#generate_connections" do
+      it "returns an empty array" do
+        subreddit = build(:subreddit, name: "A")
+        connector = SubredditConnector.new
+
+        connections = connector.generate_connections(subreddit, 5)
+
+        expect(connections.empty?).to be true
+      end
+    end
   end
 
 end
+

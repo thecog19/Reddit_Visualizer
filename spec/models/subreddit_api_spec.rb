@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SubredditApi do
+describe SubredditApi, :vcr do
 
   describe "#top_subreddits" do
     it "returns an array of subreddit data" do
