@@ -23,7 +23,7 @@ class SubredditPersister
     reset_collection_metrics
   end
 
-  def collect_subreddit_connections(user_count = 10)
+  def collect_subreddit_connections(user_count = 5)
     subreddits = Subreddit.where(children_added_at: nil)
     subreddits.each do |subreddit|
       connections = connector.generate_connections(subreddit, user_count)

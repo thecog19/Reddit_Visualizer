@@ -93,14 +93,12 @@ describe SubredditPersister, :vcr do
 
   describe "#collect_subreddit_connections" do
     it "persists subreddit connections to database" do
-      SubredditConnection.destroy_all
-      create(:subreddit, name: "A")
-      create(:subreddit, name: "B")
+      create(:subreddit, name: "AskReddit")
       persister = SubredditPersister.new
 
       expect {
-        persister.collect_subreddit_connections(1)
-      }.to change { SubredditConnection.count }.by(1)
+        persister.collect_subreddit_connections(5)
+      }.to change { SubredditConnection.count }.by_at_least(1)
     end
   end
 
