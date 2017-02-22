@@ -3,7 +3,7 @@ json.name @subreddit.name
 json.subscriber_count @subreddit.subscriber_count
 json.description @subreddit.description
 json.url @subreddit.url
-json.subreddit_icon @subreddit.subreddit_icon
+json.icon @subreddit.icon
 json.nsfw @subreddit.nsfw
 json.has_children @subreddit.has_children
 
@@ -14,7 +14,7 @@ json.children @children do |child|
   json.description child.description
   json.subscriber_count child.subscriber_count
   json.connection_weight child.get_weight(@subreddit.id)
-  json.subreddit_icon child.subreddit_icon
+  json.icon child.icon
   json.nsfw child.nsfw
   json.has_children child.has_children
 end
