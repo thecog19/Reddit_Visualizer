@@ -25,24 +25,23 @@ class Pathfinder
     "No path found"
   end
 
-  def build_node(subreddit, parent = nil)
-    subreddit_temp = {}
-    subreddit_temp["subreddit"] = subreddit
-    subreddit_temp["parent"] = nil
-    subreddit = subreddit_temp
-  end
-
   def add_nodes(subreddit, limit)
     return_array = []
     if subreddit.class != Hash
       build_node(subreddit)
     end
-    # pass to build_node method
     subreddit["subreddit"].get_top_connections(limit).each do |sr|
       next unless sr
       return_array.push(build_node(sr, subreddit))
     end
     return_array
+  end
+
+  def build_node(subreddit, parent = nil)
+    subreddit_temp = {}
+    subreddit_temp["subreddit"] = subreddit
+    subreddit_temp["parent"] = parent
+    subreddit = subreddit_temp
   end
 
   def path_array(node, start_subreddit)
@@ -56,4 +55,4 @@ class Pathfinder
   end
 end
 pf = Pathfinder.new
-puts pf.find_path(5, 1, 1)
+puts pf.find_path(5, 16, 78)

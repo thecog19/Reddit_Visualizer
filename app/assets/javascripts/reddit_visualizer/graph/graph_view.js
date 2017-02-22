@@ -40,7 +40,6 @@ GRAPH.view = (function(d3) {
 
   var update = function update(graphData)  {
     _graphData = graphData;
-    console.log(_graphData)
     _updateForce();
 
     _bindNodes();
@@ -52,7 +51,6 @@ GRAPH.view = (function(d3) {
       if (node.__data__.children) {
         node.classList.remove('expandable-node')
       }
-      console.log(node.__data__.children)
     }
   };
 

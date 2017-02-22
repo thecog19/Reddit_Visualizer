@@ -35,7 +35,6 @@ GRAPH.model = (function(d3, scales) {
         if (error) throw error;
         _graphData.root = json;
         update();
-        console.log(_graphData)
         resolve(_graphData);
       });
     });
@@ -106,7 +105,7 @@ GRAPH.model = (function(d3, scales) {
           }else{
             var adjustment = (distance - min) / distance * .5;
           }
-          
+
           _adjustCollision(treeNode, dataNode, adjustment, absXLength, absYLength);
         }
       }
@@ -140,7 +139,7 @@ GRAPH.model = (function(d3, scales) {
 
   var _showChildren = function(d){
     d.children = d._children;
-    d._children = null;  
+    d._children = null;
   }
 
   var _hideChildren = function(d){
@@ -178,7 +177,6 @@ GRAPH.model = (function(d3, scales) {
 
   var _uniqueChildren = function _uniqueChildren(children) {
     return children.reduce(function(array, child) {
-      console.log('child', child)
       for (var i = 0; i < _graphData.nodes.length; i++) {
         if (_graphData.nodes[i].id === child.id) {
           child.id = --_negativeId;
