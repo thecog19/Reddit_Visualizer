@@ -47,11 +47,19 @@ line.link {
 }
 
 .nsfw-node circle {
-  fill: #D11F6A!important
+  fill: #D11F6A;
 }
 
-.active-d3-node circle {
-  fill: rgba(46, 204, 113,1.0)!important;
+.expandable-node circle {
+  fill: rgba(46, 204, 113,1.0);
+}
+
+.active-node circle {
+  fill: rgba(155, 89, 182,1.0);
+}
+
+.repeat-node circle {
+  fill: #8fa0bc;
 }
 
 .node text {
@@ -94,6 +102,62 @@ subreddit-detail {
 .subreddit-icon {
   max-height: 100px;
   overflow: hidden;
+}
+
+graph-legend {
+  position: absolute;
+  color: #fff;
+  background-color: #404040;
+  height: auto;
+  width: auto;
+  left: 10px;
+  bottom: 10px;
+  padding: 0 5px 0 0;
+  border: 2px solid #3182bd;
+}
+
+.unclickable {
+  cursor: default!important;
+}
+
+.clickable {
+  cursor: pointer!important;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.legend-node {
+  margin: 5px 0 0 5px;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+}
+
+.legend-text {
+  margin: 0 0 0 5px;
+}
+
+.active-node-legend {
+  background-color: rgba(155, 89, 182,1.0);
+}
+
+.expandable-node-legend {
+  background-color: rgba(46, 204, 113,1.0);
+}
+
+.nsfw-node-legend {
+  background-color: #D11F6A;
+}
+
+.repeat-node-legend {
+  background-color: #8fa0bc;
+}
+
+ul {
+  margin-bottom: 5px;
 }
 
 // styles borrowed from https://github.com/hyspace/typeahead.js-bootstrap3.less/blob/master/typeahead.css to fix weirdness with typeahead breaking bootstrap styling on input group

@@ -6,6 +6,7 @@ GRAPH.model = (function(d3, scales) {
 
   var _config;
   var _graphData = {};
+  var _negativeId = 0;
 
   var init = function init(config) {
     _config = config;
@@ -127,7 +128,7 @@ GRAPH.model = (function(d3, scales) {
     return _graphData.nodes.map(function(node){
       if(node._children){
         _showChildren(node)
-      } else if(!(node.children)){
+      } else if(!node.children && !node.matchingId){
         return _fetchChildren(node);
       }
       update();
@@ -176,14 +177,19 @@ GRAPH.model = (function(d3, scales) {
   };
 
   var _uniqueChildren = function _uniqueChildren(children) {
-    return children.filter(function(child) {
+    return children.reduce(function(array, child) {
+      console.log('child', child)
       for (var i = 0; i < _graphData.nodes.length; i++) {
         if (_graphData.nodes[i].id === child.id) {
-          return false;
+          child.id = --_negativeId;
+          child.matchingId = _graphData.nodes[i].id
         }
       }
-      return true;
-    });
+      if (child.subscriber_count < 11000000){
+        array.push(child);
+      }
+      return array;
+    }, []);
   };
 
   return {
