@@ -12,7 +12,8 @@
           <input type="text"
           ng-model="subredditName"
           name="subreddit-name"
-          class="form-control typeahead search">
+          class="form-control typeahead search"
+          ng-disabled="loadingSubreddits">
           <span class="input-group-btn">
             <button class="btn btn-info" type="submit">Search</button>
           </span>
