@@ -13,6 +13,7 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
         .then(function(response) {
           RV.config.json.rootId = response.id;
           RV.config.height = $window.innerHeight;
+          RV.config.width = $window.innerWidth * .75;
           RV.config.nodeClickHandlers = [ _showSubreddit ];
           $scope.errors = null;
           $scope.subreddit = response;
