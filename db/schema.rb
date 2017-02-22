@@ -55,5 +55,4 @@ ActiveRecord::Schema.define(version: 20170221223229) do
     t.string   "reddit_id"
     t.index ["url"], name: "index_subreddits_on_url", unique: true, using: :btree
   end
-
 end
