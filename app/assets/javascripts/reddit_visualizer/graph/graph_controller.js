@@ -33,13 +33,9 @@ GRAPH.controller = (function(model, view, d3) {
   };
 
   var expandChildren = function(){
-<<<<<<< HEAD
     return model.expandChildren().then(function(r) {
       view.update(r)
     })
-=======
-    return model.expandChildren().then(view.update)
->>>>>>> d8f6ae70e78f5e87673ee24808fe9a221a1f86db
   }
 
   return {

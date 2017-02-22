@@ -7,30 +7,40 @@ class Pathfinder
     queue = []
     path = []
 
-    subreddits[id_start] = true
     unless end_subreddit
       'Node does not exist'
     else
-      queue += add_nodes(start_subreddit, limit)
+      queue.push(build_node(start_subreddit))
       until queue.empty?
         node = queue.shift
-        next if subreddits[node.subreddit.id]
-        next if node.subreddit.subscriber_count > 11_000_000
-        puts node.subreddit.name
-        subreddits[node.subreddit.id] = true
-        queue += add_nodes(node.subreddit, limit)
-        path_array(node, start_subreddit) if node.subreddit == end_subreddit
+        next if subreddits[node["subreddit"].id]
+        next if node["subreddit"].subscriber_count > 11_000_000 && 
+        (node["subreddit"].id != start_subreddit.id && node["subreddit"].id != end_subreddit.id)
+        puts node["subreddit"].name
+        subreddits[node["subreddit"].id] = true
+        queue += add_nodes(node, limit)
+        return path_array(node, start_subreddit) if node["subreddit"] == end_subreddit
       end
     end
     "No path found"
   end
 
+  def build_node(subreddit)
+    subreddit_temp = {}
+    subreddit_temp["subreddit"] = subreddit
+    subreddit_temp["parent"] = nil
+    subreddit = subreddit_temp
+  end
+
   def add_nodes(subreddit, limit)
     return_array = []
-    subreddit.get_top_connections(limit).each do |sub|
+    if subreddit.class != Hash
+      build_node(subreddit)
+    end
+    subreddit["subreddit"].get_top_connections(limit).each do |sub|
       sub_hash = {} 
-      sub_hash.subreddit = sub
-      sub_hash.parent = subreddit
+      sub_hash["subreddit"] = sub
+      sub_hash["parent"] = subreddit
       return_array.push(sub_hash) 
     end
     return_array
@@ -39,12 +49,12 @@ class Pathfinder
   def path_array(node, start_subreddit)
     current_node = node
     path_array = []
-    until  current_node == start_subreddit
-      path_array.push(current_node)
-      current_node = current_node.parent
+    until  current_node["subreddit"].id == start_subreddit.id
+      path_array.push(current_node["subreddit"].name)
+      current_node = current_node["parent"]
     end 
     path_array
   end
 end
 pf = Pathfinder.new
-puts pf.find_path(5, 16, 41)
+puts pf.find_path(5, 1, 41)
