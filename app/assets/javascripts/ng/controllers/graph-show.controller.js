@@ -1,9 +1,9 @@
 var RV = RV || {}
-RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService',
-  function($scope, subredditService) {
+RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window',
+  function($scope, subredditService, $window) {
 
     var _showSubreddit = function(d) {
-      $scope.subreddit = d;      
+      $scope.subreddit = d;
       $scope.$apply()
     }
 
@@ -12,11 +12,37 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService',
       subredditService.getSubreddit($scope.subredditName)
         .then(function(response) {
           RV.config.json.rootId = response.id;
+          RV.config.height = $window.innerHeight;
           RV.config.nodeClickHandlers = [ _showSubreddit ];
+          $scope.errors = null;
           $scope.subreddit = response;
-          RV.graph().initialize(RV.config);
+          RV.graph.init(RV.config);
+        })
+        .catch(function(error) {
+          $scope.errors = error.data
+        });
+    }
+
+    $(".tt-dataset").on("click",".tt-suggestion", function(e){
+      var text = e.currentTarget.innerText
+      $scope.subredditName = text
+    })
+
+    $scope.expandChildren = function(){
+      $scope.loadingSubreddits = true;
+      console.log()
+      RV.graph.expandChildren()
+        .then(function() {
+          console.log('done')
+          $scope.loadingSubreddits = false;
+          $scope.$apply()
         })
     }
 
+    $scope.clearErrors = function() {
+      $scope.errors = null;
+    }
+
+    $scope.loadingSubreddits = false;
     $scope.drawGraph()
   }])

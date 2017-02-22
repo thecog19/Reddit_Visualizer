@@ -2,17 +2,51 @@
   <div id="graph">
   </div>
   <div id="sidebar">
-    <h1>RedditViz</h1>
+    <div ng-click="clearErrors()" ng-if="errors" class="alert alert-danger clickable">
+      {{errors}}
+    </div>
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
-        <input type="text" 
-               ng-model="subredditName" 
-               name="subreddit-name" 
-               class="form-control">
+        <div class="input-group" id="the-basics">
+          <input type="text"
+          ng-model="subredditName"
+          name="subreddit-name"
+          class="form-control typeahead search">
+          <span class="input-group-btn">
+            <button class="btn btn-info" type="submit">Search</button>
+          </span>
+        </div>
       </div>
-      <input type="submit" class="btn btn-primary">
     </form>
     <subreddit-detail subreddit="subreddit"></subreddit-detail>
+    <div class='form-group'>
+      <button class="btn btn-info btn-block"
+              ng-hide="loadingSubreddits"
+              ng-click="expandChildren()">
+        Expand connected subreddits
+      </button>
+      <button class="btn btn-info btn-block"
+              ng-show="loadingSubreddits"
+              disabled>
+        Loading...
+      </button>
+    </div>
+    <div class='form-group'>
+      <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#help">
+        View tips on using site
+      </button>
+    </div>
+    <help-pane></help-pane>
   </div>
 </div>
+<graph-legend></graph-legend>
+<script src="/assets/js-cookie.js"></script>
+<script type="text/javascript">
+  setTimeout(function () {
+    if (!Cookies.get('visited')) {
+      angular.element("#help").modal();
+      Cookies.set('visited', true);
+    }
+  }, 500);
+</script>

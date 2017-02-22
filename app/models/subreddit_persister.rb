@@ -50,7 +50,6 @@ class SubredditPersister
     if connection.valid?
       connection.save
       update_parent_subreddit(connection.subreddit_from)
-      update_parent_subreddit(connection.subreddit_to)
     end
   end
 

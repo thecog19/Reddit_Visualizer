@@ -12,10 +12,16 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require typeahead
+//= require autocomplete
+//= require bootstrap-sprockets
 //= require angular
 //= require lodash
 //= require restangular
 //= require ui-router
 //= require d3
-//= require reddit_visualizer/graph
+//= require reddit_visualizer/graph/graph_scales
+//= require reddit_visualizer/graph/graph_model
+//= require reddit_visualizer/graph/graph_view
+//= require reddit_visualizer/graph/graph_controller
 //= require_tree .
