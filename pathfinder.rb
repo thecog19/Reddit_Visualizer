@@ -1,5 +1,6 @@
 class Pathfinder
   def find_path(limit, id_start, id_end)
+    return if id_start == id_end
     start_subreddit = Subreddit.find_by(id: id_start)
     end_subreddit = Subreddit.find_by(id: id_end)
 
@@ -14,9 +15,8 @@ class Pathfinder
       until queue.empty?
         node = queue.shift
         next if subreddits[node["subreddit"].id]
-        next if node["subreddit"].subscriber_count > 11_000_000 && 
+        next if node["subreddit"].subscriber_count > 11_000_000 &&
         (node["subreddit"].id != start_subreddit.id && node["subreddit"].id != end_subreddit.id)
-        puts node["subreddit"].name
         subreddits[node["subreddit"].id] = true
         queue += add_nodes(node, limit)
         return path_array(node, start_subreddit) if node["subreddit"] == end_subreddit
@@ -25,7 +25,7 @@ class Pathfinder
     "No path found"
   end
 
-  def build_node(subreddit)
+  def build_node(subreddit, parent = nil)
     subreddit_temp = {}
     subreddit_temp["subreddit"] = subreddit
     subreddit_temp["parent"] = nil
@@ -37,11 +37,10 @@ class Pathfinder
     if subreddit.class != Hash
       build_node(subreddit)
     end
-    subreddit["subreddit"].get_top_connections(limit).each do |sub|
-      sub_hash = {} 
-      sub_hash["subreddit"] = sub
-      sub_hash["parent"] = subreddit
-      return_array.push(sub_hash) 
+    # pass to build_node method
+    subreddit["subreddit"].get_top_connections(limit).each do |sr|
+      next unless sr
+      return_array.push(build_node(sr, subreddit))
     end
     return_array
   end
@@ -52,9 +51,9 @@ class Pathfinder
     until  current_node["subreddit"].id == start_subreddit.id
       path_array.push(current_node["subreddit"].name)
       current_node = current_node["parent"]
-    end 
+    end
     path_array
   end
 end
 pf = Pathfinder.new
-puts pf.find_path(5, 1, 41)
+puts pf.find_path(5, 1, 1)
