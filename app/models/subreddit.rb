@@ -46,7 +46,8 @@ class Subreddit < ApplicationRecord
 
   def self.find_by_id_or_name(params)
     if params[:id] == '0'
-      @subreddit = Subreddit.find_by(name: params[:name])
+      @subreddit = Subreddit.where('name ILIKE ?', params[:name])
+      !@subreddit.empty? ? @subreddit[0] : false
     else
       @subreddit = Subreddit.find_by(id: params[:id])
     end
