@@ -55,20 +55,30 @@ GRAPH.view = (function(d3) {
   };
 
   var clickOnChildren = function clickOnChildren(nodes){
-    //timing is still an issue
-    //click is not resolving
-    //not going int the if loop
-    //don't know why!
-    //magic funtimes with js
-    for(var i = 0; i < nodes.length; i++){
-      for(var j = 0; j < _viewData.nodes.length; j++){
-        if(nodes[i]["name"] === _viewData.nodes[0][j]["__data__"]["name"]){
-          console.log("clicking!")
-          _viewData.nodes[j].click()
+
+    function click(node, i, j) {
+      _callbacks.toggleChildren(node)
+        .then(function() {
+          console.log('looping again')
+          loop(++i)
+        })
+    }
+
+    function loop(currentI) {
+      var currentI = currentI || 0;
+
+      for(var i = currentI; i < nodes.length; i++){
+        for(var j = 0; j < _viewData.nodes[0].length; j++){
+          var dataNode = _viewData.nodes[0][j]["__data__"]
+          if(nodes[i]["name"] === dataNode["name"]){
+            click(dataNode, i)
+            return;
+          }
         }
       }
     }
-    
+
+    loop();
   }
 
   var redraw = function redraw() {
@@ -86,7 +96,6 @@ GRAPH.view = (function(d3) {
   };
 
   var _updateForce = function _updateForce() {
-    console.log(_graphData)
     _force
       .nodes(_graphData.nodes)
       .links(_graphData.links)

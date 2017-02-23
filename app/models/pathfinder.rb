@@ -2,10 +2,10 @@ class Pathfinder
   def find_path(start_subreddit, end_subreddit, limit=5)
     return if start_subreddit == end_subreddit
 
-    unless end_subreddit
-      'Node does not exist'
+    if end_subreddit
+      search_subreddits(start_subreddit, end_subreddit, limit)
     else
-      return search_subreddits(start_subreddit, end_subreddit, limit)
+      false
     end
   end
 
@@ -20,7 +20,7 @@ class Pathfinder
       queue += add_nodes(node, limit)
       return create_path(node, start_subreddit) if node['subreddit'] == end_subreddit
     end
-    'No path found'
+    false
   end
 
   def valid_node?(node, start_id, end_id)

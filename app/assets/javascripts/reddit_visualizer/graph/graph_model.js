@@ -15,7 +15,7 @@ GRAPH.model = (function(d3, scales) {
     scales.init(_config.scales);
     _graphData.scales = scales.getScales();
     if(!!path){
-      console.log(path)
+
       _graphData.root = path
       update()
       return _graphData
@@ -150,6 +150,7 @@ GRAPH.model = (function(d3, scales) {
   }
 
   var _hideChildren = function(d){
+    console.log(d)
     d._children = d.children;
     d.children = null;
   }
