@@ -17,6 +17,10 @@ class SubredditPersister
     subreddits = Subreddit.where(children_added_at: nil)
     subreddits.each do |subreddit|
       connections = connector.generate_connections(subreddit, user_count)
+    puts '-' * 50
+    puts 'connections'
+    puts connections
+    puts '-' * 50
       persist_subreddit_connections(connections)
     end
   end

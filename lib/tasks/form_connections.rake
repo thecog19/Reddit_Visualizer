@@ -3,6 +3,7 @@ namespace :reddit do
 
   task form_connections: [:environment] do
     s = SubredditPersister.new
-    s.collect_subreddit_connections(50)
+    s.collect_subreddit_connections
   end
 end
+
