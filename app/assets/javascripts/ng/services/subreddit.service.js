@@ -5,11 +5,10 @@ RV.RedditViz.factory('subredditService', ['Restangular', function(Restangular) {
   }
 
   var findPath = function(beginningSubreddit, destinationSubreddit) {
-    $.ajax({
+    return $.ajax({
       url: '/api/v1/paths/' + 0 + '.json',
       dataType: 'json',
       data: {beginning: beginningSubreddit, destination: destinationSubreddit},
-      success: function(response) {console.log("response", response)}
     })
   }
 

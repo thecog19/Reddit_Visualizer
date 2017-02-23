@@ -8,13 +8,20 @@ GRAPH.model = (function(d3, scales) {
   var _graphData = {};
   var _negativeId = 0;
 
-  var init = function init(config) {
+  var init = function init(config, path) {
     _config = config;
     // make initial json call w/ route builder
     var route = _jsonRoute(_config.json.rootId);
     scales.init(_config.scales);
     _graphData.scales = scales.getScales();
-    return _setRootData(route);
+    if(!!path){
+      console.log(path)
+      _graphData.root = path
+      update()
+      return _graphData
+    }else{  
+      return _setRootData(route);
+    }
   };
 
   var update = function update() {

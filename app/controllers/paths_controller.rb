@@ -7,7 +7,7 @@ class PathsController < ApplicationController
     path = Pathfinder.new
     @path = path.find_path(start_subreddit, end_subreddit)
     respond_to do |format|
-      format.json {render json: @path}
+      format.json 
     end
   end
 

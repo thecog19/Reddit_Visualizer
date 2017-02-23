@@ -24,7 +24,9 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
     }
 
     $scope.findPath = function(destinationSubreddit) {
-      subredditService.findPath($scope.subredditName, destinationSubreddit)
+      subredditService.findPath($scope.subredditName, destinationSubreddit).then(function(response){
+          RV.graph.init(RV.config, response)
+      })
     }
 
     $(".tt-dataset").on("click",".tt-suggestion", function(e){
