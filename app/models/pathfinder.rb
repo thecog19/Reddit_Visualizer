@@ -34,7 +34,7 @@ class Pathfinder
     if subreddit.class != Hash
       build_node(subreddit)
     end
-    subreddit["subreddit"].get_top_connections(limit).each do |sr|
+    subreddit["subreddit"].related_subreddits(limit).each do |sr|
       next unless sr
       node_list.push(build_node(sr, subreddit))
     end
