@@ -24,7 +24,6 @@ class Pathfinder
   end
 
   def valid_node?(node, start_id, end_id)
-    valid = false
     if @visited_subreddits[node.id]
       return true
     elsif node.subscriber_count > 11_000_000 && (node.id != start_id && node.id != end_id)
