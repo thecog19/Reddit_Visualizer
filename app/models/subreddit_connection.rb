@@ -6,13 +6,12 @@ class SubredditConnection < ApplicationRecord
   belongs_to :subreddit_to,
     foreign_key: "subreddit_to_id",
     class_name: "Subreddit"
-
   validate :unique_from_to
   validate :not_self_referencing
 
   def unique_from_to
     if SubredditConnection.exists?(subreddit_from_id: subreddit_from_id,
-        subreddit_to_id: subreddit_to_id)
+                                   subreddit_to_id: subreddit_to_id)
       errors.add(:connection, "must not already posses that child")
     end
   end

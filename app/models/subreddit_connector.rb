@@ -8,15 +8,7 @@ class SubredditConnector
 
   def generate_connections(subreddit, user_count, connections = 5)
     posters = users_api.top_posters(subreddit, user_count)
-    puts '-' * 50
-    puts 'posters'
-    puts posters
-    puts '-' * 50
     scores = get_scores(posters, connections)
-    puts '-' * 50
-    puts 'scores'
-    puts scores
-    puts '-' * 50
     build_connections_params(subreddit, scores)
   end
 
