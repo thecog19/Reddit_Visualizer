@@ -6,12 +6,12 @@ class PathsController < ApplicationController
 
     path = Pathfinder.new
     @path = path.find_path(start_subreddit, end_subreddit)
-    if @path 
+    if @path
       respond_to do |format|
-        format.json 
+        format.json
       end
     else
-      render json: 'No path found', status: 404
+      render json: 'No path found.'.to_json, status: 404
     end
   end
 

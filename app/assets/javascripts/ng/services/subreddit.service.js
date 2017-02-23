@@ -5,11 +5,13 @@ RV.RedditViz.factory('subredditService', ['Restangular', function(Restangular) {
   }
 
   var findPath = function(beginningSubreddit, destinationSubreddit) {
-    return $.ajax({
-      url: '/api/v1/paths/' + 0 + '.json',
-      dataType: 'json',
-      data: {beginning: beginningSubreddit, destination: destinationSubreddit},
-    })
+    return Restangular.one('paths', 0).customGET('', { beginning: beginningSubreddit, destination: destinationSubreddit });
+
+    // $.ajax({
+    //   url: '/api/v1/paths/' + 0 + '.json',
+    //   dataType: 'json',
+    //   data: {beginning: beginningSubreddit, destination: destinationSubreddit},
+    // })
   }
 
   return {
