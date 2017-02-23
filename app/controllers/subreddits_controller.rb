@@ -10,6 +10,7 @@ class SubredditsController < ApplicationController
 
   def show
     if @subreddit = Subreddit.find_by_id_or_name(params)
+      Subreddit.where('lower(name) = ?', params[:name])
       successful_show
     else
       failed_show

@@ -38,12 +38,12 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', '$timeout', 'subredditServic
       .catch(_showErrors);
     };
 
-    $("#search-input .tt-dataset").on("click",".tt-suggestion", function(e){
+    $("#search-input .tt-dataset").on("select",".tt-suggestion", function(e){
       var text = e.currentTarget.innerText;
       $scope.subredditName = text;
     });
 
-    $("#path-input .tt-dataset").on("click",".tt-suggestion", function(e){
+    $("#path-input .tt-dataset").on("select",".tt-suggestion", function(e){
       var text = e.currentTarget.innerText;
       $scope.destinationSubreddit = text;
     })
