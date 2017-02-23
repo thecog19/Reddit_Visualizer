@@ -7,6 +7,7 @@ FactoryGirl.define do
     description "MyText"
 
     trait :with_connections do
+      children_added_at Time.now
       after(:build) do |subreddit|
         create_list :subreddit_connection, 3, subreddit_from: subreddit
       end

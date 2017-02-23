@@ -11,10 +11,11 @@ class Subreddit < ApplicationRecord
   has_many :destination_subreddits,
     through: :subreddit_destination_connections,
     source: :subreddit_to
-  validates :name, uniqueness: true
-  validates :url, uniqueness: true
+  validates :name, uniqueness: true, presence: true
+  validates :url, uniqueness: true, presence: true
 
   API = RedditApi::Subreddits.new
+
 
   def related_subreddits(limit)
     related_subreddits = subreddit_destination_connections
@@ -26,20 +27,20 @@ class Subreddit < ApplicationRecord
   end
 
   def get_weight(parent_id)
-    self.subreddit_origin_connections
-        .find_by(subreddit_from_id: parent_id)
-        .connection_weight
+    subreddit_origin_connections
+      .find_by(subreddit_from_id: parent_id)
+      .connection_weight
   end
 
   def has_children
     !!children_added_at
   end
 
-  def self.find_or_fetch_by_name(subreddit_name)
+  def self.find_or_fetch_by_name(subreddit_name, api = API)
     if exists?(name: subreddit_name)
       find_by(name: subreddit_name)
     else
-      subreddit_data = API.data_for(subreddit_name)
+      subreddit_data = api.data_for(subreddit_name)
       create(subreddit_data.to_h)
     end
   end
