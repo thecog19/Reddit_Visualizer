@@ -18,7 +18,8 @@
           ng-model="subredditName"
           name="subreddit-name"
           class="form-control typeahead search"
-          ng-disabled="loadingSubreddits || loadingPath">
+          ng-disabled="loadingSubreddits || loadingPath"
+          ng-change="logChange()">
           <span class="input-group-btn">
             <button class="btn btn-info" type="submit"
                     ng-disabled="loadingSubreddits || loadingPath">
