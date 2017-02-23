@@ -12,10 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require typeahead
 //= require autocomplete
 //= require bootstrap-sprockets
 //= require angular
+//= require typeahead
 //= require lodash
 //= require restangular
 //= require ui-router

@@ -130,7 +130,7 @@ graph-legend {
 }
 
 .legend-node {
-  margin: 5px 0 0 5px;
+  margin: 2px 0 2px 5px;
   height: 20px;
   width: 20px;
   border-radius: 100%;
@@ -156,7 +156,22 @@ graph-legend {
   background-color: #8fa0bc;
 }
 
+.help-link span {
+  font-size: 20px;
+  margin: 2px 0 2px 5px;
+  cursor: pointer;
+}
+
+.help-text {
+  color: #fff;
+}
+
+.help-text:hover {
+  color: tomato;
+}
+
 ul {
+  padding-top: 3px;
   margin-bottom: 5px;
 }
 

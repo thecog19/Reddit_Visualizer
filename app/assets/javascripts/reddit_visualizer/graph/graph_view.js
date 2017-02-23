@@ -40,7 +40,6 @@ GRAPH.view = (function(d3) {
 
   var update = function update(graphData)  {
     _graphData = graphData;
-
     _updateForce();
 
     _bindNodes();
@@ -54,6 +53,32 @@ GRAPH.view = (function(d3) {
       }
     }
   };
+
+  var clickOnChildren = function clickOnChildren(nodes){
+
+    function click(node, i, j) {
+      _callbacks.toggleChildren(node)
+        .then(function() {
+          loop(++i)
+        })
+    }
+
+    function loop(currentI) {
+      var currentI = currentI || 0;
+
+      for(var i = currentI; i < nodes.length; i++){
+        for(var j = 0; j < _viewData.nodes[0].length; j++){
+          var dataNode = _viewData.nodes[0][j]["__data__"]
+          if(nodes[i]["name"] === dataNode["name"]){
+            click(dataNode, i)
+            return;
+          }
+        }
+      }
+    }
+
+    loop();
+  }
 
   var redraw = function redraw() {
     // Redraw lines
@@ -216,7 +241,8 @@ GRAPH.view = (function(d3) {
   return {
     init: init,
     update: update,
-    redraw: redraw
+    redraw: redraw,
+    clickOnChildren: clickOnChildren
   };
 
 }(d3));

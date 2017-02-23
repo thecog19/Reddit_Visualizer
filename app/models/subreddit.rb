@@ -1,4 +1,3 @@
-
 class Subreddit < ApplicationRecord
   has_many :subreddit_origin_connections,
     foreign_key: "subreddit_to_id",
