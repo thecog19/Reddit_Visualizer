@@ -1,4 +1,6 @@
 class Pathfinder
+  Node = Struct.new("Node", :subreddit, :parent)
+
   def find_path(start_subreddit, end_subreddit, limit=5)
     return if start_subreddit == end_subreddit
 
@@ -13,48 +15,44 @@ class Pathfinder
     @visited_subreddits = {}
     queue = []
 
-    queue.push(build_node(start_subreddit))
+    queue.push(build_node(start_subreddit.id))
     until queue.empty?
       node = queue.shift
-      next if valid_node?(node['subreddit'], start_subreddit.id, end_subreddit.id)
+      next if valid_node?(node['subreddit'])
       queue += add_nodes(node, limit)
-      return create_path(node, start_subreddit) if node['subreddit'] == end_subreddit
+      return create_path(node, start_subreddit) if node['subreddit'] == end_subreddit.id
     end
     false
   end
 
-  def valid_node?(node, start_id, end_id)
-    return true if @visited_subreddits[node.id]
-    @visited_subreddits[node.id] = true
+  def valid_node?(node_id)
+    return true if @visited_subreddits[node_id]
+    @visited_subreddits[node_id] = true
     false
   end
 
-  def add_nodes(subreddit, limit)
+  def add_nodes(node, limit)
     node_list = []
-    if subreddit.class != Hash
-      build_node(subreddit)
-    end
-    subreddit["subreddit"].related_subreddits(limit).each do |sr|
+    Subreddit.find_by(id: node.subreddit).related_subreddits(limit).each do |sr|
       next unless sr
-      node_list.push(build_node(sr, subreddit))
+      node_list.push(build_node(sr.id, node))
     end
     node_list
   end
 
   def build_node(subreddit, parent = nil)
-    subreddit_temp = {}
-    subreddit_temp["subreddit"] = subreddit
-    subreddit_temp["parent"] = parent
-    subreddit = subreddit_temp
+    Node.new(subreddit, parent)
   end
 
   def create_path(node, start_subreddit)
-    current_node = node
     path = []
-    until  current_node["subreddit"].id == start_subreddit.id
-      path.unshift(current_node["subreddit"])
-      current_node = current_node["parent"]
+    until node["subreddit"] == start_subreddit.id
+      path.unshift(node["subreddit"])
+      node = node["parent"]
     end
-    path.unshift(current_node["subreddit"])
+    path.unshift(node["subreddit"])
+    path.map do |node_id|
+      Subreddit.find_by(id: node_id)
+    end
   end
 end

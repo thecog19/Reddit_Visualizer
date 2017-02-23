@@ -46,11 +46,14 @@ class Subreddit < ApplicationRecord
 
   def self.find_by_id_or_name(params)
     if params[:id] == '0'
-      @subreddit = Subreddit.where('name ILIKE ?', params[:name])
-      !@subreddit.empty? ? @subreddit[0] : false
+      find_by_name_case_insensitive(params[:name])      
     else
       @subreddit = Subreddit.find_by(id: params[:id])
     end
+  end
+
+  def self.find_by_name_case_insensitive(name)
+    Subreddit.where('name ILIKE ?', name)[0]
   end
 
 end
