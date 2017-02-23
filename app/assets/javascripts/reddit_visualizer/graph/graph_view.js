@@ -52,7 +52,6 @@ GRAPH.view = (function(d3) {
       if (node.__data__.children) {
         node.classList.remove('expandable-node')
       }
-      console.log(node.__data__.children)
     }
   };
 
@@ -219,4 +218,6 @@ GRAPH.view = (function(d3) {
     update: update,
     redraw: redraw
   };
+
 }(d3));
+
