@@ -1,3 +1,4 @@
+
 class SubredditsController < ApplicationController
 
   def index
@@ -8,20 +9,24 @@ class SubredditsController < ApplicationController
   end
 
   def show
-    if params[:id] == '0'
-      @subreddit = Subreddit.find_by(name: params[:name])
+    if @subreddit = Subreddit.find_by_id_or_name(params)
+      successful_show
     else
-      @subreddit = Subreddit.find_by(id: params[:id])
+      failed_show
     end
-    if @subreddit
-      puts "subreddit: #{@subreddit}"
-      @children = @subreddit.get_top_connections(5)
-      respond_to do |format|
-        format.json
-      end
-    else
-      render json: "Subreddit not found.".to_json, status: 404
-    end
-
   end
+
+  private
+
+  def successful_show
+    @children = @subreddit.get_top_connections(5)
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def failed_show
+    render json: "Subreddit not found.".to_json, status: 404
+  end
+
 end

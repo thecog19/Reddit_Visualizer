@@ -44,4 +44,12 @@ class Subreddit < ApplicationRecord
     end
   end
 
+  def self.find_by_id_or_name(params)
+    if params[:id] == '0'
+      @subreddit = Subreddit.find_by(name: params[:name])
+    else
+      @subreddit = Subreddit.find_by(id: params[:id])
+    end
+  end
+
 end

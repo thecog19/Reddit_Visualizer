@@ -1,3 +1,4 @@
+
 class StaticpagesController < ApplicationController
 
   def index
