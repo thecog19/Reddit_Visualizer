@@ -1,8 +1,8 @@
 class PathsController < ApplicationController
 
   def show
-    start_subreddit = Subreddit.find_by(name: params[:beginning])
-    end_subreddit = Subreddit.find_by(name: params[:destination])
+    start_subreddit = Subreddit.find_by_name_case_insensitive(params[:beginning])
+    end_subreddit = Subreddit.find_by_name_case_insensitive(params[:destination])
 
     path = Pathfinder.new
     @path = path.find_path(start_subreddit, end_subreddit)
