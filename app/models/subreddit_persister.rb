@@ -1,27 +1,19 @@
 
 class SubredditPersister
-  attr_reader :failures
-
-  CAPTURE_RATE = 100
-  REQUEST_LIMIT = 5
 
   def initialize(args = {})
-    @api = args.fetch(:api, SubredditApi.new)
-    @captured = 0
-    @captured_this_iteration = 0
-    @failures = 0
-    @connector = SubredditConnector.new(api: api)
+    @subreddit_api = args.fetch(:subreddit_api, RedditApi::Subreddits.new)
+    @connector = SubredditConnector.new
+    @subreddit_factory = Subreddit
+    @connection_factory = SubredditConnection
   end
 
   def collect_subreddits(count)
-    while captured < count && failures < REQUEST_LIMIT
-      subreddits_data = api.top_subreddits(CAPTURE_RATE, captured)
-      persist_subreddits(subreddits_data, count)
-      update_failures
-    end
+    subreddits_data = subreddit_api.top(count)
+    persist_subreddits(subreddits_data, count)
   end
 
-  def collect_subreddit_connections(user_count = 10)
+  def collect_subreddit_connections(user_count = 5)
     subreddits = Subreddit.where(children_added_at: nil)
     subreddits.each do |subreddit|
       connections = connector.generate_connections(subreddit, user_count)
@@ -29,33 +21,18 @@ class SubredditPersister
     end
   end
 
-  protected
-  attr_accessor :captured, :captured_this_iteration
-  attr_writer :failures
   private
-  attr_reader :api, :connector
+  attr_reader :subreddit_api, :connector, :subreddit_factory,
+              :connection_factory
 
   def persist_subreddits(subreddits_data, count)
-    self.captured_this_iteration = 0
     subreddits_data.each do |subreddit_data|
       persist_subreddit(subreddit_data)
-      break if captured == count
     end
   end
 
   def persist_subreddit(subreddit_data)
-    subreddit = Subreddit.new(subreddit_data)
-    if subreddit.valid?
-      subreddit.save
-      self.captured += 1
-      self.captured_this_iteration += 1
-    end
-  end
-
-  def update_failures
-    if captured_this_iteration.zero?
-      self.failures += 1
-    end
+    subreddit_factory.create(subreddit_data.to_h)
   end
 
   def persist_subreddit_connections(connections)
@@ -79,5 +56,5 @@ class SubredditPersister
   def update_parent_subreddit(subreddit)
     subreddit.update(children_added_at: Time.now)
   end
-
 end
+

@@ -48,10 +48,11 @@ ActiveRecord::Schema.define(version: 20170221223229) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.datetime "children_added_at"
-    t.text     "subreddit_icon"
+    t.text     "icon"
     t.string   "category"
     t.integer  "active_users"
     t.boolean  "nsfw"
+    t.string   "reddit_id"
     t.index ["name"], name: "index_subreddits_on_name", unique: true, using: :btree
     t.index ["url"], name: "index_subreddits_on_url", unique: true, using: :btree
   end

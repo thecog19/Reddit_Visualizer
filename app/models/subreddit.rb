@@ -14,8 +14,7 @@ class Subreddit < ApplicationRecord
     source: :subreddit_to
   validates :url, uniqueness: true
 
-
-  API = SubredditApi.new
+  API = RedditApi::Subreddits.new
 
   def get_top_connections(limit)
     top_connections = subreddit_destination_connections.order(connection_weight: :desc).limit(limit)
@@ -34,12 +33,11 @@ class Subreddit < ApplicationRecord
 
   def self.find_or_fetch_by_name(subreddit_name)
     if exists?(name: subreddit_name)
-      subreddit = where(name: subreddit_name).last
+      find_by(name: subreddit_name)
     else
-      subreddit = new(API.get_sub_data(subreddit_name))
-      subreddit.save
+      subreddit_data = API.data_for(subreddit_name)
+      create(subreddit_data.to_h)
     end
-    subreddit
   end
 
 end

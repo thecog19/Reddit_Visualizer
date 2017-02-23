@@ -160,6 +160,14 @@ ul {
   margin-bottom: 5px;
 }
 
+.insructions-list {
+  list-style: square;
+  padding-left: 1em;
+
+  li {
+    padding-bottom: .5em;
+  }
+}
 // styles borrowed from https://github.com/hyspace/typeahead.js-bootstrap3.less/blob/master/typeahead.css to fix weirdness with typeahead breaking bootstrap styling on input group
 .input-group .twitter-typeahead:first-child .tt-input,
 .input-group .twitter-typeahead:first-child .tt-hint {

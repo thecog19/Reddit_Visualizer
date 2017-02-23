@@ -173,23 +173,34 @@ GRAPH.model = (function(d3, scales) {
         resolve(_graphData);
       });
     });
-  };
+  }
 
   var _uniqueChildren = function _uniqueChildren(children) {
-    return children.reduce(function(array, child) {
-      console.log('child', child)
-      for (var i = 0; i < _graphData.nodes.length; i++) {
-        if (_graphData.nodes[i].id === child.id) {
-          child.id = --_negativeId;
-          child.matchingId = _graphData.nodes[i].id
-        }
-      }
-      if (child.subscriber_count < 11000000){
-        array.push(child);
-      }
-      return array;
+    return children.reduce(function(children, child) {
+      _markIfDuplicated(child)
+      _addIfValid(child, children)
+      return children;
     }, []);
-  };
+  }
+
+  var _validChild = function _validChild(child) {
+    return !child.matchingId || child.subscriber_count < 11000000;
+  }
+
+  var _markIfDuplicated = function _markIfDuplicated(child) {
+    for (var i = 0; i < _graphData.nodes.length; i++) {
+      if (_graphData.nodes[i].id === child.id) {
+        child.id = --_negativeId;
+        child.matchingId = _graphData.nodes[i].id
+      }
+    }
+  }
+
+  var _addIfValid = function _addIfValid(child, children) {
+    if (_validChild(child)){
+      children.push(child);
+    }
+  }
 
   return {
     init: init,
