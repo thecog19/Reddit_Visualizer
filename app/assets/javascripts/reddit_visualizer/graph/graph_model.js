@@ -8,13 +8,20 @@ GRAPH.model = (function(d3, scales) {
   var _graphData = {};
   var _negativeId = 0;
 
-  var init = function init(config) {
+  var init = function init(config, path) {
     _config = config;
     // make initial json call w/ route builder
     var route = _jsonRoute(_config.json.rootId);
     scales.init(_config.scales);
     _graphData.scales = scales.getScales();
-    return _setRootData(route);
+    if(!!path){
+      console.log(path)
+      _graphData.root = path
+      update()
+      return _graphData
+    }else{  
+      return _setRootData(route);
+    }
   };
 
   var update = function update() {
@@ -105,7 +112,7 @@ GRAPH.model = (function(d3, scales) {
           }else{
             var adjustment = (distance - min) / distance * .5;
           }
-          
+
           _adjustCollision(treeNode, dataNode, adjustment, absXLength, absYLength);
         }
       }
@@ -139,7 +146,7 @@ GRAPH.model = (function(d3, scales) {
 
   var _showChildren = function(d){
     d.children = d._children;
-    d._children = null;  
+    d._children = null;
   }
 
   var _hideChildren = function(d){
@@ -207,6 +214,7 @@ GRAPH.model = (function(d3, scales) {
     update: update,
     toggleChildren: toggleChildren,
     checkCollision: checkCollision,
-    expandChildren: expandChildren
+    expandChildren: expandChildren,
+    _setRootData: _setRootData
   };
 }(d3, GRAPH.scales));

@@ -40,7 +40,6 @@ GRAPH.view = (function(d3) {
 
   var update = function update(graphData)  {
     _graphData = graphData;
-
     _updateForce();
 
     _bindNodes();
@@ -52,9 +51,25 @@ GRAPH.view = (function(d3) {
       if (node.__data__.children) {
         node.classList.remove('expandable-node')
       }
-      console.log(node.__data__.children)
     }
   };
+
+  var clickOnChildren = function clickOnChildren(nodes){
+    //timing is still an issue
+    //click is not resolving
+    //not going int the if loop
+    //don't know why!
+    //magic funtimes with js
+    for(var i = 0; i < nodes.length; i++){
+      for(var j = 0; j < _viewData.nodes.length; j++){
+        if(nodes[i]["name"] === _viewData.nodes[0][j]["__data__"]["name"]){
+          console.log("clicking!")
+          _viewData.nodes[j].click()
+        }
+      }
+    }
+    
+  }
 
   var redraw = function redraw() {
     // Redraw lines
@@ -71,6 +86,7 @@ GRAPH.view = (function(d3) {
   };
 
   var _updateForce = function _updateForce() {
+    console.log(_graphData)
     _force
       .nodes(_graphData.nodes)
       .links(_graphData.links)
@@ -217,6 +233,7 @@ GRAPH.view = (function(d3) {
   return {
     init: init,
     update: update,
-    redraw: redraw
+    redraw: redraw,
+    clickOnChildren: clickOnChildren
   };
 }(d3));

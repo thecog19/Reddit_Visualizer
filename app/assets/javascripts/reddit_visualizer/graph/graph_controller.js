@@ -19,7 +19,7 @@ GRAPH.controller = (function(model, view, d3) {
     toggleChildren: _toggleChildren,
   };
 
-  var init = function(config) {
+  var init = function(config, path = false) {
     var viewData, graphData;
 
     _callbacks.nodeClickHandlers = config.nodeClickHandlers;
@@ -27,13 +27,22 @@ GRAPH.controller = (function(model, view, d3) {
     viewData = view.init(config, _callbacks);
     config.viewData = viewData;
 
-    graphData = model.init(config).then(function(graphData) {
+    if(!!path){
+      graphData = model.init(config, path["subreddits"].shift())
       view.update(graphData);
-    });
+      view.clickOnChildren(path["subreddits"]) 
+
+    }else{
+      graphData = model.init(config).then(function(graphData) {
+        view.update(graphData);
+      });
+    }
   };
 
   var expandChildren = function(){
-    return model.expandChildren().then(view.update)
+    return model.expandChildren().then(function(r) {
+      view.update(r)
+    })
   }
 
   return {

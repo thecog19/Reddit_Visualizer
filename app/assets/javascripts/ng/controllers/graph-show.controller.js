@@ -24,6 +24,12 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
         });
     }
 
+    $scope.findPath = function(destinationSubreddit) {
+      subredditService.findPath($scope.subredditName, destinationSubreddit).then(function(response){
+          RV.graph.init(RV.config, response)
+      })
+    }
+
     $(".tt-dataset").on("click",".tt-suggestion", function(e){
       var text = e.currentTarget.innerText
       $scope.subredditName = text
@@ -31,10 +37,8 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
 
     $scope.expandChildren = function(){
       $scope.loadingSubreddits = true;
-      console.log()
       RV.graph.expandChildren()
         .then(function() {
-          console.log('done')
           $scope.loadingSubreddits = false;
           $scope.$apply()
         })
