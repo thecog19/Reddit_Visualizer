@@ -1,3 +1,4 @@
+
 namespace :reddit do
   desc "Continuously run populate_database_job for set period of time"
 
@@ -7,4 +8,3 @@ namespace :reddit do
   end
 end
 
-# heroku run rake reddit:gather_subreddits
