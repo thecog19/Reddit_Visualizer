@@ -1,4 +1,4 @@
-json.subreddits @path do |subreddit|  
+json.subreddits @path do |subreddit|
   json.id subreddit.id
   json.name subreddit.name
   json.subscriber_count subreddit.subscriber_count
@@ -8,7 +8,7 @@ json.subreddits @path do |subreddit|
   json.nsfw subreddit.nsfw
   json.has_children subreddit.has_children
 
-  json.children subreddit.get_top_connections(5) do |child|
+  json.children subreddit.related_subreddits(5) do |child|
     json.id child.id
     json.name child.name
     json.url child.url
