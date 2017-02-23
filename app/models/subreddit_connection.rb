@@ -9,6 +9,7 @@ class SubredditConnection < ApplicationRecord
   validate :unique_from_to
   validate :not_self_referencing
 
+  private
   def unique_from_to
     if SubredditConnection.exists?(subreddit_from_id: subreddit_from_id,
                                    subreddit_to_id: subreddit_to_id)

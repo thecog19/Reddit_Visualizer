@@ -34,13 +34,13 @@ describe Subreddit, :vcr do
       subreddit = create(:subreddit)
       subreddit_to_strong = create(:subreddit)
       subreddit_to_weak = create(:subreddit)
-      strong_connection = create(:subreddit_connection, 
-                                connection_weight: 100, 
-                                subreddit_from: subreddit, 
+      strong_connection = create(:subreddit_connection,
+                                connection_weight: 100,
+                                subreddit_from: subreddit,
                                 subreddit_to: subreddit_to_strong)
-      weak_connection = create(:subreddit_connection, 
-                                connection_weight: 1, 
-                                subreddit_from: subreddit, 
+      weak_connection = create(:subreddit_connection,
+                                connection_weight: 1,
+                                subreddit_from: subreddit,
                                 subreddit_to: subreddit_to_weak)
 
       subreddits = subreddit.related_subreddits(1)
@@ -50,10 +50,10 @@ describe Subreddit, :vcr do
   end
 
   describe "#get_weight" do
-    it "returns a connection weight for a specific subreddit" do 
+    it "returns a connection weight for a specific subreddit" do
       subreddit = create(:subreddit)
       subreddit_connected = create(:subreddit)
-      connection = create(:subreddit_connection, 
+      connection = create(:subreddit_connection,
                           connection_weight: 10,
                           subreddit_from: subreddit_connected,
                           subreddit_to: subreddit)
@@ -63,22 +63,22 @@ describe Subreddit, :vcr do
       expect(weight).to eq(connection.connection_weight)
     end
   end
- 
+
   describe "#has_children" do
-    it "returns true if the subreddit has children" do 
+    it "returns true if the subreddit has children" do
       subreddit = create(:subreddit, :with_connections)
- 
+
       has_children = subreddit.has_children
 
-      expect(has_children).to be true 
+      expect(has_children).to be true
     end
 
-    it "returns false if it does not have children" do 
+    it "returns false if it does not have children" do
       subreddit = create(:subreddit)
- 
+
       has_children = subreddit.has_children
 
-      expect(has_children).to be false 
+      expect(has_children).to be false
     end
   end
 
@@ -107,7 +107,7 @@ describe Subreddit, :vcr do
 
       it "creates the subreddit" do
         subreddit_name = "politics"
-        
+
         expect{
           Subreddit.find_or_fetch_by_name(subreddit_name)
           }.to change{Subreddit.count}.by(1)
