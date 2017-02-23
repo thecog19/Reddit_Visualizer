@@ -4,7 +4,7 @@ class SubredditPersister
   def initialize(args = {})
     @subreddit_api = args.fetch(:subreddit_api, RedditApi::Subreddits.new)
     @connector = SubredditConnector.new
-    @subreddit_factory = Subreddit
+    @subreddit_factory = args.fetch(:subreddit_factory, Subreddit)
     @connection_factory = SubredditConnection
   end
 
@@ -14,7 +14,7 @@ class SubredditPersister
   end
 
   def collect_subreddit_connections(user_count = 5)
-    subreddits = Subreddit.where(children_added_at: nil)
+    subreddits = subreddit_factory.where(children_added_at: nil)
     subreddits.each do |subreddit|
       connections = connector.generate_connections(subreddit, user_count)
       persist_subreddit_connections(connections)
