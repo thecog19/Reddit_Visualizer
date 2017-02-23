@@ -1,3 +1,4 @@
+
 <section>
   <div class="subreddit-icon">
     <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
@@ -5,7 +6,9 @@
     </a>
   </div>
   <a href="https://www.reddit.com{{subreddit.url}}" target="_blank">
-    <h2>{{subreddit.name}}</h2>
+    <h2>
+      {{subreddit.name}} <i class="fa fa-link" aria-hidden="true"></i>
+    </h2>
   </a>
   <p>Subscribers: {{ subreddit.subscriber_count | number}}</p>
   <p>{{ subreddit.description }}</p>
@@ -13,10 +16,15 @@
   <h4>Related Subreddits:</h4>
   <ul>
     <li ng-repeat="child in subreddit.children">
-      <h4 class="inline-h4"><a href="https://www.reddit.com{{ child.url }}" target="_blank">
+      <h4 class="inline-h4">
+        <a href="https://www.reddit.com{{ child.url }}" target="_blank">
         {{ child.name }}
-      </a></h4>
-      <a href="https://google.com/#q={{ subreddit.name }} + {{ child.name }}" target="_blank"><img src="assets/google-favicon-vector.png" class="google-icon"></a>
+      </a>
+      </h4>
+      <a href="https://google.com/#q={{ subreddit.name }} + {{ child.name }}"
+         target="_blank">
+        <img src="assets/google-favicon-vector.png" class="google-icon">
+      </a>
     </li>
   </ul>
 </section>
