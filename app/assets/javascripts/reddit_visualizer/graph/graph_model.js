@@ -19,7 +19,7 @@ GRAPH.model = (function(d3, scales) {
       _graphData.root = path
       update()
       return _graphData
-    }else{  
+    }else{
       return _setRootData(route);
     }
   };
@@ -150,7 +150,6 @@ GRAPH.model = (function(d3, scales) {
   }
 
   var _hideChildren = function(d){
-    console.log(d)
     d._children = d.children;
     d.children = null;
   }

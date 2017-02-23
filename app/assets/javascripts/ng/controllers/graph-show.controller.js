@@ -25,14 +25,21 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', 'subredditService', '$window
     }
 
     $scope.findPath = function(destinationSubreddit) {
+      $scope.loadingPath = true;
       subredditService.findPath($scope.subredditName, destinationSubreddit).then(function(response){
-          RV.graph.init(RV.config, response)
+          RV.graph.init(RV.config, response);
+          $scope.loadingPath = false;
       })
     }
 
-    $(".tt-dataset").on("click",".tt-suggestion", function(e){
-      var text = e.currentTarget.innerText
-      $scope.subredditName = text
+    $("#search-input .tt-dataset").on("click",".tt-suggestion", function(e){
+      var text = e.currentTarget.innerText;
+      $scope.subredditName = text;
+    });
+
+    $("#path-input .tt-dataset").on("click",".tt-suggestion", function(e){
+      var text = e.currentTarget.innerText;
+      $scope.destinationSubreddit = text;
     })
 
     $scope.expandChildren = function(){

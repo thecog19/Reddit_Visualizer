@@ -34,7 +34,7 @@ var extract_names = function(response) {
 }
 
 $(document).ready(function() {
-  $('#the-basics .typeahead').typeahead({
+  $('#search-input .typeahead').typeahead({
     hint: true,
     highlight: true,
     minLength: 1

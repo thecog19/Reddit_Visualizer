@@ -8,20 +8,18 @@
     <form ng-submit="drawGraph()">
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
-        <div class="input-group" id="the-basics">
+        <div class="input-group" id="search-input">
           <input type="text"
           ng-model="subredditName"
           name="subreddit-name"
           class="form-control typeahead search"
-          ng-disabled="loadingSubreddits">
+          ng-disabled="loadingSubreddits || loadingPath">
           <span class="input-group-btn">
-            <button class="btn btn-info" type="submit" ng-disabled="loadingSubreddits">Search</button>
+            <button class="btn btn-info" type="submit" ng-disabled="loadingSubreddits || loadingPath">Search</button>
           </span>
         </div>
       </div>
     </form>
-
-
 
     <form ng-submit="findPath(destinationSubreddit)">
       <div class="form-group">
@@ -30,21 +28,30 @@
           <input type="text"
           ng-model="destinationSubreddit"
           name="subreddit-name"
+          ng-disabled="loadingSubreddits || loadingPath"
           class="form-control typeahead search">
           <span class="input-group-btn">
-            <button class="btn btn-info" type="submit">Search</button>
+            <button class="btn btn-info"
+                    type="submit"
+                    ng-disabled="loadingSubreddits || loadingPath"
+                    ng-hide="loadingPath">
+              Search
+            </button>
+            <button class="btn btn-info"
+                    type="submit"
+                    ng-disabled="loadingSubreddits || loadingPath"
+                    ng-show="loadingPath">
+              Finding...
+            </button>
           </span>
         </div>
       </div>
     </form>
 
-
-
-
-    <path-finder></path-finder>
     <div class='form-group'>
       <button class="btn btn-info btn-block"
               ng-hide="loadingSubreddits"
+              ng-disabled="loadingPath"
               ng-click="expandChildren()">
         Expand subreddits
       </button>

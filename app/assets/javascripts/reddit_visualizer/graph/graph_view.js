@@ -59,7 +59,6 @@ GRAPH.view = (function(d3) {
     function click(node, i, j) {
       _callbacks.toggleChildren(node)
         .then(function() {
-          console.log('looping again')
           loop(++i)
         })
     }

@@ -28,10 +28,9 @@ GRAPH.controller = (function(model, view, d3) {
     config.viewData = viewData;
 
     if(!!path){
-      console.log(path)
       graphData = model.init(config, path["subreddits"].shift())
       view.update(graphData);
-      view.clickOnChildren(path["subreddits"]) 
+      view.clickOnChildren(path["subreddits"])
 
     }else{
       graphData = model.init(config).then(function(graphData) {
