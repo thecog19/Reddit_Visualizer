@@ -1,7 +1,7 @@
 
 FactoryGirl.define do
   factory :subreddit_connection do
-    subreddit_from { create(:subreddit, name: "AskReddit" ) }
-    subreddit_to { create(:subreddit, name: "politics" ) }
+    subreddit_from
+    subreddit_to
   end
 end

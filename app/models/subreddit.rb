@@ -11,16 +11,16 @@ class Subreddit < ApplicationRecord
   has_many :destination_subreddits,
     through: :subreddit_destination_connections,
     source: :subreddit_to
-  validates :url, uniqueness: true
   validates :name, uniqueness: true
+  validates :url, uniqueness: true
 
   API = RedditApi::Subreddits.new
 
-  def get_top_connections(limit)
-    top_connections = subreddit_destination_connections
+  def related_subreddits(limit)
+    related_subreddits = subreddit_destination_connections
                       .order(connection_weight: :desc)
                       .limit(limit)
-    top_connections.map do |connection|
+    related_subreddits.map do |connection|
       connection.subreddit_to
     end
   end

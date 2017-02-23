@@ -264,37 +264,37 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  angularjs-rails (~> 1.6.1)
-  better_errors (~> 2.1.1)
-  binding_of_caller (~> 0.7.2)
-  bootstrap-sass (~> 3.3.7)
+  angularjs-rails (~> 1.6)
+  better_errors (~> 2.1)
+  binding_of_caller (~> 0.7)
+  bootstrap-sass (~> 3.3)
   byebug
   delayed_job_active_record
   factory_girl_rails (~> 4.0)
-  figaro (~> 1.1.1)
+  figaro (~> 1.1)
   guard-rspec (~> 4.7)
-  httparty (~> 0.14.0)
-  jasmine (~> 2.5.2)
-  jazz_fingers (~> 4.0.1)
-  jbuilder (~> 2.6.1)
+  httparty (~> 0.14)
+  jasmine (~> 2.5)
+  jazz_fingers (~> 4.0)
+  jbuilder (~> 2.6)
   jquery-rails
-  listen (~> 3.0.5)
+  listen (~> 3.0)
   pg (~> 0.18)
-  pry-rails (~> 0.3.5)
+  pry-rails (~> 0.3)
   puma (~> 3.0)
-  rails (~> 5.0.1)
-  rails-assets-lodash (~> 4.17.4)!
-  rails-assets-restangular (~> 1.6.1)!
-  rails-assets-ui-router (~> 0.4.2)!
+  rails (~> 5.0)
+  rails-assets-lodash (~> 4.17)!
+  rails-assets-restangular (~> 1.6)!
+  rails-assets-ui-router (~> 0.4)!
   reddit_api
   rspec-rails (~> 3.5)
   shoulda-matchers (~> 3.1)
-  spring (~> 2.0.1)
-  spring-watcher-listen (~> 2.0.0)
+  spring (~> 2.0)
+  spring-watcher-listen (~> 2.0)
   tzinfo-data
-  uglifier (~> 3.0, >= 3.0.4)
-  vcr (~> 3.0.3)
-  webmock (~> 2.3.2)
+  uglifier (~> 3.0, >= 3.0)
+  vcr (~> 3.0)
+  webmock (~> 2.3)
 
 BUNDLED WITH
    1.14.4

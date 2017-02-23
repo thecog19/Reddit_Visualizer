@@ -19,7 +19,7 @@ class SubredditsController < ApplicationController
   private
 
   def successful_show
-    @children = @subreddit.get_top_connections(5)
+    @children = @subreddit.related_subreddits(5)
     respond_to do |format|
       format.json
     end
