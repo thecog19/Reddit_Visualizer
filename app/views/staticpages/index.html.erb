@@ -20,6 +20,28 @@
         </div>
       </div>
     </form>
+
+
+
+    <form ng-submit="findPath(destinationSubreddit)">
+      <div class="form-group">
+        <label for="subreddit-name">Find a Subreddit's Path:</label>
+        <div class="input-group" id="path-input">
+          <input type="text"
+          ng-model="destinationSubreddit"
+          name="subreddit-name"
+          class="form-control typeahead search">
+          <span class="input-group-btn">
+            <button class="btn btn-info" type="submit">Search</button>
+          </span>
+        </div>
+      </div>
+    </form>
+
+
+
+
+    <path-finder></path-finder>
     <div class='form-group'>
       <button class="btn btn-info btn-block"
               ng-hide="loadingSubreddits"
@@ -32,13 +54,7 @@
         Loading...
       </button>
     </div>
-    <div class='form-group'>
-      <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#help">
-        How to
-      </button>
-    </div>
     <subreddit-detail subreddit="subreddit"></subreddit-detail>
-    <path-finder></path-finder>
     <help-pane></help-pane>
   </div>
 </div>
