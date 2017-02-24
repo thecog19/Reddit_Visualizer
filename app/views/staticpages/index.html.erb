@@ -10,7 +10,7 @@
       {{errors}}
     </div>
 
-    <form ng-submit="drawGraph()">
+    <form ng-submit="drawGraph()" name="searchForm"> 
       <div class="form-group">
         <label for="subreddit-name">Find a Subreddit:</label>
         <div class="input-group" id="search-input">
@@ -18,8 +18,7 @@
           ng-model="subredditName"
           name="subreddit-name"
           class="form-control typeahead search"
-          ng-disabled="loadingSubreddits || loadingPath"
-          ng-change="logChange()">
+          ng-disabled="loadingSubreddits || loadingPath">
           <span class="input-group-btn">
             <button class="btn btn-info" type="submit"
                     ng-disabled="loadingSubreddits || loadingPath">
@@ -30,7 +29,7 @@
       </div>
     </form>
 
-    <form ng-submit="findPath(destinationSubreddit)">
+    <form ng-submit="findPath()">
       <div class="form-group">
         <label for="subreddit-name">Find path to:</label>
         <div class="input-group" id="path-input">

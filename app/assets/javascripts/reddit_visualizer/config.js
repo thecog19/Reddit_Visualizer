@@ -1,5 +1,3 @@
-'use strict';
-
 var RV = RV || {};
 
 RV.config = {

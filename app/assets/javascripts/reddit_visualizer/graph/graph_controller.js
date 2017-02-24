@@ -1,5 +1,3 @@
-'use strict';
-
 var GRAPH = GRAPH || {};
 
 GRAPH.controller = (function(model, view, d3) {

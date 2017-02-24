@@ -1,5 +1,3 @@
-'use strict';
-
 var GRAPH = GRAPH || {};
 
 GRAPH.view = (function(d3) {

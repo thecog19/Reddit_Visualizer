@@ -1,5 +1,3 @@
-'use strict';
-
 var GRAPH = GRAPH || {};
 
 GRAPH.scales = (function(d3) {

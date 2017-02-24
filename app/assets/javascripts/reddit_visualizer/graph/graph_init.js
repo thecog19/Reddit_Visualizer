@@ -1,5 +1,3 @@
-'use strict';
-
 var GRAPH = GRAPH || {};
 
 var RV = RV || {};

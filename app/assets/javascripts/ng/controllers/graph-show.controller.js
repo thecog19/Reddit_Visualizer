@@ -14,8 +14,8 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', '$timeout', 'subredditServic
       $timeout($scope.clearErrors, 5000);
     };
 
-    $scope.subredditName = "AskReddit";
     $scope.drawGraph = function() {
+      $scope.subredditName = angular.element('#search-input .tt-input').val() || 'AskReddit';
       subredditService.getSubreddit($scope.subredditName)
         .then(function(response) {
           RV.config.json.rootId = response.id;
@@ -29,7 +29,8 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', '$timeout', 'subredditServic
         .catch(_showErrors);
     };
 
-    $scope.findPath = function(destinationSubreddit) {
+    $scope.findPath = function() {
+      var destinationSubreddit = angular.element('#path-input .tt-input').val()
       $scope.loadingPath = true;
       subredditService.findPath($scope.subredditName, destinationSubreddit).then(function(response){
           RV.graph.init(RV.config, response);
@@ -37,16 +38,6 @@ RV.RedditViz.controller('GraphShowCtrl', ['$scope', '$timeout', 'subredditServic
       })
       .catch(_showErrors);
     };
-
-    $("#search-input .tt-dataset").on("select",".tt-suggestion", function(e){
-      var text = e.currentTarget.innerText;
-      $scope.subredditName = text;
-    });
-
-    $("#path-input .tt-dataset").on("select",".tt-suggestion", function(e){
-      var text = e.currentTarget.innerText;
-      $scope.destinationSubreddit = text;
-    })
 
     $scope.expandChildren = function(){
       $scope.loadingSubreddits = true;
