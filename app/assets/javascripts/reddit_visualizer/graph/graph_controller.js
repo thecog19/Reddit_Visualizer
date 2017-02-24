@@ -19,7 +19,8 @@ GRAPH.controller = (function(model, view, d3) {
     toggleChildren: _toggleChildren,
   };
 
-  var init = function(config, path = false) {
+  var init = function(config, path) {
+    var path = path || false;
     var viewData, graphData;
 
     _callbacks.nodeClickHandlers = config.nodeClickHandlers;
