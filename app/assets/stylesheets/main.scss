@@ -156,10 +156,19 @@ graph-legend {
   background-color: #8fa0bc;
 }
 
-.help-link span {
-  font-size: 20px;
+.help-link {
+  display: flex;
+  align-items: center;
   margin: 2px 0 2px 5px;
   cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.help-icon {
+  font-size: 20px;
 }
 
 .help-text {
