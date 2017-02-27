@@ -5,8 +5,10 @@ The Reddit Visualizer application will allow you to explore connections between 
 
 See it live [on heroku](https://reddit-visualizer.herokuapp.com/).
 
+![ss](public/screenshot.png?raw=true "Screenshot of project")
+
 ## Using the Deployed Application
-1. Visit [the Reddit Visualizer] (May take ~20 seconds to load - Heroku Hobby Dev)
+1. Visit [the Reddit Visualizer](https://reddit-visualizer.herokuapp.com/)
 2. Search for your desired subreddit using the search bar or start exploring from the default subreddit (AskReddit).
 3. Click on subreddit nodes to expand that subreddit to see its connections.
   - Line weight represents connection strength
